@@ -60,7 +60,7 @@ split {
 	}
 	
 	//final split
-	if (current.mapName == "menu.le" && old.mapName == "Outro" || current.mapName == "menu.le" && current.gameLoading != 0 || current.mapName == "Outro" && current.gameLoading != 0) {
+	if (current.mapName == "menu.le" && old.mapName == "Outro" || current.mapName == "menu.le" && current.gameLoading != 0 || current.mapName == "Outro" && current.gameLoading != 0 && old.gameLoading == 0) {
 		return true;
 	}
 }
