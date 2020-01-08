@@ -6,6 +6,7 @@
 
 // Changelog:
 // 1.0 - Initial release, added autostart, split, reset, load removal and settings
+// 1.1 - fixed(?) final split not working Sometimes(tm)
 
 state("gratka3d") {
 	string7 mapName: 0xB2968; 
@@ -59,7 +60,7 @@ split {
 	}
 	
 	//final split
-	if (current.mapName == "menu.le" && old.mapName == "Outro") {
+	if (current.mapName == "menu.le" && old.mapName == "Outro" || current.mapName == "menu.le" && current.gameLoading != 0 || current.mapName == "Outro" && current.gameLoading != 0) {
 		return true;
 	}
 }
