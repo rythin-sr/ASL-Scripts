@@ -65,7 +65,7 @@ split {
 }
 
 isLoading {
-	return (current.gameLoading != 0);
+	return (current.gameLoading != 0 || current.mapName == "menu.le");
 }
 
 reset {
