@@ -48,7 +48,7 @@ init {
     print("MD5Hash: " + MD5Hash.ToString()); //Lets DebugView show me the MD5Hash of the game executable, which is actually useful.
 	
 	if(MD5Hash == "37CF43A357ACF65793702824538539DF"){
-		version == "Non-Steam 1.01";
+		version = "Non-Steam 1.01";
 	}
 	
 	if(MD5Hash == "6B8599808068742CF4DB2CF25400E472"){
