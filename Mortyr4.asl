@@ -61,8 +61,10 @@ init {
 }
 
 update {
-	if (current.mapName == "" && old.mapName != "") {
-		vars.lastMap = old.mapName;
+	if (version != "Non-Steam 1.01") {
+		if (current.mapName == "" && old.mapName != "") {
+			vars.lastMap = old.mapName;
+		}
 	}
 	if (version == "Steam 1.01") {
 		if (current.cutCheck == 12 || current.cutCheck == 21) {
@@ -96,7 +98,7 @@ start {
 split {
 
 	//level splits
-	if (version == "1.0" || version == "Steam 1.01") {
+	if (version != "Non-Steam 1.01") {
 		if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h") {
 			vars.lastMap = current.mapName;
 			return true;
@@ -108,8 +110,10 @@ split {
 	}
 	
 	//final split
-	if (current.mapName == "level_3_3" && old.finaleFade == 1 && current.finaleFade == 0) {
-		return true;
+	if (version != "Non-Steam 1.01") {
+		if (current.mapName == "level_3_3" && old.finaleFade == 1 && current.finaleFade == 0) {
+			return true;
+		}
 	}
 }
 
