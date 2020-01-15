@@ -22,6 +22,15 @@ state("game", "Steam 1.01") {
 	float finaleFade: 0x1C0EFC;
 }
 
+state("game", "Non-Steam 1.01")
+{
+	string9 levelName : 0x1C412D;
+	byte saveLoadWatcher : "GameClient.dll", 0x20C004;
+	bool inMenu : 0x1B980C;
+	byte cutsceneWatcher : 0x1BA648;
+    bool isFading: "GameClient.dll", 0x20FC04;
+}
+
 init {
 	vars.lastMap = "h";
 	vars.isCut = true; //something from Mr_Mary's script which seems to be needed? idk cba rewriting the steam script
@@ -38,12 +47,16 @@ init {
     var MD5Hash = exeMD5HashBytes.Select(x => x.ToString("X2")).Aggregate((a, b) => a + b);
     print("MD5Hash: " + MD5Hash.ToString()); //Lets DebugView show me the MD5Hash of the game executable, which is actually useful.
 	
+	if(MD5Hash == "37CF43A357ACF65793702824538539DF"){
+		version == "Non-Steam 1.01";
+	}
+	
 	if(MD5Hash == "6B8599808068742CF4DB2CF25400E472"){
-      version = "Steam 1.01";
+		version = "Steam 1.01";
     }
 	
 	if(MD5Hash == "96884A37F6B03FEFF0B38868FC908087"){
-      version = "1.0";
+		version = "1.0";
     } 
 }
 
@@ -69,6 +82,10 @@ start {
 		}
 	}
 	
+	if (version == "Non-Steam 1.01") {
+			return current.levelName == "level_1_1" && current.saveLoadWatcher != 0 && old.saveLoadWatcher == 0;
+	}
+	
 	if (version == "Steam 1.01") {
 		if (current.mapName == "level_1_1" && current.cutsceneWatch == 0) {
 			return true;
@@ -79,9 +96,15 @@ start {
 split {
 
 	//level splits
-	if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h") {
-		vars.lastMap = current.mapName;
-		return true;
+	if (version == "1.0" || version == "Steam 1.01") {
+		if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h") {
+			vars.lastMap = current.mapName;
+			return true;
+		}
+	}
+	
+	if (version == "Non-Steam 1.01") {
+		return current.levelName == "" && old.levelName != current.levelName;
 	}
 	
 	//final split
@@ -93,6 +116,10 @@ split {
 isLoading {
 	if (version == "1.0") {
 		return (current.gameLoading != 256 || current.freezeWatcher != 0);
+	}
+	
+	if (version == "Non-Steam 1.01") {
+		return !current.inMenu && current.saveLoadWatcher == 0 && current.cutsceneWatcher == 2 && !current.isFading;
 	}
 	
 	if (version == "Steam 1.01") {
