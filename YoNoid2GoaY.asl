@@ -115,5 +115,9 @@ split {
 
 gameTime{
 	return TimeSpan.FromMilliseconds(current.gameTime /10000);
-}	
+}
+
+isLoading {
+	return true;
+}
 
