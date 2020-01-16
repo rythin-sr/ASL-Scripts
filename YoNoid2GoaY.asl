@@ -36,7 +36,7 @@ startup {
 	settings.Add("MikeSplit", false, "Split when quitting to menu from Mike's Lair");
 	settings.Add("BossCheck", false, "Print whether Mike fight split will work (requires DbgView)", "BossSplit");
 	settings.SetToolTip("BossSplit", "BossSplit");
-	
+	settings.Add("test", true, "test");
 }
 
 update {
@@ -118,6 +118,6 @@ gameTime{
 }
 
 isLoading {
-	return true;
+	return (settings["test"] == true);
 }
 
