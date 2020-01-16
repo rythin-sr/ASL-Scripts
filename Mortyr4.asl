@@ -25,11 +25,12 @@ state("game", "Steam 1.01") {
 
 state("game", "Non-Steam 1.01")
 {
-	string9 levelName : 0x1C412D;
+	string9 mapName : 0x1C412D;
 	byte saveLoadWatcher : "GameClient.dll", 0x20C004;
 	bool inMenu : 0x1B980C;
 	byte cutsceneWatcher : 0x1BA648;
-    bool isFading: "GameClient.dll", 0x20FC04;
+    	bool isFading: "GameClient.dll", 0x20FC04;
+	float finaleFade: 0x1C2EFC;
 }
 
 init {
@@ -86,7 +87,7 @@ start {
 	}
 	
 	if (version == "Non-Steam 1.01") {
-			return current.levelName == "level_1_1" && current.saveLoadWatcher != 0 && old.saveLoadWatcher == 0;
+			return current.mapName == "level_1_1" && current.saveLoadWatcher != 0 && old.saveLoadWatcher == 0;
 	}
 	
 	if (version == "Steam 1.01") {
@@ -107,14 +108,12 @@ split {
 	}
 	
 	if (version == "Non-Steam 1.01") {
-		return current.levelName == "" && old.levelName != current.levelName;
+		return current.mapName == "" && old.mapName != current.mapName;
 	}
 	
 	//final split
-	if (version != "Non-Steam 1.01") {
-		if (current.mapName == "level_3_3" && old.finaleFade == 1 && current.finaleFade == 0) {
-			return true;
-		}
+	if (current.mapName == "level_3_3" && old.finaleFade == 1 && current.finaleFade == 0) {
+		return true;
 	}
 }
 
