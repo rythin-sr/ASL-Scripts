@@ -1,8 +1,8 @@
 //Mortyr IV: Operation Thunderstorm Load Remover + Autosplitter
 //1.0 code written by rythin, addresses partially found by pitpo
 //1.01 Steam done entirely by Mr_Mary, with the exception of final split, poorly copy-pasted here
-//1.01 non-steam done entirely by pitpo, poorly copy-pasted here
-//Now with final split! (except non-steam 1.01)
+//1.01 non-steam done mostly by pitpo, some bits re-written by rythin
+//Now with final split! 
 
 state("game", "1.0") {
 	int gameLoading : "GameClient.dll", 0x210D82; //1 or 257 when loading, 256 when gameplay
