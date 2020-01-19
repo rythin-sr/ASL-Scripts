@@ -87,14 +87,15 @@ start {
 	}
 	
 	if (version == "Non-Steam 1.01") {
-			if (current.mapName == "level_1_1" && current.saveLoadWatcher != 0 && old.saveLoadWatcher == 0) {
-				vars.lastMap = "h";
-				return true;
-			}
+		if (current.mapName == "level_1_1" && current.saveLoadWatcher != 0 && old.saveLoadWatcher == 0) {
+			vars.lastMap = "h";
+			return true;
+		}
 	}
 	
 	if (version == "Steam 1.01") {
 		if (current.mapName == "level_1_1" && current.cutsceneWatch == 0) {
+			vars.lastMap = "h";
 			return true;
 		}
 	}
