@@ -29,8 +29,8 @@ start {
 split {
 	//level splits
 	if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h") {
-			vars.lastMap = current.mapName;
-			return true;
+		vars.lastMap = current.mapName;
+		return true;
 	}
 }
 
