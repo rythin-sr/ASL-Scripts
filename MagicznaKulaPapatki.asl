@@ -21,7 +21,7 @@ startup {
 	settings.Add("34", true, "Level03 -> Level04");
 	settings.Add("45", true, "Level04 -> Level05");
 	settings.Add("56", true, "Level05 -> Level06");
-	settings.Add("67", false, "Level06 -> Outro");
+	
 }
 
 start {
