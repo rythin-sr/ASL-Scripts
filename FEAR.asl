@@ -1,8 +1,10 @@
+//FEAR Autosplitter + Load Remover made by rythin, with contributions from SuicideMachine, FireCulex and KunoDemetries
+
 state("FEAR")
 {
 	int gameLoading:		0x173DB0;				//0, 4 or 5 when gameplay, 1 or 2 when loading
-	byte cp2:				0x00015DCC, 0x288;		//0 or 96 when gameplay is happening
-	byte cp1:				0x170D28;				//0 when gameplay is happening
+	byte cp2:			0x00015DCC, 0x288;		//0 or 96 when gameplay is happening
+	byte cp1:			0x170D28;				//0 when gameplay is happening
 	string16 mapName:		0x16C045;
 	int gamePaused:			0x16CCE8;				//1 when paused
 }
