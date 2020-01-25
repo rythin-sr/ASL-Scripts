@@ -5,8 +5,7 @@
 
 //	ToDo: 
 //	-better start and final split for 2
-//	-better start for 3 MAYBE
-//	-3 IGT MAYBE
+//	-maybe try 3 IGT again?
 //	-settings to split for every room in yh10s 1 and 2 and maybe 3
 
 //															YOU HAVE 10 SECONDS
@@ -65,11 +64,11 @@ init {
 		vars.areaEndTransition = 0;
 		vars.timerPausedRoom = 0;
 	}
+	
+	if (version == "yh10s3") {
+		vars.yh3SplitCounter = 0;
+	}
 }    
-
-startup {
-	vars.yh3SplitCounter = 0;
-}
 
 update {
 	if (version == "yh10s") {
@@ -148,14 +147,14 @@ start {
 	}
 	
 	if (version == "yh10s3") {
-		//if (current.runStart == 0 && old.runStart == 1) {
-		//	vars.yh3SplitCounter = 0;
-		//	return true;
-		//}
-		
-		if (current.inHub == 1 && old.inHub == 0) {
+		if (current.runStart == 0 && old.runStart == 1) {
+			vars.yh3SplitCounter = 0;
 			return true;
 		}
+		
+	//	if (current.inHub == 1 && old.inHub == 0) {
+	//		return true;
+	//	}
 	}
 }
 
@@ -186,7 +185,7 @@ split {
 	if (version == "yh10s3") {
 	
 		//area splits
-		if (current.inHub == 1 && old.inHub == 0 && vars.yh3SplitCounter != 1) {
+		if (current.inHub == 1 && old.inHub == 0 && vars.yh3SplitCounter > 1) {
 			return true;
 		}
 		
