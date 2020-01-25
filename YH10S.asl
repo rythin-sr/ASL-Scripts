@@ -1,9 +1,12 @@
 //You Have 10 Seconds Series autosplitter
+//YH10S autosplitter originally by Arcree, cleaned up a tad by rythin
+//YH10S2 & TH10S3 autosplitter by rythin
+//IGT by rythin
 
 //	ToDo: 
 //	-better start and final split for 2
 //	-better start for 3 MAYBE
-//	-2 IGT, maybe try 3 IGT again?
+//	-3 IGT MAYBE
 //	-settings to split for every room in yh10s 1 and 2 and maybe 3
 
 //															YOU HAVE 10 SECONDS
