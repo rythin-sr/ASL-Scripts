@@ -202,7 +202,7 @@ split {
 		}
 		
 		//final split
-		if (current.credits == 1 && old.credits == 0) {
+		if (current.credits == 1 && old.credits == 0 && vars.yh3SplitCounter > 25) {
 			return true;
 		}
 	}
