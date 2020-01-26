@@ -197,7 +197,7 @@ split {
 	if (version == "yh10s3") {
 	
 		//area splits
-		if (current.inHub == 1 && old.inHub == 0 && vars.yh3SplitCounter > 1) {
+		if (current.inHub == 1 && old.inHub == 0 && vars.yh3SplitCounter >= 1) {
 			return true;
 		}
 		
