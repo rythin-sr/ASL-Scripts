@@ -11,6 +11,7 @@ state("FEAR")
 
 init {
 	vars.lastMap = "h";
+	vars.splits = new List<string>();
 }
 
 update {
@@ -20,22 +21,28 @@ update {
 }
 
 start { 
-	if (current.mapName == "Intro.World00p" && old.gameLoading != 0 && current.gameLoading == 0 || current.gameLoading == 4 || current.gameLoading == 5) {
-		vars.lastMap = "h";
-		return true;
+	if(current.gameLoading == 0 || current.gameLoading == 4 || current.gameLoading == 5) {
+		if(current.mapName == "Intro.World00p" && old.gameLoading != 0) {
+			vars.lastMap = "h";
+			vars.splits.Clear();
+			vars.splits.Add(current.mapName);
+			return true;
+		}
 	}
 }
 
 split {
 	//level splits
-	if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h") {
+	if (vars.lastMap != current.mapName && current.mapName != "" && vars.lastMap != "h" && !vars.splits.Contains(current.mapName) && timer.CurrentPhase == TimerPhase.Running) {
 		vars.lastMap = current.mapName;
+		vars.splits.Add(current.mapName);
 		return true;
 	}
 }
 
 reset {
 	return (old.mapName == "" && current.mapName == "Intro.World00p");
+	vars.lastMap = "h";
 }
 
 isLoading {
