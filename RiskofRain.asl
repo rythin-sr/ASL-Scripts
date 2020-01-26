@@ -16,12 +16,14 @@ state("ROR_GMS_controller") {
 	double spIGT:	0x02BD97CC, 0x0, 0x10, 0x0, 0x4D0;		//goes from 0 to 59, then back to 0, only in singleplayer
 	int isPaused:	0x2BAAA3C;								//229 when paused, 255 when not
 }
-	
+
+// 				    I have tried many ways to get IGT in livesplit, but alas gamesux
+
 //init {
 //	vars.displayIGT = 0;
 //	vars.counter = 0;
 //}
-// I have tried many ways to get IGT in livesplit, but alas gamesux
+
 //update {
 	//if (old.spIGT != 0 && current.spIGT != 0 && current.spIGT != old.spIGT) {	//since IGT resets every minute, add 1 second to IGT
 	//	vars.displayIGT = vars.displayIGT + 1;									//every time it ticks
