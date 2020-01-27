@@ -161,6 +161,7 @@ start {
 	if (version == "yh10s2") {
 		if (current.inMenu == 1061997773 && old.inMenu == 1065353216) {		//this address is jank as fuck but hey it works lol
 			return true;
+			vars.IGTfinal = 0;
 		}
 	}
 	
