@@ -1,14 +1,9 @@
 //Risk of Rain Autosplitter by rythin
 
-// Current features:
+//Current features:
 // *autostart
 // *full autosplitting including final split
 // *auto reset on quit to menu
-
-// ToDo:
-// *settings to support multi-char categories
-// *setting to disable splitting between levels (only on game completion)
-// *work on IGT some more?
 
 state("ROR_GMS_controller") {
 	int roomID: 	0x2BED7A8; 								//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41
@@ -17,27 +12,9 @@ state("ROR_GMS_controller") {
 	int isPaused:	0x2BAAA3C;								//229 when paused, 255 when not
 }
 
-// 				    I have tried many ways to get IGT in livesplit, but alas gamesux
-
-//init {
-//	vars.displayIGT = 0;
-//	vars.counter = 0;
-//}
-
-//update {
-	//if (old.spIGT != 0 && current.spIGT != 0 && current.spIGT != old.spIGT) {	//since IGT resets every minute, add 1 second to IGT
-	//	vars.displayIGT = vars.displayIGT + 1;									//every time it ticks
-	//}
-	
-	//if (old.spIGT == 59 && current.spIGT == 0) {		//because IGT gets set to 0 when you pause, i avoid adding to igt when it goes to 0
-	//	vars.counter = vars.counter + 1;				//instead i add 2 seconds on the transition from 59 to 0
-	//}													//to make up 59 -> 0 and 0 -> 1
-	
-	//if (vars.counter == 2) {
-	//	vars.counter = 0;
-	//	vars.displayIGT = vars.displayIGT + 3;
-	//}
-//}
+startup {
+	settings.Add("levelsplits", true, "Split between levels");
+}
 	
 start {
 	if (old.roomID == 6 && current.roomID != 6 || old.roomID == 40 && current.roomID != 40) {
@@ -48,7 +25,7 @@ start {
 	
 split {
 	//area splits
-	if (current.roomID != old.roomID && old.roomID != 6 && old.roomID != 40) {
+	if (current.roomID != old.roomID && old.roomID != 6 && old.roomID != 40 && settings["levelsplits"] == true) {
 		return true;
 	}
 	
@@ -59,14 +36,5 @@ split {
 }
 	
 reset {
-	return (current.roomID == 2);
+	return (current.roomID == 6 || current.roomID == 40);
 }
-
-//gameTime {
-//	return TimeSpan.FromSeconds(vars.displayIGT);
-//}
-
-//isLoading {
-//	return true;
-//}
-
