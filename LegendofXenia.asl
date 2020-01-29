@@ -85,7 +85,7 @@ split {
 			return true;
 		}
 	
-		if (current.posY >= 130 && current.posY <= 140 && old.posX == 407 && current.posX == 408 && current.roomID == 2) {
+		if (current.posY >= 125 && current.posY <= 145 && old.posX == 407 && current.posX == 408 && current.roomID == 2) {
 			return true;
 		}
 	}
