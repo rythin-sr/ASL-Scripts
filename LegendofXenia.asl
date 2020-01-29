@@ -19,18 +19,27 @@ init {
 	}
 }
 
-startup {																			//	1.0		 |	  1.1
-	settings.Add("sshrine", false, "Southern Shrine -> Austral Beach");				//1 -> 0	 |
-	settings.Add("thicket", false, "Austral Beach -> Mucky Thicket"); 				//0 -> 2	 |
-	settings.Add("keysplit", true, "Split when refreshing the key");				//			 |
-	settings.Add("hamlet", false, "Mucky Thicket -> Island Hamlet");				//2 -> 3	 |
-	settings.Add("magesplit", false, "Old Mage's House -> Island Hamlet");			//6 -> 3	 |
-	settings.Add("ebanks", false, "Island Hamlet -> Western Banks");				//3 -> 9	 |
-	settings.Add("lbanks", false, "Western Banks -> Island Hamlet");				//9 -> 3	 |
-	settings.Add("ewoods", false, "Island Hamlet -> Haunted Woods");				//3 -> 8	 |
-	settings.Add("lwoods", false, "Haunted Woods -> Island Hamlet");				//8 -> 3	 |
-	settings.Add("doorroom", false, "Island Hamlet -> Ancient Gated Path");			//3 -> 11	 |	3 -> 10
-	settings.Add("doorsplit", false, "Ancient Gated Path -> Northern Springs");		//11 -> 12	 |	10 -> 11
+startup {
+	// setting categories
+	settings.Add("roomidsplits", false, "Area Splits");
+	settings.Add("misc", false, "Misc Splits");
+
+	// level change splits											   1.0	 |	  1.1
+	settings.Add("sshrine", false, "Southern Shrine -> Austral Beach", "roomidsplits");			//1 -> 0 |
+	settings.Add("thicket", false, "Austral Beach -> Mucky Thicket", "roomidsplits"); 			//0 -> 2 |
+	settings.Add("hamlet", false, "Mucky Thicket -> Island Hamlet", "roomidsplits");			//2 -> 3 |
+	settings.Add("magesplit", false, "Old Mage's House -> Island Hamlet", "roomidsplits");			//6 -> 3 |
+	settings.Add("ebanks", false, "Island Hamlet -> Western Banks", "roomidsplits");			//3 -> 9 |
+	settings.Add("lbanks", false, "Western Banks -> Island Hamlet", "roomidsplits");			//9 -> 3 |
+	settings.Add("ewoods", false, "Island Hamlet -> Haunted Woods", "roomidsplits");			//3 -> 8 |
+	settings.Add("lwoods", false, "Haunted Woods -> Island Hamlet", "roomidsplits");			//8 -> 3     |
+	settings.Add("doorroom", false, "Island Hamlet -> Ancient Gated Path", "roomidsplits");			//3 -> 11    |	3 -> 10
+	settings.Add("doorsplit", false, "Ancient Gated Path -> Northern Springs", "roomidsplits");		//11 -> 12   |	10 -> 11
+	
+	//misc splits
+	settings.Add("keysplit", false, "Split when refreshing the key", "misc");
+	settings.Add("shrinesplit", false, "Split when leaving a shrine (relevant for 100%)", "misc");
+	settings.Add("keypickup", false, "Split when picking up keys (Western Banks & Mucky Thicket only", "misc"); 
 	
 }
 
@@ -50,6 +59,36 @@ start {	//timing on first movement up or right, since you'd never move down or l
 }
 
 split {
+
+	//shrinesplit
+	if (settings["shrinesplit"] == true) {
+		if (current.posX >= 52 && current.posX <= 60 && old.posY == 140 && current.posY == 141 && current.roomID == 1) {
+			return true;
+		}
+	
+		if (current.posX >= -4 && current.posX <= 4 && old.posY == 356 && current.posY == 357 && current.roomID == 9) {
+			return true;
+		}
+	
+		if (current.posX >= 180 && current.posX <= 188 && old.posY == 4 && current.posY == 5 && current.roomID == 3) {
+			return true;
+		}
+	
+		if (current.posX >= 172 && current.posX <= 180 && old.posY == 252 && current.posY == 253 && current.roomID == 8) {
+			return true;
+		}
+	}
+	
+	//keypickup
+	if (settings["shrinesplit"] == true) {
+		if (current.posX >= -8 && current.posX <= -4 && old.posY == 80 && current.posY == 81 && current.roomID == 9) {
+			return true;
+		}
+	
+		if (current.posY >= 130 && current.posY <= 140 && old.posX == 407 && current.posX == 408 && current.roomID == 2) {
+			return true;
+		}
+	}
 
 	//Southern Shrine -> Austral Beach
 	if (settings["sshrine"] == true && old.roomID == 1 && current.roomID == 0) {
