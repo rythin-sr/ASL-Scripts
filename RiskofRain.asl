@@ -6,10 +6,10 @@
 // *auto reset on quit to menu
 
 state("ROR_GMS_controller") {
-	int roomID: 	0x2BED7A8; 								//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41
+	int roomID: 		0x2BED7A8; 					//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41
 	int runEnd:		0x02BEB5E0, 0x0, 0x548, 0xC, 0xB4;		//goes from 0 to 1 when you Press 'A' to leave the planet
-	double spIGT:	0x02BD97CC, 0x0, 0x10, 0x0, 0x4D0;		//goes from 0 to 59, then back to 0, only in singleplayer
-	int isPaused:	0x2BAAA3C;								//229 when paused, 255 when not
+	double spIGT:		0x02BD97CC, 0x0, 0x10, 0x0, 0x4D0;		//goes from 0 to 59, then back to 0, only in singleplayer
+	int isPaused:		0x2BAAA3C;					//229 when paused, 255 when not
 }
 
 startup {
@@ -18,7 +18,6 @@ startup {
 	
 start {
 	if (old.roomID == 6 && current.roomID != 6 || old.roomID == 40 && current.roomID != 40) {
-		vars.displayIGT = 1;	//i think i did some math wrong so just make it start on 1
 		return true;
 	}
 }
