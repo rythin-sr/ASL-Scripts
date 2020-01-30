@@ -81,8 +81,8 @@ split {
 	
 	//keypickup
 	if (settings["keypickup"] == true) {
-		if (current.posX >= -8 && current.posX <= -4 && old.posY <= 80 && current.posY >= 81 && current.roomID == 9) {
-			return true;
+		if (current.posX >= -8 && current.posX <= -4 && old.posY <= 80 && current.posY >= 81  && current.posY < 90 && current.roomID == 9) {
+			return true;	//lol this one's a mess
 		}
 	
 		if (current.posY >= 125 && current.posY <= 145 && old.posX <= 407 && current.posX >= 408 && current.roomID == 2) {
