@@ -24,14 +24,14 @@ startup {
 	settings.Add("roomidsplits", false, "Area Splits");
 	settings.Add("misc", false, "Misc Splits");
 
-	// level change splits											   1.0	 |	  1.1
-	settings.Add("sshrine", false, "Southern Shrine -> Austral Beach", "roomidsplits");			//1 -> 0 |
-	settings.Add("thicket", false, "Austral Beach -> Mucky Thicket", "roomidsplits"); 			//0 -> 2 |
-	settings.Add("hamlet", false, "Mucky Thicket -> Island Hamlet", "roomidsplits");			//2 -> 3 |
-	settings.Add("magesplit", false, "Old Mage's House -> Island Hamlet", "roomidsplits");			//6 -> 3 |
-	settings.Add("ebanks", false, "Island Hamlet -> Western Banks", "roomidsplits");			//3 -> 9 |
-	settings.Add("lbanks", false, "Western Banks -> Island Hamlet", "roomidsplits");			//9 -> 3 |
-	settings.Add("ewoods", false, "Island Hamlet -> Haunted Woods", "roomidsplits");			//3 -> 8 |
+	// level change splits											   1.0	     |	  1.1
+	settings.Add("sshrine", false, "Southern Shrine -> Austral Beach", "roomidsplits");			//1 -> 0     |
+	settings.Add("thicket", false, "Austral Beach -> Mucky Thicket", "roomidsplits"); 			//0 -> 2     |
+	settings.Add("hamlet", false, "Mucky Thicket -> Island Hamlet", "roomidsplits");			//2 -> 3     |
+	settings.Add("magesplit", false, "Old Mage's House -> Island Hamlet", "roomidsplits");			//6 -> 3     |
+	settings.Add("ebanks", false, "Island Hamlet -> Western Banks", "roomidsplits");			//3 -> 9     |
+	settings.Add("lbanks", false, "Western Banks -> Island Hamlet", "roomidsplits");			//9 -> 3     |
+	settings.Add("ewoods", false, "Island Hamlet -> Haunted Woods", "roomidsplits");			//3 -> 8     |
 	settings.Add("lwoods", false, "Haunted Woods -> Island Hamlet", "roomidsplits");			//8 -> 3     |
 	settings.Add("doorroom", false, "Island Hamlet -> Ancient Gated Path", "roomidsplits");			//3 -> 11    |	3 -> 10
 	settings.Add("doorsplit", false, "Ancient Gated Path -> Northern Springs", "roomidsplits");		//11 -> 12   |	10 -> 11
@@ -80,7 +80,7 @@ split {
 	}
 	
 	//keypickup
-	if (settings["shrinesplit"] == true) {
+	if (settings["keypickup"] == true) {
 		if (current.posX >= -8 && current.posX <= -4 && old.posY == 80 && current.posY == 81 && current.roomID == 9) {
 			return true;
 		}
