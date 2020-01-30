@@ -24,7 +24,7 @@ start {
 	
 split {
 	//area splits
-	if (current.roomID != old.roomID && old.roomID != 6 && old.roomID != 40 && settings["levelsplits"] == true) {
+	if (current.roomID != old.roomID && current.roomID != 2 && old.roomID != 6 && old.roomID != 40 && settings["levelsplits"] == true) {
 		return true;
 	}
 	
