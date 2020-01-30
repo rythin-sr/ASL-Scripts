@@ -38,8 +38,6 @@ startup {
 	
 	//misc splits
 	settings.Add("keysplit", false, "Split when refreshing the key", "misc");
-	settings.Add("keypickup", false, "Split when picking up keys (Western Banks & Mucky Thicket only", "misc"); 
-	
 }
 
 update {
@@ -58,17 +56,6 @@ start {	//timing on first movement up or right, since you'd never move down or l
 }
 
 split {	
-	//keypickup
-	if (settings["keypickup"] == true) {
-		if (current.posX >= -8 && current.posX <= -4 && old.posY <= 80 && current.posY >= 81  && current.posY < 90 && current.roomID == 9) {
-			return true;	//lol this one's a mess
-		}
-	
-		if (current.posY >= 125 && current.posY <= 145 && old.posX <= 407 && current.posX >= 408 && current.roomID == 2) {
-			return true;
-		}
-	}
-
 	//Southern Shrine -> Austral Beach
 	if (settings["sshrine"] == true && old.roomID == 1 && current.roomID == 0) {
 		return true;
