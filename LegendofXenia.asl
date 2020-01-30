@@ -62,30 +62,30 @@ split {
 
 	//shrinesplit
 	if (settings["shrinesplit"] == true) {
-		if (current.posX >= 52 && current.posX <= 60 && old.posY == 140 && current.posY == 141 && current.roomID == 1) {
+		if (current.posX >= 52 && current.posX <= 60 && old.posY <= 140 && current.posY >= 141 && current.roomID == 1) {
 			return true;
 		}
 	
-		if (current.posX >= -4 && current.posX <= 4 && old.posY == 356 && current.posY == 357 && current.roomID == 9) {
+		if (current.posX >= -4 && current.posX <= 4 && old.posY <= 356 && current.posY >= 357 && current.roomID == 9) {
 			return true;
 		}
 	
-		if (current.posX >= 180 && current.posX <= 188 && old.posY == 4 && current.posY == 5 && current.roomID == 3) {
+		if (current.posX >= 180 && current.posX <= 188 && old.posY <= 4 && current.posY >= 5 && current.roomID == 3) {
 			return true;
 		}
 	
-		if (current.posX >= 172 && current.posX <= 180 && old.posY == 252 && current.posY == 253 && current.roomID == 8) {
+		if (current.posX >= 172 && current.posX <= 180 && old.posY <= 252 && current.posY >= 253 && current.roomID == 8) {
 			return true;
 		}
 	}
 	
 	//keypickup
 	if (settings["keypickup"] == true) {
-		if (current.posX >= -8 && current.posX <= -4 && old.posY == 80 && current.posY == 81 && current.roomID == 9) {
+		if (current.posX >= -8 && current.posX <= -4 && old.posY <= 80 && current.posY >= 81 && current.roomID == 9) {
 			return true;
 		}
 	
-		if (current.posY >= 125 && current.posY <= 145 && old.posX == 407 && current.posX == 408 && current.roomID == 2) {
+		if (current.posY >= 125 && current.posY <= 145 && old.posX <= 407 && current.posX >= 408 && current.roomID == 2) {
 			return true;
 		}
 	}
