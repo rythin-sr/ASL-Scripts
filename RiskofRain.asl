@@ -37,5 +37,5 @@ split {
 }
 	
 reset {
-	return (current.roomID == 6 || current.roomID == 39);
+	return (current.roomID == 6 || current.roomID == 39 || current.roomID == 7);
 }
