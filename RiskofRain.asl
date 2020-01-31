@@ -17,8 +17,10 @@ startup {
 }
 	
 start {
-	if (old.roomID == 6 && current.roomID != 6 || old.roomID == 40 && current.roomID != 40) {
-		return true;
+	if (old.roomID == 6 && current.roomID != 6 || old.roomID == 40 && current.roomID != 40 || old.roomID == 7 && current.roomID != 7) {
+		if (current.roomID != 2) {
+			return true;
+		}
 	}
 }
 	
