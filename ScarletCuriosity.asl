@@ -1,3 +1,5 @@
+//Load Remover for Touhou: Scarlet Curiosity by rythin
+
 state("Kokishin", "1.31 JP") {
 	int gameLoading: 0x05A5464;
 }
