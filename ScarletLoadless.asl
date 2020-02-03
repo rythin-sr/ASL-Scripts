@@ -1,14 +1,17 @@
-state("Kokishin") {
-	int Loading: 0x05A5464;
+state("Kokishin", "1.31 JP") {
+	int gameLoading: 0x05A5464;
 }
 
-update {
-	vars.Loading = false;
-	if (current.Loading == 257) {
-		vars.Loading = true;
+init {
+	if (modules.First().ModuleMemorySize == 7761920) {
+		version = "1.31 JP";
 	}
+	
+	//if (modules.First().ModuleMemorySize == ) {	steam version currently not supported as i dont own it lol
+	//	version = "Steam";
+	//}
 }
 
 isLoading {
-	return vars.Loading;
-}
+	return (current.gameLoading != 1);
+} 
