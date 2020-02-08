@@ -35,7 +35,7 @@ state("You Have 10 Seconds 3", "yh10s3") {
 startup {
 	settings.Add("YH10S", true, "YH10S");
 	settings.Add("1areasplits", true, "Split on area change", "YH10S");
-	settings.Add("1levelsplits", false, "Split on level change", YH10S");
+	settings.Add("1levelsplits", false, "Split on level change", "YH10S");
 }
 
 init {	
