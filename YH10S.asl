@@ -13,7 +13,7 @@ state("You Have 10 Secondsfinal", "yh10s"){
 	int roomID:		0x59C310;
 	int hasControl:		0x399F04, 0x0, 0xF8, 0xC, 0xB4;			//0 during gameplay, 1 or 2 during fade
 	double y1IGT:		0x0034D464, 0x5C8, 0xC, 0x140, 0x4, 0x130;	//10s countdown, doesn't tick on rooms: 15 (2-2), 32 (3-8), 43(4-4)
-	double y1IGT2:		0x0059E504, 0x0, 0x13C, 0x140, 0x4, 0x130;			//10s countdown, works on most levels including the above, but missing some others
+	double y1IGT2:		0x0059E504, 0x0, 0x13C, 0x140, 0x4, 0x130;	//10s countdown, works on most levels including the above, but missing some others
 	double finaleIGT:	0x0034D464, 0x1F8, 0xC, 0x13C, 0x4, 0x130;	//50s countdown on the last screen
 }
 //											YOU HAVE 10 SECONDS 2
@@ -30,6 +30,12 @@ state("You Have 10 Seconds 3", "yh10s3") {
 	int levelState:		0x0040761C, 0x0, 0x404, 0x2C, 0xCC; 		//2 between screens and on the last screen?
 	int inHub:		0x0040761C, 0x0, 0x474, 0x2C, 0xCC;		//0 when in level, 1 in hub
 	int credits:		0x0040761C, 0x0, 0x51C, 0x2C, 0xCC; 		//1 when credits activate, 0 otherwise
+}
+
+startup {
+	settings.Add("YH10S", true, "YH10S");
+	settings.Add("1areasplits", true, "Split on area change", "YH10S");
+	settings.Add("1levelsplits", false, "Split on level change", YH10S");
 }
 
 init {	
@@ -181,8 +187,17 @@ split {
 
 	if (version == "yh10s") {
 		//area splits
-		if (current.roomID == 36 && old.roomID == 13 || current.roomID == 37 && old.roomID == 24 || current.roomID == 38 && old.roomID == 35) {
-			return true;
+		if (settings["1areasplits"] == true) {
+			if (current.roomID == 36 && old.roomID == 13 || current.roomID == 37 && old.roomID == 24 || current.roomID == 38 && old.roomID == 35) {
+				return true;
+			}
+		}
+		
+		//level splits
+		if (settings["1levelsplits"] == true) {
+			if (current.roomID != old.roomID && current.roomID != 1 && old.roomID != 1) {
+				return true;
+			}
 		}
 	
 		//final split
