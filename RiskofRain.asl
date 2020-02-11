@@ -6,7 +6,7 @@
 // *auto reset on quit to menu
 
 state("ROR_GMS_controller", "GOG 1.2.2") {
-	int roomID: 		0x2BED7A8; 								//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41
+	int roomID: 		0x2BED7A8; 								//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41 | cutscenes: 1 & 9
 	int runEnd:			0x02BEB5E0, 0x0, 0x548, 0xC, 0xB4;		//goes from 0 to 1 when you Press 'A' to leave the planet
 }
 
@@ -28,10 +28,6 @@ init {
 startup {
 	settings.Add("levelsplits", true, "Split between levels");
 }
-
-//update {
-//	print(version.ToString());
-//}
 	
 start {
 	if (old.roomID == 6 && current.roomID != 6 || old.roomID == 40 && current.roomID != 40 || old.roomID == 7 && current.roomID != 7) {
@@ -43,8 +39,11 @@ start {
 	
 split {
 	//area splits
-	if (current.roomID != old.roomID && current.roomID != 2 && old.roomID != 6 && old.roomID != 2 && old.roomID != 40 && settings["levelsplits"] == true) {
-		return true;
+	if (current.roomID != old.roomID && 													//when room changes
+	current.roomID != 2 && old.roomID != 6 && old.roomID != 2 && old.roomID != 40 && 		//and is not one of the menus
+	old.roomID != 9 && old.roomID != 1 && old.roomID != 0 && 								//nor the cutscenes on game startup
+	settings["levelsplits"] == true) {														//and setting is on
+		return true;																		//split
 	}
 	
 	//final split
@@ -54,5 +53,5 @@ split {
 }
 	
 reset {
-	return (current.roomID == 6 || current.roomID == 39 || current.roomID == 7 || current.roomID == 40);
+	return (current.roomID == 2);
 }
