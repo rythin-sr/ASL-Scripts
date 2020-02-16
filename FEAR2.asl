@@ -48,12 +48,24 @@ split {
 }
 
 isLoading {
-	if (current.gameLoading == 0) {
-		return true;
+	if (version == "GOG") {
+		if (current.gameLoading == 0) {
+			return true;
+		}
+		
+		else {
+			return false;
+		}
 	}
 	
-	else {
-		return false;
+	if (version == "Steam") {
+		if (current.gameLoading != 0) {
+			return true;
+		}
+		
+		else {
+			return false;
+		}
 	}
 }
 
