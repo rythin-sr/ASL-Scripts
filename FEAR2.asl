@@ -28,7 +28,7 @@ init {
 		version = "GOG";
 	}
 	
-	if (MD5Hash == "") { //cba installing steam version again someone give me the hash ty
+	if (MD5Hash == "54E27BA4855ADCE4A42B241FB2BF20AE") { 
 		version = "Steam";
 	}
 }
