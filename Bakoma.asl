@@ -55,7 +55,11 @@ split {
 			vars.doneMaps.Add(current.mapName);
 			return true;
         	}
-    	}    
+    	}
+	
+	if (current.mapName == "menu" && old.mapName == "skaly") {
+		return true;
+	}
 }
 
 reset {
