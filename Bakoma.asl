@@ -6,11 +6,11 @@ state("bakoma") {
 	string10        mapName:            0x9B428;
 	//map names for future reference:
 	//menu.lev
-	//las.lev
-	//m2.lev
-	//piramida.lev
-	//p2.lev
-	//Pustynia1.lev
+	//Las.lev
+	//Moczary.lev
+	//Piramida.lev
+	//Plaza.lev
+	//Pustynia.lev
 	//skaly.lev
 	//wyspa.lev
     
@@ -19,11 +19,11 @@ state("bakoma") {
 startup 
 {
 	vars.maps = new Dictionary<string,string> {
-		{"las", "las"},
-		{"m2", "m2"},
-		{"piramida", "piramida"},
-		{"p2", "p2"},
-		{"Pustynia1", "Pustynia1"},
+		{"Las", "Las"},
+		{"Moczary", "Moczary"},
+		{"Piramida", "Piramida"},
+		{"Plaza", "Plaza"},
+		{"Pustynia", "Pustynia"},
 		{"skaly", "skaly"},
 		{"wyspa", "wyspa"}
 	};
@@ -37,14 +37,24 @@ startup
 
 init {
 	vars.doneMaps = new List<string>();   
-	vars.firstMap = "h";
+	vars.firstMap = "h";	//variable for determining the reset point
+	vars.splitCount = 0;	//variable used for final split
+	vars.kurwa = 0;			//variable used to determine whether the runner is doing the category with or without wyspa.lev
 } 
+
+update {
+	if (current.mapName == "menu" && old.mapName == "wyspa") {
+		vars.kurwa = 1;
+	}
+}
 
 start {
 	if (vars.mapList.Contains(current.mapName) && current.gameLoading == 0 && old.gameLoading != 0) { 
 		vars.doneMaps.Clear();
 		vars.doneMaps.Add(current.mapName);
 		vars.firstMap = current.mapName;
+		vars.splitCount = 0;
+		vars.kurwa = 0;
 		return true;
 	}
 }
@@ -53,12 +63,21 @@ split {
 	if (current.mapName != old.mapName) {
 		if (current.mapName != "menu" && !vars.doneMaps.Contains(current.mapName)) {
 			vars.doneMaps.Add(current.mapName);
+			vars.splitCount = vars.splitCount + 1;
 			return true;
-        	}
-    	}
+       		}
+   	}
 	
-	if (current.mapName == "menu" && old.mapName == "skaly") {
-		return true;
+	//final split based on category
+	//will still have issues if you decide to do wyspa.lev last
+	//but honestly why would you do that
+	if (current.mapName == "menu" && old.mapName != "menu") {
+		if (vars.kurwa == 0 && vars.splitCount == 5) {
+			return true;
+		}
+		if (vars.kurwa == 1 && vars.splitCount == 6) {
+			return true;
+		}
 	}
 }
 
