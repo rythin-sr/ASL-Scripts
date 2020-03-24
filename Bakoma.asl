@@ -1,6 +1,6 @@
 state("bakoma") {
-	int 		    gameLoading:		0x9C2DC;	//0 during gameplay
-	string10 	  mapName:		  	0x9B428;	
+	int 		gameLoading:	0x9C2DC;	//0 during gameplay
+	string10 	mapName:	0x9B428;	
 }
 
 split {
