@@ -1,4 +1,4 @@
-//FEAR Autosplitter + Load Remover made by rythin, with contributions from SuicideMachine, FireCulex and KunoDemetries
+//FEAR Autosplitter + Load Remover made by rythin, with contributions from SuicideMachine, FireCulex, KunoDemetries and KZ_Frew
 
 state("FEAR")
 {
