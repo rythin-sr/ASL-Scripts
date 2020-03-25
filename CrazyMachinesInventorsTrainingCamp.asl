@@ -1,14 +1,21 @@
 //Crazy Machines 1.5: Inventors Training Camp Autosplitter by rythin
 
 state("cm_family", "PL Retail") {
-	int 		textboxWatcher: 	0x112794;
-	string4 	levelName: 		0x00112D28, 0x4, 0x10, 0x64;
-	int 		endTextbox: 		0x0011111C, 0xE8, 0x8, 0xD4, 0x1A4;
+	int 	tbWatcher: 			0x112794;											//tb on screen = 1, else 0
+	string4 levelName: 			0x00114D44, 0x10, 0x28, 0x4, 0x14, 0x2C;			//level name (duh)
+	int 	endTextbox: 			0x0011111C, 0xE8, 0x8, 0xD4, 0x1A4;				//same as tbWatcher but only for the tb at the end of a level
 }
 
 state("cm_family", "Steam") {
-	string4		levelName:		0x00113D64, 0x10, 0x28, 0x4, 0x14, 0x2C;
+	string4	levelName:			0x00113D64, 0x10, 0x28, 0x4, 0x14, 0x2C;
+	string4 levelName:			0x00113D64, 0x10, 0x64;
 	int		endTextbox:		0x00110178, 0xE0, 0x54;
+	int		tbWatcher:		0x1117BC;
+}
+
+startup {
+	settings.Add("allsplit", true, "Split on every level");
+	settings.Add("testsplit", false, "Split on completing Tests");
 }
 
 init {  
@@ -19,18 +26,32 @@ init {
 
 	if (modules.First().ModuleMemorySize == 1142784) {
 		version = "PL Retail";
-	}
+	}			
 }
 
 start {
-	return (current.levelName == "Tren" || current.levelName == "Spra" ||
-	current.levelName == "Foot" || current.levelName == "Test");
+		if (current.tbWatcher == 1 && old.tbWatcher == 0) {
+			if (current.levelName == "Tren" || current.levelName == "Spra" || current.levelName == "Foot" || current.levelName == "Test") {
+				return true;
+			}
+		}
 }
 	
 split {
 	//split after finishing a level
-	if (current.endTextbox == 0 && old.endTextbox == 1) {	
-		return true;
+	if (settings["allsplit"] == true) {
+		if (current.endTextbox == 0 && old.endTextbox == 1) {	
+			return true;
+		}
+	}
+	
+	//split after finishing a test
+	if (settings["testsplit"] == true && settings["allsplit"] == false) {
+		if (old.levelName == "Test" || old.levelName == "Fina" || old.levelName == "Spra") {
+			if (current.endTextbox == 0 && old.endTextbox == 1) {
+				return true;
+			}
+		}
 	}
 	
 	//final split
