@@ -8,11 +8,13 @@
 state("ROR_GMS_controller", "1.2.2") {
 	int roomID: 		0x2BED7A8; 						//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41 | cutscenes: 1 & 9
 	int runEnd:		0x02BEB5E0, 0x0, 0x548, 0xC, 0xB4;			//goes from 0 to 1 when you Press 'A' to leave the planet
+	double gameTime:	0x02BEB5E0, 0x0, 0x28, 0xC, 0xBC, 0x8, 0x0, 0x720, 0x8, 0x1EC0;
 }
 
 state("Risk of Rain", "1.2.2") {
 	int roomID: 		0x2BED7A8; 						//1st stages: 18, 23, 22, 21, 19, 20 | last stage: 41 | cutscenes: 1 & 9
 	int runEnd:		0x02BEB5E0, 0x0, 0x548, 0xC, 0xB4;			//goes from 0 to 1 when you Press 'A' to leave the planet
+	double gameTime:	0x02BEB5E0, 0x0, 0x28, 0xC, 0xBC, 0x8, 0x0, 0x720, 0x8, 0x1EC0;
 }
 
 state("Risk of Rain", "Steam") {
@@ -50,7 +52,6 @@ split {
 	settings["levelsplits"] == true) {								//and setting is on
 		return true;										//split
 	}
-	
 	//final split
 	if (current.roomID == 41 && current.runEnd == 1 && old.runEnd == 0) {
 		return true;
@@ -59,4 +60,10 @@ split {
 	
 reset {
 	return (current.roomID == 2 || current.roomID == 40);
+}
+
+gameTime {
+	if (version == "1.2.2") {
+		return TimeSpan.FromSeconds(current.gameTime);
+	}
 }
