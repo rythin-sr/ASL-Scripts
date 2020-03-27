@@ -63,7 +63,7 @@ reset {
 }
 
 gameTime {
-	if (version == "1.2.2") {
+	if (version == "1.2.2" && current.gameTime != 0) {
 		return TimeSpan.FromSeconds(current.gameTime);
 	}
 }
