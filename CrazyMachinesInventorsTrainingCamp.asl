@@ -25,7 +25,7 @@ state("cm_family", "Steam") {
 startup {
 	settings.Add("allsplit", true, "Split on every level");
 	settings.Add("testsplit", false, "Split on completing Tests");
-	settings.Add("gt", false, "Enable game time comparsion (may cayse crashes)");
+	settings.Add("gt", false, "Enable game time comparsion (may cause crashes)");
 }
 
 init {  
