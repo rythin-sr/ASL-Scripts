@@ -11,14 +11,13 @@ state("gratka3d") {
 
 startup {
 	vars.maps = new Dictionary<string, string> {
-		{"Intro", "Intro"},
-		{"Level01", "Level01"},
-		{"Level02", "Level02"},
-		{"Level03", "Level03"},
-		{"Level04", "Level04"},
-		{"Level05", "Level05"},
-		{"Level06", "Level06"},
-		{"Outro", "Outro"},
+		{"level01", "Intro -> Level01"},
+		{"Level02", "Level01 -> Level02"},
+		{"Level03", "Level02 -> Level03"},
+		{"Level04", "Level03 -> Level04"},
+		{"level05", "Level04 -> Level05"},
+		{"Level06", "Level05 -> Level06"},
+		{"Outro", "Level06 -> Outro"},
 	};
 	
 	vars.allMaps = new List<string>();
@@ -35,8 +34,10 @@ start {
 }
 	
 split {
-	if (current.mapName != old.mapName && vars.allMaps.Contains(current.mapName) {
-		return true;
+	if (current.mapName != old.mapName) {
+		if (vars.allMaps.Contains(current.mapName) && settings[current.mapName]) {
+			return true;
+		}
 	}
 	
 	if (old.mapName == "Outro" && current.mapName == "menu.le") {
