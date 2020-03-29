@@ -7,7 +7,7 @@
 //Twitch:  rythin_sr
 
 state("006", "1.2") {
-	int roomID: 	0x05CB860;
+	int roomID: 		0x05CB860;
 }
 
 state("006", "1.1") {
