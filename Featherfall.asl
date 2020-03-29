@@ -1,5 +1,6 @@
 //Featherfall Game Time by rythin
 //Autosplitter coming when i have motivation to work on it again
+
 //Contact info:
 //Discord: rythin#0135
 //Twitter: @rythin_sr
@@ -7,12 +8,11 @@
 
 state("soksouls") {
 	double IGT:		0x0043550C, 0x0, 0x60, 0x10, 0x4B4, 0x1A0;
-	int dumbShit:	0x41C8A4; //changes when you go into the game?? idk
-	int fpsCap:		0x3D0A50; //game runs at 60 except the end "cutscene", which is capped at 30
+	int fpsCap:		0x3D0A50; 					//seems to be 30 in the menu and 60 in game?
 }
 
 start {
-	return (current.dumbShit != old.dumbShit);
+	return (current.fpsCap == 60 && old.fpsCap == 30);
 }
 
 isLoading {
