@@ -62,6 +62,10 @@ reset {
 	return (current.roomID == 2 || current.roomID == 40);
 }
 
+isLoading {
+	return true;
+}
+
 gameTime {
 	if (version == "1.2.2" && current.gameTime != 0) {
 		return TimeSpan.FromSeconds(current.gameTime);
