@@ -22,7 +22,7 @@ state("trespass", "1.1") {
 }
 
 state("tpassp6", "Community Edition") {
-    bool		gameLoading1: 		0x054FDF0;
+   	bool		gameLoading1: 		0x054FDF0;
 	bool		gameLoading2:		0x5B3968;
 	string3		mapName: 		0x5AEC68; //BE, ij, it, lab, as, as2, sum
 	float		isMoving:		0x005B3DE4, 0x70;
