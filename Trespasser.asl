@@ -6,27 +6,27 @@
 //Twitch:  rythin_sr
 
 state("trespass", "1.0") {
-	int			gameLoading1:		0x340AD4;
-	int			gameLoading2:		0x26E654;
-	string3		mapName:			0x26E342;
-	float		isMoving:			0x0033DC88, 0x68;
-	int			csWatcher:			"smackw32.dll", 0x14298; 
+	int		gameLoading1:		0x340AD4;
+	int		gameLoading2:		0x26E654;
+	string3		mapName:		0x26E342;
+	float		isMoving:		0x0033DC88, 0x68;
+	int		csWatcher:		"smackw32.dll", 0x14298; 
 }
 
 state("trespass", "1.1") {
-	int			gameLoading1:		0x26A28C;
-	int			gameLoading2:		0x26A938;
-	string3		mapName:			0x269F7A;
-	float		isMoving:			0x003397A8, 0x68;
-	int			csWatcher:			"smackw32.dll", 0x00015414, 0x3CC; 
+	int		gameLoading1:		0x26A28C;
+	int		gameLoading2:		0x26A938;
+	string3		mapName:		0x269F7A;
+	float		isMoving:		0x003397A8, 0x68;
+	int		csWatcher:		"smackw32.dll", 0x00015414, 0x3CC; 
 }
 
 state("tpassp6", "Community Edition") {
     bool		gameLoading1: 		0x054FDF0;
 	bool		gameLoading2:		0x5B3968;
-	string3		mapName: 			0x5AEC68; //BE, ij, it, lab, as, as2, sum
-	float		isMoving:			0x005B3DE4, 0x70;
-	int			csWatcher:			"smackw32.dll" , 0x14298; 
+	string3		mapName: 		0x5AEC68; //BE, ij, it, lab, as, as2, sum
+	float		isMoving:		0x005B3DE4, 0x70;
+	int		csWatcher:		"smackw32.dll" , 0x14298; 
 } 
 
 startup {
@@ -89,12 +89,7 @@ isLoading {
 	//It seems to catch all the incorrect values from what ive tested
 	
 	if (version == "1.0" || version == "1.1") {
-		if (current.gameLoading1 == 1  || current.gameLoading2 == 2) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return (current.gameLoading1 == 1  || current.gameLoading2 == 2);
 	}
 	
 	if (version == "Community Edition") {
