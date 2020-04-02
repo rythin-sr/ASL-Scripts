@@ -7,11 +7,11 @@
 //Twitch:  rythin_sr
 
 state("006", "1.2") {
-	int roomID: 		0x05CB860;
+	int	roomID: 	0x05CB860;
 }
 
 state("006", "1.1") {
-	int roomID:		0x59D310;
+	int	roomID:		0x59D310;
 }
 
 state("Super Blue Boy Planet", "2.0") {
