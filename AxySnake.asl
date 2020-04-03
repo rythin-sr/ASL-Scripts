@@ -16,7 +16,7 @@ state("AxySnake") {
 
 start {
 	return (current.snakeChosen == 1 && old.snakeChosen == 0);
-	}
+}
 	
 split {
 
@@ -49,5 +49,3 @@ split {
 	}
 	
 }
-
-
