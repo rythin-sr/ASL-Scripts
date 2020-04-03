@@ -1,7 +1,12 @@
 //Crazy Machines 3 Autosplitter + Load Remover by rythin
 //timer will start whenever you leave a loading screen
-//this is a really janky implementation but i have no other way of
-//doing it really, game sucks
+//this is a really janky implementation
+//load removal might break sometimes? not tested extensively
+
+//Contanct info in case issues arise:
+//Discord: rythin#0135
+//Twitter: rythin_sr
+//Twitch:  rythin_sr
 
 state("cm3") {
 	int gameLoading:	0x005C8338, 0xD8, 0x548, 0x90, 0xB1C;
