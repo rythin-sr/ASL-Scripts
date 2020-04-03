@@ -1,13 +1,9 @@
 // Made by rythin, contact in case you encounter any issues: 
-// Discord: rythin#0135, Twitter: @rythin_sr, Twitch: rythin_sr
 
-// Changelog:
-// 1.0 - initial release
-// 1.1 - made timer start in accordance with sr.c rules
-// 1.2 - removed the requirement for setting the difficulty you wish to run
-// 1.2.1 - removed game time since it was broken and the game is timed in RTA anyway
-// 1.2.2 - fixed a typo which caused errors with the final split on far camera 5 level difficulty
-// 1.3 - fixed splitting for full game runs
+//Contanct info in case issues arise:
+//Discord: rythin#0135
+//Twitter: rythin_sr
+//Twitch:  rythin_sr
 
 
 state("AxySnake") {
