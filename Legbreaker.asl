@@ -1,15 +1,15 @@
-//Autosplitter for Legbreaker by rythin
+//Legbreaker Autosplitter by rythin
 
 state("Legbreaker") {
 	int roomID: 0x01A71CC8, 0xE8, 0x3D8, 0x148, 0x50, 0x18;
-//											            LEVEL IDs
+//									    LEVEL IDs
 //
-//	|  STAGE 1	|	 STAGE 2	|	 STAGE 3	|	 STAGE 4	|	 STAGE 5	|	 STAGE 6	|
-//L1|	   170   	|	   119		|	   147		|	   174		|	   181		|	   169		|
-//L2|	   175  	|	   170		|	   189		|	   132		|	   167		|	   162		|
-//L3|	   172  	|	   134		|	   188		|	   128		|	   142		|	   144		|
-//L4|	   181  	|	   137		|	   189		|	   190		|	   131		|	   198		|
-//L5|	   148	  |	   154		|	   199		|	   164		|	   169		|	   115		|
+//	|  	STAGE 1		|	 STAGE 2	|	 STAGE 3	|	 STAGE 4	|	 STAGE 5	|	 STAGE 6	|
+//L1	|	   170   	|	   119		|	   147		|	   174		|	   181		|	   169		|
+//L2	|	   175  	|	   170		|	   189		|	   132		|	   167		|	   162		|
+//L3	|	   172  	|	   134		|	   188		|	   128		|	   142		|	   144		|
+//L4	|	   181  	|	   137		|	   189		|	   190		|	   131		|	   198		|
+//L5	|	   148	  	|	   154		|	   199		|	   164		|	   169		|	   115		|
 
 //game tends to have an aneurysm on level transitions or room resets which makes the roomID jump up to like 200 or 300-something
 //it happens seemingly randomly and isn't consistent at all
