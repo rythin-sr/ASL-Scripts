@@ -1,6 +1,4 @@
 //Crazy Machines 3 Autosplitter + Load Remover by rythin
-//timer will start whenever you leave a loading screen
-//this is a really janky implementation
 //load removal might break sometimes? not tested extensively
 
 //Contanct info in case issues arise:
