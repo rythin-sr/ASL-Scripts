@@ -24,7 +24,7 @@ startup {
 	vars.levelsDone = new List<int>();
 	vars.lvlDisp = "Menu";	//for making the level display neater
 	
-	//got this from the Defy Gravity autosplitter, cheers for that
+	//got this from the super meat boy autosplitter, cheers for that
 	vars.SetTextComponent = (Action<string, string>)((id, text) =>
 	{
 		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
