@@ -11,10 +11,11 @@
 state("cm3") {
 	int gameLoading:	0x005C8338, 0xD8, 0x548, 0x90, 0xB1C;
 	int levelDone:		0x005CAF68, 0x78, 0xB1C;	
+	int inMenu:		0x0066E560, 0x50, 0xD8, 0x41C;
 }
 
 start {
-	return (current.gameLoading == 0 && old.gameLoading == 1024);
+	return (current.inMenu == 0 && old.inMenu == 1024);
 }
 
 split {
