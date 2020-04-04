@@ -96,6 +96,10 @@ split {
 		if (current.levelName == "WIEL" || current.levelName == "GRAN") {
 			return true;
 		}
+		
+		if (current.levelName2 == "GRAN") {
+			return true;
+		}
 	}	
 }
 
