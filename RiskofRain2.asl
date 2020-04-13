@@ -96,6 +96,7 @@ split {
 		
 start {
 	if (vars.curLev == "golemplains" || vars.curLev == "golemplains2" || vars.curLev == "blackbeach" || vars.curLev == "blackbeach2") {
+		vars.oldLev = vars.curLev;
 		return true;
 	}
 }
