@@ -26,7 +26,7 @@ state("nuclearthrone") {
 //17			|	1446			|	1458
 
 init {
-	vars.reader = new StreamReader(new FileStream("C:\\Users\\Cassie\\Appdata\\Local\\nuclearthrone\\nuclearthrone.sav", FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+	vars.reader = new StreamReader(new FileStream("appdata")+"\\..\\Local\\nuclearthrone\\nuclearthrone.sav", FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 	//in order to keep track of the history of the runs/wins
 	//we need a current array and an old array keeping track
 	vars.runValues = new double[17];
