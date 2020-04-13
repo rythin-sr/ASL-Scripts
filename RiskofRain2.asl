@@ -8,6 +8,25 @@ state("Risk of Rain 2") {
 }
 
 startup {
+
+	 vars.SetTextComponent = (Action<string, string>)((id, text) =>
+	{
+		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
+		var textSetting = textSettings.FirstOrDefault(x => (x.GetType().GetProperty("Text1").GetValue(x, null) as string) == id);
+		if (textSetting == null)
+		{
+		var textComponentAssembly = Assembly.LoadFrom("Components\\LiveSplit.Text.dll");
+		var textComponent = Activator.CreateInstance(textComponentAssembly.GetType("LiveSplit.UI.Components.TextComponent"), timer);
+		timer.Layout.LayoutComponents.Add(new LiveSplit.UI.Components.LayoutComponent("LiveSplit.Text.dll", textComponent as LiveSplit.UI.Components.IComponent));
+
+		textSetting = textComponent.GetType().GetProperty("Settings", BindingFlags.Instance | BindingFlags.Public).GetValue(textComponent, null);
+		textSetting.GetType().GetProperty("Text1").SetValue(textSetting, id);
+		}
+
+		if (textSetting != null)
+		textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
+	});
+
 	settings.Add("teleS", false, "Split when activating the Teleporter");
 	settings.Add("levS", true, "Split when changing level");
 	settings.Add("bazaarS", false, "Split upon entering the Bazaar", "levS");
@@ -27,45 +46,19 @@ init {
 	vars.reader = new StreamReader(new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 	
 	vars.loading = false;
-	
-	vars.teleSplit = false;
-	vars.levelSplit = false;
-	vars.finalSplit = false;
-	
-	vars.start = false;
-	vars.reset = false;
+	vars.curLev = "";
+	vars.oldLev = "";
+	vars.runStarted = false;
+	vars.firstsList = new List<string>();
+	string[] firsts = { "golemplains", "golemplains2", "blackbeach", "blackbeach2" };
 }
 
 update {
 	if (vars.reader == null) return false;
 	vars.line = vars.reader.ReadLine();
 	
-	//pretty sure there's a better way to do this and i might rewrite this script if i figure out what that better way is
-	//for now this works and i understand it so i mean, we take those
+	
 	if (vars.line != null) {
-		if (vars.line.StartsWith("Parent of RectTransform is being set")) {
-			vars.finalSplit = true;
-		}
-	
-		if (vars.line.StartsWith("Object PodGroundImpact") && !vars.line.StartsWith("Active scene changed from  to title")) {
-			vars.start = true;
-		}
-	
-		if (vars.line.StartsWith("Active scene changed") && !vars.line.StartsWith("Active scene changed from  to title")) {
-			if (!vars.line.StartsWith("Active scene changed from  to bazaar")) {
-				if (settings["levS"]) {
-					vars.levelSplit = true;
-				}
-			}	
-		}
-	
-		if (vars.line.StartsWith("Active scene changed from  to bazaar") && settings["bazaarS"]) {
-			vars.levelSplit = true;
-		}
-	
-		if (vars.line.StartsWith("<style=cEvent>You activated the <style=cDeath>Teleporter") && settings["teleS"]) {
-			vars.teleSplit = true;
-		}
 	
 		if (vars.line.StartsWith("Unloaded scene")) {
 			vars.loading = true;
@@ -74,47 +67,67 @@ update {
 		if (vars.line.StartsWith("Client ready")) {
 			vars.loading = false;
 		}
-	
-		if (vars.line.StartsWith("<style=cDeath>") || vars.line.StartsWith("Active scene changed from  to title")) {
-			vars.reset = true;
+		
+		if (vars.line.StartsWith("Active scene changed")) {
+			vars.curLev = vars.line.Split(' ')[6];
 		}
+		
+		if (vars.runStarted == false && vars.curLev != "lobby" && vars.curLev != "title") {
+			vars.runStarted = true;
+			vars.oldLev = vars.curLev;
+		}
+		
+		//if (vars.curLev != vars.oldLev) {
+		//	print("OLD:"+vars.oldLev.ToString()+"CUR:"+vars.curLev.ToString());
+		//}
+
 	}
+	
+	vars.SetTextComponent("Level:", (vars.curLev).ToString());
 }
 
 split {
-	if (vars.teleSplit) {
-		vars.teleSplit = false;
-		return true;
+	//level splits
+	if (settings["levS"]) {
+		if (vars.curLev != vars.oldLev && vars.curLev != "") {			
+			if (vars.curLev != "bazaar" && !settings["bazaarS"]) {
+				vars.oldLev = vars.curLev;
+				return true;
+			}
+			
+			if (settings["bazaarS"]) {
+				vars.oldLev = vars.curLev;
+				return true;
+			}
+		}
 	}
 	
-	if (vars.levelSplit) {
-		vars.levelSplit = false;
-		return true;
+	//tele splits
+	if (settings["teleS"]) {
+		if (vars.line != null && vars.line.StartsWith("<style=cEvent>You activated the <style=cDeath>Teleporter")) {
+			return true;
+		}
 	}
 	
-	if (vars.finalSplit) {
-		vars.finalSplit = false;
+	//final split
+	if (vars.line != null && vars.line.StartsWith("Parent of RectTransform is being set") && vars.curLev == "mysteryspace") {
 		return true;
 	}
 }
-
+		
 start {
-	if (vars.start) {
-		vars.start = false;
-		vars.finalSplit = false;
-		vars.levelSplit = false;
-		vars.teleSplit = false;
-		return true;
+	if (vars.line != null) {
+		if (vars.line.StartsWith("Object PodGroundImpact")){
+			vars.runStarted = false;
+			return true;
+		}
 	}
 }
-
+		
 reset {
-	if (vars.reset) {
-		vars.reset = false;
-		return true;
-	}
+	return (vars.curLev == "title" || vars.curLev == "lobby");
 }
-
+		
 isLoading {
 	return vars.loading;
 }
