@@ -68,7 +68,7 @@ update {
 split {
 	//level splits
 	if (settings["levS"]) {
-		if (vars.curLev != vars.oldLev && vars.curLev != "") {			
+		if (vars.curLev != vars.oldLev && vars.curLev != "" && vars.oldLev != "") {			
 			if (vars.curLev != "bazaar" && !settings["bazaarS"]) {
 				vars.oldLev = vars.curLev;
 				return true;
