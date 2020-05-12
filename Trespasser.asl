@@ -83,11 +83,6 @@ isLoading {
 	//but theres around 1-2s of loading that gameLoading1 
 	//doesnt seem to detect, hence why gameLoading2 is necessary
 	
-	//also, when running 1.0 or 1.1 
-	//sometimes one of the values from the other version 
-	//gets stuck at some random absurdly high number, hence why the '< 1000000'. 
-	//It seems to catch all the incorrect values from what ive tested
-	
 	if (version == "1.0" || version == "1.1") {
 		return (current.gameLoading1 == 1  || current.gameLoading2 == 2);
 	}
