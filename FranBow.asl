@@ -7,7 +7,7 @@
 
 state("Fran Bow") {
 	int gameLoading:	0x385990;	//0 when gameplay
-	int roomID:			0x59D310;
+	int roomID:		0x59D310;
 }
 
 //in case i wanna support demo runs at some point later on
