@@ -1,3 +1,5 @@
+//Knights: Learn to Fly / Kajko i Kokosz: Szkoła Latania Autosplitter + Load Remover by rythin
+
 state("kk") {
 	//polish version off legendsworld i think? idk i got this ages ago
 	int loading:		0x38B370; 	//1 when loading, 0 otherwise
