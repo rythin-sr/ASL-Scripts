@@ -8,7 +8,7 @@
 
 //todo:
 //smarter splits for gurriella activities/side missions (address for activity name needed)
-//(im not doing this)
+//(i'm not doing this)
 
 //done:
 //better starting point
