@@ -21,13 +21,13 @@ state("RFG") {
 
 	//basic splitting
 	int missions:			0xDDC350;	//completed mission counter
-	string35 missionVid:	0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
+	string35 missionVid:		0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
 	int activities:			0xDDC3BC;	//completed guerrilla activity counter
 	int cutscene:			0x7EACD0;	//20 first cutscene, 29 cs after intro
 	int loading:			0x768D90;
 	
 	//collectibles & hundo related
-	int ores:				0xDDDC34;
+	int ores:			0xDDDC34;
 	int radioLogs:			0x1102CD8;
 	
 	//currently unused 
@@ -37,26 +37,26 @@ state("RFG") {
 
 // mission list
 // Intro
-// Better Red Than Dead 					| intro_1.bik
-// Ambush									| intro_2.bik
-// Start Your Engines (Parker Done)			| we_know_where_you_are.bik
-// Ultor Echo								| partytime.bik
-// Rallying Point							| friends_martians_countrymen.bik
-// Industrial Revolution					| walker_martian_ranger.bik
-// Ashes to Ashes... (Dust Done)			| death_from_above.bik
-// Emergency Response						| refugee_truck.bik
-// Catch and Release						| highway_to_hell.bik
+// Better Red Than Dead 			| intro_1.bik
+// Ambush					| intro_2.bik
+// Start Your Engines (Parker Done)		| we_know_where_you_are.bik
+// Ultor Echo					| partytime.bik
+// Rallying Point				| friends_martians_countrymen.bik
+// Industrial Revolution			| walker_martian_ranger.bik
+// Ashes to Ashes... (Dust Done)		| death_from_above.bik
+// Emergency Response				| refugee_truck.bik
+// Catch and Release				| highway_to_hell.bik
 // Air Traffic Control (Badlands Done)		| start_your_engines.bik
-// Access Denied							| traffic_jam.bik
-// Blitzkrieg (Oasis Done)					| tank_attack.bik
-// The Guns of Tharsis (Free Fire Zone Done)| guns_of_tharsis.bik
-// Death by Committee						| death_by_committee.bik
-// The Dogs of War							| sniper_hunter.bik
-// Hammer of the Gods						| save_the_guerrilla_camp.bik
-// Emergency Broadcast System				| emergency_broadcast_system.bik
-// Manual Override							| ants_vs_magnifying_glass.bik
-// Guerrillas at the Gates					| assault_the_edf_central_command.bik
-// Mars Attacks (EOS Done)					| final_mission.bik
+// Access Denied				| traffic_jam.bik
+// Blitzkrieg (Oasis Done)			| tank_attack.bik
+// The Guns of Tharsis (Free Fire Zone Done)	| guns_of_tharsis.bik
+// Death by Committee				| death_by_committee.bik
+// The Dogs of War				| sniper_hunter.bik
+// Hammer of the Gods				| save_the_guerrilla_camp.bik
+// Emergency Broadcast System			| emergency_broadcast_system.bik
+// Manual Override				| ants_vs_magnifying_glass.bik
+// Guerrillas at the Gates			| assault_the_edf_central_command.bik
+// Mars Attacks (EOS Done)			| final_mission.bik
 
 startup {
 
