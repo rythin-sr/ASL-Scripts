@@ -1,3 +1,13 @@
+//Spongebob Squarepants: 3D Obstacle Odyssey Autosplitter by rythin
+//Currently starts the timer later than already established rules and stops it earlier
+//However, i would advise for the rules to change as this method of timing makes more sense for an RTA speedrun
+//(timing starting AFTER the first load, minimising hardware differences)
+
+//Contanct info in case issues arise:
+//Discord: rythin#0135
+//Twitter: rythin_sr
+//Twitch:  rythin_sr
+
 state("sboo") {
 	//board you're currently on, 25 on stage end screen, 1 in menus
 	int board:	0x0012ABC0, 0xA8, 0x6C;
@@ -40,6 +50,7 @@ split {
 }
 
 reset {
+	//autoreset currently broken
 	if (current.board == 1 && old.board != 25 && old.board != 1) {
 		if (current.igt == 0 && old.igt != 1) {
 			return true;
@@ -52,5 +63,6 @@ isLoading {
 }
 
 gameTime {
+	//IGT for fun mostly, RTA still should be used as the main timing method
 	return TimeSpan.FromSeconds(vars.dispIGT);
 }
