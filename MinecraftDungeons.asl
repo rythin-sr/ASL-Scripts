@@ -18,7 +18,7 @@ state("Dungeons-Win64-Shipping", "MCD Launcher") {
 }
 
 startup {
-	vars.h = 0;			//used for isLoading logic
+	vars.h = 0;		//used for isLoading logic
 	vars.inTut = 0;		//used for autoreset logic
 	vars.dispS = 1;		//used for seed display
 	vars.lastSeed = 0;	//used for autosplitting (hopefully not for long)
@@ -130,16 +130,16 @@ update {
 }
 
 isLoading {
-	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
-		if (old.what == current.what) {				//when the value stops updating
-			vars.h = current.what;					//set h to that value	
-			Thread.Sleep(10);						//wait 10ms, probably unnecessary but bite me
-			if (vars.h == current.what) {			//if the value is still the same
-				return true;						//pause the timer
+	if (current.lc == 0) {				//only run this logic during loads (and chest anims but shh)
+		if (old.what == current.what) {		//when the value stops updating
+			vars.h = current.what;		//set h to that value	
+			Thread.Sleep(10);		//wait 10ms, probably unnecessary but bite me
+			if (vars.h == current.what) {	//if the value is still the same
+				return true;		//pause the timer
 			}
 		
 			else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
-				return true;						//this should help with that
+				return true;			//this should help with that
 			}
 		
 			else {
