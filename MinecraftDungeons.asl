@@ -139,8 +139,6 @@ update {
 		break;
 	}
 	
-	print(modules.First().ModuleMemorySize.ToString());
-	
 	if (settings["seedD"]) {
 		vars.SetTextComponent("Seed:", (vars.dispS).ToString());
 	}
