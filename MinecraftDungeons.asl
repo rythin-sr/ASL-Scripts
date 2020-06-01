@@ -30,7 +30,7 @@ startup {
 	refreshRate = 30;
 	
 	settings.Add("seedD", false, "Display the current level's seed");
-	settings.Add("introS", true, "Split upon completing Squid Coast");
+	//settings.Add("introS", true, "Split upon completing Squid Coast");
 	settings.Add("levelS", true, "Split upon completing a level");
 	settings.Add("IL", false, "Enable IL-Mode");
 	
@@ -86,7 +86,7 @@ start {
 }
 
 split {
-
+	/*
 	//tutorial split
 	if (settings["introS"]) {
 		if (current.seed == 0 && current.lc != 0 && current.cs == 1 && old.cs == 0) {
@@ -94,11 +94,12 @@ split {
 			return true;
 		}
 	}
+	*/
 	
 	//mission splits (also final split)
 	
 	if (settings["levelS"] || settings["IL"]) {
-		if (current.seed > 1 && old.cs == 0 && current.cs == 1 && current.lc != 0) {
+		if (old.cs == 0 && current.cs == 1 && current.lc != 0) {
 			return true;
 		}
 	}
