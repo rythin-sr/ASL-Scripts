@@ -1,5 +1,6 @@
-//build 4142545, aka 1.0(?)
-state("Dungeons-Win64-Shipping", "MCD Launcher") {
+//Minecraft Dungeons Autosplitter + Load Remover by rythin & KunoDemetries
+
+state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
 
 	//increases by 1 every frame, up to 255 then back to 0, counting pauses during loads or lag
 	byte what:		0x3B1C7B8;
@@ -12,6 +13,13 @@ state("Dungeons-Win64-Shipping", "MCD Launcher") {
 	
 	//1 when in a cutscene, 0 otherwise
 	int cs:		0x03FA1AF8, 0x8;
+}
+
+state("Dungeons", "Windows Store, build 4142545") {
+	byte what:		0x3F1A789;
+	byte lc:		0x3F5F325;
+	int seed:		0x03CED8A8, 0x20, 0xD80, 0x4E8;
+	int cs:			0x03FA3BB8, 0x8;
 }
 
 startup {
@@ -47,7 +55,11 @@ startup {
 
 init {
 	if (modules.First().ModuleMemorySize == 93192192) {
-		version = "MCD Launcher";
+		version = "Launcher, build 4142545";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 93487104) {
+		version = "Windows Store, build 4142545";
 	}
 	
 	else {
@@ -58,15 +70,17 @@ init {
 
 start {
 	if (settings["IL"] == false) {
-		if (current.seed == 0 && current.lc != 0 && old.lc == 0) {
+		if (current.seed == 0 && current.cs == 1 && old.cs == 0) {
 			vars.inTut = 1;
 			return true;
 		}
 	}
 	
 	if (settings["IL"] == true) {
-		if (current.seed > 1 && current.cs == 0 && old.cs == 1) {
-			return true;
+		if (current.seed > 1 || current.seed == 0 ) {
+			if (current.cs == 0 && old.cs == 1) {
+				return true;
+			}
 		}
 	}
 }
@@ -124,6 +138,7 @@ update {
 		break;
 	}
 	
+	print(modules.First().ModuleMemorySize.ToString());
 	
 	if (settings["seedD"]) {
 		vars.SetTextComponent("Seed:", (vars.dispS).ToString());
