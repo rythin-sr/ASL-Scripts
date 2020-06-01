@@ -1,13 +1,7 @@
-//todo: 
-//find addresses for" the map you're currently in and when a cutscene is playing
-//final split
-//smarter splits between levels
-//better autostart & reset
-
 //build 4142545, aka 1.0(?)
 state("Dungeons-Win64-Shipping", "MCD Launcher") {
 
-	//increases by 1 every frame(?), up to 255 then back to 0, counting pauses during loads or lag
+	//increases by 1 every frame, up to 255 then back to 0, counting pauses during loads or lag
 	byte what:		0x3B1C7B8;
 	
 	//0 during loading AND end-of-mission chest animations
@@ -15,19 +9,22 @@ state("Dungeons-Win64-Shipping", "MCD Launcher") {
 	
 	//seed given to the level when its loaded
 	int seed:		0x03FA1B98, 0xD80, 0x440, 0x50;
+	
+	//1 when in a cutscene, 0 otherwise
+	int cs:		0x03FA1AF8, 0x8;
 }
 
 startup {
-	vars.h = 0;		//used for isLoading logic
+	vars.h = 0;			//used for isLoading logic
 	vars.inTut = 0;		//used for autoreset logic
 	vars.dispS = 1;		//used for seed display
-	vars.lastSeed = 0;	//used for autosplitting (hopefully not for long)
 	
 	refreshRate = 30;
 	
 	settings.Add("seedD", false, "Display the current level's seed");
-	settings.Add("introS", false, "Split upon completing Squid Coast");
-	settings.Add("levelS", true, "Split upon completing a level (final split is still manual)");
+	settings.Add("introS", true, "Split upon completing Squid Coast");
+	settings.Add("levelS", true, "Split upon completing a level");
+	settings.Add("IL", false, "Enable IL-Mode");
 	
 	vars.SetTextComponent = (Action<string, string>)((id, text) =>
 	{
@@ -60,9 +57,17 @@ init {
 
 
 start {
-	if (current.seed == 0 && current.lc != 0 && old.lc == 0) {
-		vars.inTut = 1;
-		return true;
+	if (settings["IL"] == false) {
+		if (current.seed == 0 && current.lc != 0 && old.lc == 0) {
+			vars.inTut = 1;
+			return true;
+		}
+	}
+	
+	if (settings["IL"] == true) {
+		if (current.seed > 1 && current.cs == 0 && old.cs == 1) {
+			return true;
+		}
 	}
 }
 
@@ -70,25 +75,24 @@ split {
 
 	//tutorial split
 	if (settings["introS"]) {
-		if (current.seed == 1 && old.seed == 0 && vars.inTut == 1) {
+		if (current.seed == 0 && current.lc != 0 && current.cs == 1 && old.cs == 0) {
 			vars.inTut = 0;
 			return true;
 		}
 	}
 	
-	//mission splits
+	//mission splits (also final split)
 	
-	if (settings["levelS"]) {
-		if (current.seed == 1 && old.seed == 0 && vars.lastSeed != 0) {
-			vars.lastSeed = 0;
+	if (settings["levelS"] || settings["IL"]) {
+		if (current.seed > 1 && old.cs == 0 && current.cs == 1 && current.lc != 0) {
 			return true;
 		}
 	}
 	
-	//final split
-	//TBD
 }
 
+/*
+### Currently taken out until I figure out a better method because fuck ###
 reset {
 	if (current.seed == 0 && vars.inTut == 0) {
 		//Thread.Sleep(2000);
@@ -97,12 +101,9 @@ reset {
 		}
 	}	
 }
+*/
 
 update {
-	
-	if (current.seed == 0 && old.seed > 1) {
-		vars.lastSeed = old.seed;
-	}
 	
 	int seedV = current.seed;
 	
@@ -130,16 +131,16 @@ update {
 }
 
 isLoading {
-	if (current.lc == 0) {				//only run this logic during loads (and chest anims but shh)
+	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
 		if (old.what == current.what) {		//when the value stops updating
-			vars.h = current.what;		//set h to that value	
-			Thread.Sleep(10);		//wait 10ms, probably unnecessary but bite me
+			vars.h = current.what;			//set h to that value	
+			Thread.Sleep(10);				//wait 10ms
 			if (vars.h == current.what) {	//if the value is still the same
-				return true;		//pause the timer
+				return true;				//pause the timer
 			}
 		
 			else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
-				return true;			//this should help with that
+				return true;						//this should help with that
 			}
 		
 			else {
