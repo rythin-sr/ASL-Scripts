@@ -77,8 +77,8 @@ start {
 	}
 	
 	if (settings["IL"] == true) {
-		if (current.seed > 1 || current.seed == 0 ) {
-			if (current.cs == 0 && old.cs == 1) {
+		if (current.seed > 1 || current.seed == 0) {
+			if (current.cs == 0 && old.cs == 1 || current.cs == 0 && current.lc != 0 && old.lc == 0) {
 				return true;
 			}
 		}
