@@ -22,11 +22,12 @@ state("Dungeons", "Windows Store, build 4142545") {
 	int cs:			0x03FA3BB8, 0x8;
 }
 
-startup {
+startup {	
 	vars.h = 0;			//used for isLoading logic
+	vars.inTut = 0;		//used for dumb shit fuck you
 	vars.dispS = 1;		//used for seed display
 	vars.L = 0;			//for some split logic dependant on loads
-	
+
 	refreshRate = 30;
 	
 	settings.Add("seedD", false, "Display the current level's seed");
@@ -113,6 +114,14 @@ reset {
 }
 
 update {
+	
+	if (current.seed == 0 && vars.L == 0) {
+		vars.inTut = 1;
+	}
+	
+	else {
+		vars.inTut = 0;
+	}
 	
 	int seedV = current.seed;
 	
