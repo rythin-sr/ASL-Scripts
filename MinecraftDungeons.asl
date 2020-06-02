@@ -140,15 +140,22 @@ update {
 	//logic for determining when the game is loading
 	//this needs to be in update so that the variable updates even when the timer isnt running
 	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
-		if (old.what == current.what) {		//when the value stops updating
-			vars.h = current.what;			//set h to that value	
-			Thread.Sleep(10);				//wait 10ms
-			if (vars.h == current.what) {	//if the value is still the same
-				vars.L = 1;
-			}
+		Thread.Sleep(50);					//specifically on win store version the value flickers mid-load, so have 50ms of leeway
+		if (current.lc == 0) {				//check again just to be sure
+			if (old.what == current.what) {		//when the value stops updating
+				vars.h = current.what;			//set h to that value	
+				Thread.Sleep(10);				//wait 10ms
+				if (vars.h == current.what) {	//if the value is still the same
+					vars.L = 1;
+				}
 		
-			else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
-				vars.L = 1;
+				else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
+					vars.L = 1;
+				}
+		
+				else {
+					vars.L = 0;
+				}
 			}
 		
 			else {
@@ -157,7 +164,7 @@ update {
 		}
 		
 		else {
-			vars.L = 0;
+				vars.L = 0;
 		}
 	}
 	
