@@ -24,13 +24,12 @@ state("Dungeons", "Windows Store, build 4142545") {
 
 startup {
 	vars.h = 0;			//used for isLoading logic
-	vars.inTut = 0;		//used for autoreset logic
 	vars.dispS = 1;		//used for seed display
+	vars.L = 0;			//for some split logic dependant on loads
 	
 	refreshRate = 30;
 	
 	settings.Add("seedD", false, "Display the current level's seed");
-	//settings.Add("introS", true, "Split upon completing Squid Coast");
 	settings.Add("levelS", true, "Split upon completing a level");
 	settings.Add("IL", false, "Enable IL-Mode");
 	
@@ -63,7 +62,7 @@ init {
 	}
 	
 	else {
-		version = "Windows Store Currently Not Supported";
+		version = "Version Currently Not Supported";
 	}
 }
 
@@ -71,14 +70,13 @@ init {
 start {
 	if (settings["IL"] == false) {
 		if (current.seed == 0 && current.cs == 1 && old.cs == 0) {
-			vars.inTut = 1;
 			return true;
 		}
 	}
 	
 	if (settings["IL"] == true) {
-		if (current.seed > 1 || current.seed == 0) {
-			if (current.cs == 0 && old.cs == 1 || current.cs == 0 && current.lc != 0 && old.lc == 0) {
+		if (current.seed > 1 || current.seed == 0 ) {
+			if (current.cs == 0 && old.cs == 1 || current.cs == 0 && vars.L == 0) {
 				return true;
 			}
 		}
@@ -99,7 +97,7 @@ split {
 	//mission splits (also final split)
 	
 	if (settings["levelS"] || settings["IL"]) {
-		if (old.cs == 0 && current.cs == 1 && current.lc != 0) {
+		if (old.cs == 0 && current.cs == 1 && vars.L == 0) {
 			return true;
 		}
 	}
@@ -138,33 +136,36 @@ update {
 	if (settings["seedD"]) {
 		vars.SetTextComponent("Seed:", (vars.dispS).ToString());
 	}
-}
-
-isLoading {
+	
+	//logic for determining when the game is loading
+	//this needs to be in update so that the variable updates even when the timer isnt running
 	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
 		if (old.what == current.what) {		//when the value stops updating
 			vars.h = current.what;			//set h to that value	
 			Thread.Sleep(10);				//wait 10ms
 			if (vars.h == current.what) {	//if the value is still the same
-				return true;				//pause the timer
+				vars.L = 1;
 			}
 		
 			else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
-				return true;						//this should help with that
+				vars.L = 1;
 			}
 		
 			else {
-				return false;
+				vars.L = 0;
 			}
 		}
 		
 		else {
-			return false;
+			vars.L = 0;
 		}
 	}
 	
 	else {
-		return false;
+		vars.L = 0;
 	}
-	
+}
+
+isLoading {
+	return (vars.L == 1);
 }
