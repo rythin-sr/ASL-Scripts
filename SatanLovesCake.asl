@@ -30,7 +30,7 @@ startup {
 }
 
 start {
-	if (current.igt > old.igt && current.room.Contains("rm_start_0a")) {
+	if (current.room.Contains("rm_start_0a")) {
 		vars.igtD = 0;
 		vars.dc = 0;
 		return true;
