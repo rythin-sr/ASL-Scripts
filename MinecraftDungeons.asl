@@ -1,4 +1,4 @@
-//Minecraft Dungeons Autosplitter + Load Remover by rythin & KunoDemetries
+//Minecraft Dungeons Autosplitter + Load Remover by rythin, with help from KunoDemetries
 
 state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
 
@@ -8,7 +8,7 @@ state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
 	//0 during loading AND end-of-mission chest animations
 	byte lc:	0x3F5D26A;
 	
-	//seed given to the level when its loaded
+	//seed given to the level when its loaded, 0 in menu and tutorial, 1 in lobby
 	int seed:		0x03FA1B98, 0xD80, 0x440, 0x50;
 	
 	//1 when in a cutscene, 0 otherwise
@@ -106,17 +106,13 @@ split {
 	
 }
 
-/*
-### Currently taken out until I figure out a better method because fuck ###
 reset {
-	if (current.seed == 0 && vars.inTut == 0) {
-		//Thread.Sleep(2000);
-		if (current.seed == 0 && current.lc != 0 && old.lc != 0) {
+	if (settings["IL"]) {
+		if (current.seed == 1) {
 			return true;
 		}
 	}	
 }
-*/
 
 update {
 	
