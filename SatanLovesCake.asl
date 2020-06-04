@@ -111,7 +111,7 @@ split {
 	}
 }
 reset {
-	return (current.igt == 1 && old.igt == 0);
+	return (current.roomID == 2);
 }
 
 update {
