@@ -25,7 +25,7 @@ startup {
 	settings.Add("uWJ", false, "Walljump", "ups");
 	settings.Add("hp1", false, "Life Upgrade 1", "ups");
 	settings.Add("hp2", false, "Life Upgrade 2", "ups");
-	settings.Add("dc", false, "Death Counter");
+	settings.Add("dc", false, "Death Counter", "misc");
 	
 	vars.igtD = 0;
 	vars.dc = 0; //dialogue counter used for final split
