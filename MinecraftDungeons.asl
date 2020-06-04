@@ -17,7 +17,7 @@ state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
 
 state("Dungeons", "Windows Store, build 4142545") {
 	byte what:		0x3F1A789;
-	byte lc:		0x3F5F325;
+	byte lc:		0x3F5F32A;
 	int seed:		0x03CED8A8, 0x20, 0xD80, 0x4E8;
 	int cs:			0x03FA3BB8, 0x8;
 }
