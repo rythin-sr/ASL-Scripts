@@ -72,7 +72,7 @@ init {
 
 start {
 	if (settings["IL"] == false) {
-		if (current.seed == 0 && current.cs == 1 && vars.L = 0) {
+		if (current.seed == 0 && current.cs == 1 && vars.L == 0) {
 			return true;
 		}
 	}
