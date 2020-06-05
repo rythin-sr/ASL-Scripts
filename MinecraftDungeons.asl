@@ -1,4 +1,6 @@
-//Minecraft Dungeons Autosplitter + Load Remover by rythin, with help from KunoDemetries
+//Minecraft Dungeons Autosplitter + Load Remover
+//Code and Launcher Version addresses by rythin
+//Windows Store Version addresses by KunoDemetries
 
 state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
 
@@ -70,7 +72,7 @@ init {
 
 start {
 	if (settings["IL"] == false) {
-		if (current.seed == 0 && current.cs == 1 && old.cs == 0) {
+		if (current.seed == 0 && current.cs == 1 && vars.L = 0) {
 			return true;
 		}
 	}
