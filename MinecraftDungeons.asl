@@ -38,6 +38,8 @@ startup {
 	settings.Add("levelS", true, "Split upon completing a level");
 	settings.Add("IL", false, "Enable IL-Mode");
 	
+	//in-livesplit variable display shamelessly stolen from the Defy Gravity script 
+	
 	vars.SetTextComponent = (Action<string, string>)((id, text) =>
 	{
 		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
@@ -58,6 +60,8 @@ startup {
 }
 
 init {
+
+	//timing method popup also stolen, this time from Amnesia TDD
 
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
@@ -161,6 +165,8 @@ update {
 		break;
 	}
 	
+	//actual bit that does the displaying
+	
 	if (settings["seedD"]) {
 		vars.SetTextComponent("Seed:", (vars.dispS).ToString());
 	}
@@ -168,11 +174,11 @@ update {
 	//logic for determining when the game is loading
 	//this needs to be in update so that the variable updates even when the timer isnt running
 	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
-		Thread.Sleep(50);					//specifically on win store version the value flickers mid-load, so have 50ms of leeway
+		Thread.Sleep(50);				//specifically on win store version the value flickers mid-load, so have 50ms of leeway
 		if (current.lc == 0) {				//check again just to be sure
 			if (old.what == current.what) {		//when the value stops updating
-				vars.h = current.what;			//set h to that value	
-				Thread.Sleep(10);				//wait 10ms
+				vars.h = current.what;		//set h to that value	
+				Thread.Sleep(10);		//wait 10ms
 				if (vars.h == current.what) {	//if the value is still the same
 					vars.L = 1;
 				}
