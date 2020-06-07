@@ -25,10 +25,12 @@ state("Dungeons", "Windows Store, build 4142545") {
 }
 
 startup {	
-	vars.h = 0;			//used for isLoading logic
-	vars.inTut = 0;		//used for dumb shit fuck you
-	vars.dispS = 1;		//used for seed display
-	vars.L = 0;			//for some split logic dependant on loads
+	vars.h = 0;						//used for isLoading logic
+	vars.inTut = 0;						//used for dumb shit fuck you
+	vars.dispS = 1;						//used for seed display
+	vars.L = 0;						//for some split logic dependant on loads
+	vars.aslName = "Minecraft Dungeons Autosplitter";	//for the text popup
+
 
 	refreshRate = 30;
 	
@@ -56,6 +58,21 @@ startup {
 }
 
 init {
+
+	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
+        	var timingMessage = MessageBox.Show (
+           		"This game uses Loadless (time without loads) as the main timing method.\n"+
+            		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
+            		"Would you like the timing method to be set to Loadless for you?",
+           		 vars.aslName + " | LiveSplit",
+           		 MessageBoxButtons.YesNo,MessageBoxIcon.Question
+       		);
+		
+        	if (timingMessage == DialogResult.Yes) {
+			timer.CurrentTimingMethod = TimingMethod.GameTime;
+		}
+	}
+	
 	if (modules.First().ModuleMemorySize == 93192192) {
 		version = "Launcher, build 4142545";
 	}
