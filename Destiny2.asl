@@ -11,9 +11,9 @@ startup {
 
 	var errorMessage = MessageBox.Show (
         "Due to an update in the game, this script no longer works.\n"+
-        "Because making scripts like these requires the use of Cheat Engine,\n"+
-        "the original author of this script is now banned from Destiny 2,\n"+
-		"thus making updating it impossible. Sorry!",
+        "Because making scripts like these requires the use of\n"+
+        " Cheat Engine, the original author of this script is now \n"+
+	"banned from Destiny 2, thus making updating it impossible. Sorry!",
        	"Destiny 2 Load Remover",
      	MessageBoxButtons.OK,
 		MessageBoxIcon.Error
