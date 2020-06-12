@@ -10,13 +10,14 @@ state("destiny2")
 startup {
 
 	var errorMessage = MessageBox.Show (
-           	"Due to an update in the game, this script no longer works.\n"+
-            	"Because making scripts like these requires the use of Cheat Engine,\n"+
-            	"the original author of this script is now banned from Destiny 2,\n"
+        "Due to an update in the game, this script no longer works.\n"+
+        "Because making scripts like these requires the use of Cheat Engine,\n"+
+        "the original author of this script is now banned from Destiny 2,\n"+
 		"thus making updating it impossible. Sorry!",
-          	"Destiny 2 Load Remover",
-        	MessageBoxIcon.Error
-       	);
+       	"Destiny 2 Load Remover",
+     	MessageBoxButtons.OK,
+		MessageBoxIcon.Error
+    );
 
   vars.SetTextComponent = (Action<string, string>)((id, text) =>
 	{
