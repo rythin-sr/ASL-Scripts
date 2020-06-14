@@ -62,7 +62,6 @@ split {
 reset {
 	if (current.board == 1 && old.board != 25 || current.board == 1 && current.igt == 0) {
 			return true;
-		}
 	}
 }
 
