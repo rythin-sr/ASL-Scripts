@@ -18,11 +18,19 @@ startup {
 	vars.dispIGT = 0;
 	settings.Add("all", true, "Split on completing every level");
 	settings.Add("3", false, "Split on completing a stage");
+	
+	//list of splits that have already been done
+	vars.ds = new List<int>();
 }
 
 update {
 	if (current.igt == old.igt - 1) {
 		vars.dispIGT++;
+	}
+	
+	//reset the board when going into a new world
+	if (current.board == 1 && old.board == 25) {
+		vars.ds.Clear();
 	}
 }	
 
@@ -30,6 +38,7 @@ start {
 	if (current.board == 1 && old.igt == 0) {
 		if (current.igt == 99 || current.igt == 75) {
 			vars.dispIGT = 0;
+			vars.ds.Clear();
 			return true;
 		}
 	}	
@@ -37,7 +46,8 @@ start {
 
 split {
 	if (settings["all"] == true) {
-		if (current.board == old.board + 1) {
+		if (current.board == old.board + 1 && !vars.ds.Contains(old.board)) {
+			vars.ds.Add(old.board);
 			return true;
 		}
 	}
@@ -50,9 +60,7 @@ split {
 }
 
 reset {
-	//autoreset currently broken
-	if (current.board == 1 && old.board != 25 && old.board != 1) {
-		if (current.igt == 0 && old.igt != 1) {
+	if (current.board == 1 && old.board != 25 || current.board == 1 && current.igt == 0) {
 			return true;
 		}
 	}
@@ -63,6 +71,6 @@ isLoading {
 }
 
 gameTime {
-	//IGT for fun mostly, RTA still should be used as the main timing method
 	return TimeSpan.FromSeconds(vars.dispIGT);
 }
+
