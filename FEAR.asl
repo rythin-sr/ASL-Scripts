@@ -9,6 +9,10 @@ state("FEAR")
 	int gamePaused:			0x16CCE8;				//1 when paused
 }
 
+startup {
+	settings.Add("cp2", false, "Enable experimental checkpoint removal (should provide more accurate loadless time but may not work on some versions)");
+}
+
 init {
 	vars.lastMap = "h";
 	vars.splits = new List<string>();
@@ -42,14 +46,13 @@ split {
 
 reset {
 	return (old.mapName == "" && current.mapName == "Intro.World00p");
-	vars.lastMap = "h";
 }
 
 isLoading {
 	//cp2 acts fluctuates between loading and not in the main menu
 	//this is to prevent timer slowing down in case of "Disconnected from Sever" bug
-	if (current.gamePaused == 0) {
-		if (current.cp2 != 0 && current.cp2 != 96) {
+	if (current.gamePaused == 0 && settings["cp2"]) {
+		if (current.cp2 == 232) {
 			return true;
 		}
 	}
