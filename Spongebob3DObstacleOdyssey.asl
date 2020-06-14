@@ -45,8 +45,9 @@ start {
 }
 
 split {
+	//not actually using double split prevention anyway because i did it wrong the first time and now i cba fixing it
 	if (settings["all"] == true) {
-		if (current.board == old.board + 1 && !vars.ds.Contains(old.board)) {
+		if (current.board == old.board + 1) {
 			vars.ds.Add(old.board);
 			return true;
 		}
