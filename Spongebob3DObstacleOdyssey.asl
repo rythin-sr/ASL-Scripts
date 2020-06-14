@@ -46,7 +46,7 @@ start {
 
 split {
 	if (settings["all"] == true) {
-		if (current.board == old.board + 1 && !vars.ds.Contains(old.board)) {
+		if (current.board == old.board + 1 && !vars.ds.Contains(current.board)) {
 			vars.ds.Add(old.board);
 			return true;
 		}
