@@ -46,7 +46,7 @@ start {
 
 split {
 	if (settings["all"] == true) {
-		if (current.board == old.board + 1 && !vars.ds.Contains(current.board)) {
+		if (current.board == old.board + 1 && !vars.ds.Contains(old.board)) {
 			vars.ds.Add(old.board);
 			return true;
 		}
@@ -57,12 +57,6 @@ split {
 			return true;
 		}
 	}	
-}
-
-reset {
-	if (current.board == 1 && old.board != 25 || current.board == 1 && current.igt == 0) {
-			return true;
-	}
 }
 
 isLoading {
