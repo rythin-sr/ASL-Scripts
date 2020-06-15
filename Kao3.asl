@@ -113,5 +113,5 @@ split {
 }
 
 isLoading {
-	return (current.l == 1);
+	return (current.load == 1);
 }
