@@ -10,7 +10,9 @@ state("kao_tw")
 	int a:		0x36C028;	//artifact counter
 	int d:		0x36C26C;	//dynamine counter
 	int cs:		0x36B1E8;	//1 when text on screen or cutscene
-	int end:	0x36BEA4;	//!0 when in the final cutscene, other places untested
+	//1 when boss is dead, might be weird on other levels, untested
+	float b:	0x00360498, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10;
+
 }
 
 //0 - Flight
@@ -48,7 +50,7 @@ startup {
 		settings.Add(Tag.Key, true, Tag.Value, "ml");
 	}
 	
-	//settings.Add("v", true, "The Volcano", "ml");
+	settings.Add("v", true, "The Volcano", "ml");
 	
 	vars.mg = new Dictionary<string, string>{
 		{"3", "Virtual Race"},
@@ -104,11 +106,11 @@ split {
 	}
 	
 	//final split
-	/*currently broken
-	if (current.l == 9 && current.end != 0 && old.end == 0 && settings["v"]) {
-		vars.csc = 0;
+	currently broken
+	if (current.l == 9 && current.b == 1 && old.b == 0 && settings["v"] && !vars.ds.Contains("v")) {
+		vars.ds.Add("v");
 		return true;
-	} */
+	} 
 	
 }
 
