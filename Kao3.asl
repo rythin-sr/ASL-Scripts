@@ -48,7 +48,7 @@ startup {
 		settings.Add(Tag.Key, true, Tag.Value, "ml");
 	}
 	
-	settings.Add("v", true, "The Volcano", "ml");
+	//settings.Add("v", true, "The Volcano", "ml");
 	
 	vars.mg = new Dictionary<string, string>{
 		{"3", "Virtual Race"},
@@ -93,8 +93,7 @@ split {
 	}
 	
 	//artifact pickup
-	if (current.a == old.a + 1 && settings["ar"] && !vars.ds.Contains("ar")) {
-		vars.ds.Add("ar");
+	if (current.a == old.a + 1 && settings["ar"]) {
 		return true;
 	}
 	
@@ -105,10 +104,11 @@ split {
 	}
 	
 	//final split
+	/*currently broken
 	if (current.l == 9 && current.end != 0 && old.end == 0 && settings["v"]) {
 		vars.csc = 0;
 		return true;
-	}
+	} */
 	
 }
 
