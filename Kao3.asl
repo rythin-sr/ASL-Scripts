@@ -76,8 +76,8 @@ start {
 
 split {
 	//split based on settings
-	//levels
-	if (current.l != old.l && settings[old.l.ToString()] && !vars.ds.Contains(old.l.ToString())) {
+	//levels (walking into village from x)
+	if (current.l != old.l && current.l == 1 && settings[old.l.ToString()] && !vars.ds.Contains(old.l.ToString())) {
 		vars.ds.Add(old.l.ToString());
 		return true;
 	}
