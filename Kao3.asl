@@ -106,7 +106,6 @@ split {
 	}
 	
 	//final split
-	currently broken
 	if (current.l == 9 && current.b == 1 && old.b == 0 && settings["v"] && !vars.ds.Contains("v")) {
 		vars.ds.Add("v");
 		return true;
