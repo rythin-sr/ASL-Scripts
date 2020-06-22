@@ -2,26 +2,33 @@
 //Code and Launcher Version addresses by rythin
 //Windows Store Version addresses by KunoDemetries
 
-state("Dungeons-Win64-Shipping", "Launcher, build 4142545") {
+state("Dungeons-Win64-Shipping", "Launcher, 1.0") {
 
 	//increases by 1 every frame, up to 255 then back to 0, counting pauses during loads or lag
-	byte what:		0x3B1C7B8;
+	byte what:	0x3B1C7B8;
 	
 	//0 during loading AND end-of-mission chest animations
 	byte lc:	0x3F5D26A;
 	
 	//seed given to the level when its loaded, 0 in menu and tutorial, 1 in lobby
-	int seed:		0x03FA1B98, 0xD80, 0x440, 0x50;
+	int seed:	0x03FA1B98, 0xD80, 0x440, 0x50;
 	
 	//1 when in a cutscene, 0 otherwise
 	int cs:		0x03FA1AF8, 0x8;
 }
 
-state("Dungeons", "Windows Store, build 4142545") {
-	byte what:		0x3F1A789;
-	byte lc:		0x3F5F32A;
-	int seed:		0x03CED8A8, 0x20, 0xD80, 0x4E8;
-	int cs:			0x03FA3BB8, 0x8;
+state("Dungeons", "Windows Store, 1.0") {
+	byte what:	0x3F1A789;
+	byte lc:	0x3F5F32A;
+	int seed:	0x03CED8A8, 0x20, 0xD80, 0x4E8;
+	int cs:		0x03FA3BB8, 0x8;
+}
+
+state("Dungeons-Win64-Shipping", "Launcher, 1.2.1.0") {
+	byte what:	0x3B2B648;
+	byte lc:	0x3F6C6E5;
+	int seed:	0x03FB1018, 0xD80, 0x380, 0x50;
+	int cs:		0x03FB0F78, 0x8;
 }
 
 startup {	
@@ -78,16 +85,23 @@ init {
 	}
 	
 	if (modules.First().ModuleMemorySize == 93192192) {
-		version = "Launcher, build 4142545";
+		version = "Launcher, 1.0";
 	}
 	
 	else if (modules.First().ModuleMemorySize == 93487104) {
-		version = "Windows Store, build 4142545";
+		version = "Windows Store, 1.0";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 93143040) {
+		version = "Launcher, 1.2.1.0";
 	}
 	
 	else {
 		version = "Version Currently Not Supported";
 	}
+	
+	//print("VERSION THING: " + modules.First().ModuleMemorySize.ToString()); 
+
 }
 
 
@@ -107,17 +121,7 @@ start {
 	}
 }
 
-split {
-	/*
-	//tutorial split
-	if (settings["introS"]) {
-		if (current.seed == 0 && current.lc != 0 && current.cs == 1 && old.cs == 0) {
-			vars.inTut = 0;
-			return true;
-		}
-	}
-	*/
-	
+split {	
 	//mission splits (also final split)
 	
 	if (settings["levelS"] || settings["IL"]) {
