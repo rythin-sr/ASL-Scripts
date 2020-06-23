@@ -31,6 +31,13 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.2.1.0") {
 	int cs:		0x03FB0F78, 0x8;
 }
 
+state("Dungeons", "Windows Store, 1.2.1.0") {
+	byte what:      0x3B2E648;
+	byte lc:        0x3F6F7A5;
+	int seed:      	0x03FB40D8, 0xCA0, 0xD80, 0x380, 0x50;
+	int cs:         0x03FB4038, 0x8;
+}
+
 startup {	
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
@@ -96,8 +103,12 @@ init {
 		version = "Launcher, 1.2.1.0";
 	}
 	
+	else if (modules.First().ModuleMemorySize == 93814784) {
+		version = "Windows Store, 1.2.1.0";
+	}
+	
 	else {
-		version = "Version Currently Not Supported";
+		version = "Currently Not Supported";
 	}
 	
 	//print("VERSION THING: " + modules.First().ModuleMemorySize.ToString()); 
