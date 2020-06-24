@@ -118,10 +118,13 @@ init {
 
 start {
 	if (settings["IL"] == false) {
-		if (current.seed == 0 && current.cs == 1 && vars.L == 0) {
-			return true;
-		}
-	}
+ 		if (current.seed > 1 && current.cs == 1 && vars.L == 0) {
+           		return true;
+        	}
+        	else if (current.seed == 0 && current.cs == 1 && vars.L == 0) {
+        		return true;
+        	}
+    	}
 	
 	if (settings["IL"] == true) {
 		if (current.seed > 1 || current.seed == 0 ) {
