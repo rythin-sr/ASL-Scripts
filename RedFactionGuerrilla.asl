@@ -1,5 +1,4 @@
-//done on the firgirl repack of the original (2009) steam version
-//should work with regular steam
+//Red Faction Guerrilla Autosplitter + Load Remover by rythin
 
 //Contanct info in case issues arise:
 //Discord: rythin#0135
@@ -8,16 +7,9 @@
 
 //todo:
 //smarter splits for gurriella activities/side missions (address for activity name needed)
-//(i'm not doing this)
+//(im not doing this)
 
-//done:
-//better starting point
-//customizable autosplitting (missions & collectibles)
-//simple autosplitting (activities)
-//settings for most things
-//load removal
-
-state("RFG") {
+state("RFG", "Steam") {
 
 	//basic splitting
 	int missions:			0xDDC350;	//completed mission counter
@@ -35,29 +27,20 @@ state("RFG") {
 	//int sectors:			0xDCEA48;	//liberated sectors counter
 }
 
-// mission list
-// Intro
-// Better Red Than Dead 			| intro_1.bik
-// Ambush					| intro_2.bik
-// Start Your Engines (Parker Done)		| we_know_where_you_are.bik
-// Ultor Echo					| partytime.bik
-// Rallying Point				| friends_martians_countrymen.bik
-// Industrial Revolution			| walker_martian_ranger.bik
-// Ashes to Ashes... (Dust Done)		| death_from_above.bik
-// Emergency Response				| refugee_truck.bik
-// Catch and Release				| highway_to_hell.bik
-// Air Traffic Control (Badlands Done)		| start_your_engines.bik
-// Access Denied				| traffic_jam.bik
-// Blitzkrieg (Oasis Done)			| tank_attack.bik
-// The Guns of Tharsis (Free Fire Zone Done)	| guns_of_tharsis.bik
-// Death by Committee				| death_by_committee.bik
-// The Dogs of War				| sniper_hunter.bik
-// Hammer of the Gods				| save_the_guerrilla_camp.bik
-// Emergency Broadcast System			| emergency_broadcast_system.bik
-// Manual Override				| ants_vs_magnifying_glass.bik
-// Guerrillas at the Gates			| assault_the_edf_central_command.bik
-// Mars Attacks (EOS Done)			| final_mission.bik
+state("RFG", "Remarstered") {
 
+	//basic splitting
+	int missions:			0x21126B0;	
+	string35 missionVid:		0x27DB1F5; 	
+	int activities:			0x211275C;	
+	int cutscene:			0x124BEB4;	
+	int loading:			0x125E86C;
+	
+	//collectibles & hundo related
+	int ores:			0x2114E54;
+	int radioLogs:			0x279DCE0;
+}
+	
 startup {
 
 	settings.Add("missions" , true, "Missions");
@@ -83,7 +66,7 @@ startup {
 		{"tank_attack.bik", "Blitzkrieg"},
 		{"guns_of_tharsis.bik", "The Guns of Tharsis"},
 		{"death_by_committee.bik", "Death by Committee"},
-		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"}	
+		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"}
 	};
 	
 	vars.ml = new List<string>();						
@@ -100,6 +83,7 @@ startup {
 		{"ants_vs_magnifying_glass.bik", "Manual Override"},
 		{"emergency_broadcast_system.bik", "Emergency Broadcast System"},
 		{"assault_the_edf_central_command.bik", "Guerrillas at the Gates"}
+		//{"final_mission.bik", "Mars Attacks"}
 	};
 
 	foreach (var Tag in vars.m2) {							
@@ -119,7 +103,7 @@ startup {
 	//vars.al = new List<string>();						
 	//foreach (var Tag in vars.a) {							
 	//	settings.Add(Tag.Key, true, Tag.Value, "act");					
-    //vars.al.Add(Tag.Key); };
+	//vars.al.Add(Tag.Key); };
 	
 	//collectibles
 	settings.Add("col", false, "Collectibles");
@@ -134,20 +118,40 @@ startup {
 
 init {
 	vars.startReady = 0;
+	
+	if (modules.First().ModuleMemorySize == 60276736) {
+		version = "Remarstered";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 34639872) {
+		version = "Steam";
+	}
+	
+	else {
+		version = "Unsupported";
+	}
+	
+	//print(modules.First().ModuleMemorySize.ToString());
 }
 
 update {
-	//logic used to start the timer after the load that happens after the first cutscene
-	//this has one false positive like an hour into the run so basically fuck off i dont care
-	if (current.cutscene == 0 && old.cutscene == 20) {
-		vars.startReady = 1;
+
+	if (version == "Unsupported") {
+		return false;
 	}
+
+	//logic used to start the timer after the load that happens after the first cutscene
+	//not used currently but might be in the future
+	//if (current.cutscene == 0 && old.cutscene == 20) {
+	//	vars.startReady = 1;
+	//}
 	
 }
 
 start {
-	if (current.loading == 1 && old.loading == 0 && vars.startReady == 1) {
-		vars.startReady = 0;
+	//this start condition has one false positive ~1 hour into the run
+	//basically what im saying is ill let it exist and dont really care
+	if (current.cutscene == 20 && old.cutscene == 0) {
 		return true;
 	}
 }
