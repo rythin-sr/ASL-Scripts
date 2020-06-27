@@ -66,6 +66,7 @@ startup {
 		{"tank_attack.bik", "Blitzkrieg"},
 		{"guns_of_tharsis.bik", "The Guns of Tharsis"},
 		{"death_by_committee.bik", "Death by Committee"},
+		{"sniper_hunter.bik", "The Dogs of War"},
 		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"}
 	};
 	
