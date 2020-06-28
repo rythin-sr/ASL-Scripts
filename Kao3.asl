@@ -28,6 +28,7 @@ state("kao_tw")
 
 startup {
 
+	settings.Add("IL", false, "Start/Split according to IL rules");
 	settings.Add("ml", true, "Main Levels");
 	settings.Add("mg", true, "Minigames");
 	settings.Add("mc", true, "Misc");
@@ -63,14 +64,17 @@ startup {
 	}
 }
 
-update {
-
-}
-
 start {
 	if (current.m == 0 && old.m == 1 && current.l == 0 && current.cs == 1) {
 		vars.ds.Clear();
 		return true;
+	}
+
+	
+	if (settings["IL"]) {
+		if (current.l != 1 && current.load == 0 && old.load == 1) {
+			return true;
+		}
 	}
 }
 
@@ -82,6 +86,13 @@ split {
 		return true;
 	}
 	
+	//IL splits
+	if (settings["IL"]) {
+		if (current.l != 1 && current.load == 1 && old.load == 0) {
+			return true;
+		}
+	}
+	
 	//volcano entry
 	if (settings["ve"] && current.l == 9 && old.l != 9 && !vars.ds.Contains("ve")) {
 		vars.ds.Add("ve");
@@ -89,7 +100,7 @@ split {
 	}
 	
 	//tutorial dynamite pickup
-	if (current.l == 1 && current.d == 10 && old.d == 0 && settings["td"] && !vars.ds.Contains("td")) {
+	if (current.l == 1 && current.d > old.d && settings["td"] && !vars.ds.Contains("td")) {
 		vars.ds.Add("td");
 		return true;
 	}
