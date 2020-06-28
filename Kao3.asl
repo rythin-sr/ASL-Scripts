@@ -72,7 +72,7 @@ start {
 
 	
 	if (settings["IL"]) {
-		if (current.l != 1 && current.load == 0 && old.load == 1) {
+		if (current.l != 1 && current.l != 0 && current.load == 0 && old.load == 1) {
 			return true;
 		}
 	}
