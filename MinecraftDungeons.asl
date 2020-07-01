@@ -1,6 +1,6 @@
 //Minecraft Dungeons Autosplitter + Load Remover
 //Code and Launcher Version addresses by rythin
-//Windows Store Version addresses by KunoDemetries
+//Windows Store Version addresses by KunoDemetries, Krvne, Birdi
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.0") {
 
@@ -38,7 +38,21 @@ state("Dungeons", "Windows Store, 1.2.1.0") {
 	int cs:         0x03FB4038, 0x8;
 }
 
-startup {	
+state("Dungeons-Win64-Shipping", "Launcher, 1.3.2.0") {
+	byte what:	0x3F4F414;
+	byte lc:	0x3FA12E5;
+	int seed:	0x03FD84B8, 0x8, 0x2F0, 0x50;
+	int cs:		0x03FD8588, 0x8;
+}
+
+state("Dungeons", "Windows Store, 1.3.2.0") {
+    byte what:      	0x3B58688;
+    byte lc:        	0x3FA7425;
+    int seed:       	0x03FDE5F8, 0x8, 0x4D8, 0x20, 0x438;
+    int cs:         	0x03FDE6C8, 0x8;
+}
+
+startup {
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
 	vars.dispS = 1;						//used for seed display
@@ -51,6 +65,7 @@ startup {
 	settings.Add("seedD", false, "Display the current level's seed");
 	settings.Add("levelS", true, "Split upon completing a level");
 	settings.Add("IL", false, "Enable IL-Mode");
+	settings.Add("dbg", false, "Display autosplitter debug info");
 	
 	//in-livesplit variable display shamelessly stolen from the Defy Gravity script 
 	
@@ -80,8 +95,8 @@ init {
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
            		"This game uses Loadless (time without loads) as the main timing method.\n"+
-            		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
-            		"Would you like the timing method to be set to Loadless for you?",
+            	"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
+            	"Would you like the timing method to be set to Loadless for you?",
            		 vars.aslName + " | LiveSplit",
            		 MessageBoxButtons.YesNo,MessageBoxIcon.Question
        		);
@@ -107,6 +122,14 @@ init {
 		version = "Windows Store, 1.2.1.0";
 	}
 	
+	else if (modules.First().ModuleMemorySize == 93663232) {
+		version = "Launcher, 1.3.2.0";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 94089216) {
+		version = "Windows Store, 1.3.2.0";
+	}
+	
 	else {
 		version = "Currently Not Supported";
 	}
@@ -118,13 +141,10 @@ init {
 
 start {
 	if (settings["IL"] == false) {
- 		if (current.seed > 1 && current.cs == 1 && vars.L == 0) {
-           		return true;
-        	}
-        	else if (current.seed == 0 && current.cs == 1 && vars.L == 0) {
-        		return true;
-        	}
-    	}
+ 		if (current.seed != 1 && vars.L == 0) {
+           	return true;
+        }
+    }
 	
 	if (settings["IL"] == true) {
 		if (current.seed > 1 || current.seed == 0 ) {
@@ -187,6 +207,13 @@ update {
 	
 	if (settings["seedD"]) {
 		vars.SetTextComponent("Seed:", (vars.dispS).ToString());
+	}
+	
+	if (settings["dbg"]) {
+		vars.SetTextComponent("count:", (current.what).ToString());
+		vars.SetTextComponent("lc:", (current.lc).ToString());
+		vars.SetTextComponent("seed:", (current.seed).ToString());
+		vars.SetTextComponent("cs:", (current.cs).ToString());
 	}
 	
 	//logic for determining when the game is loading
