@@ -159,7 +159,7 @@ split {
 	//mission splits (also final split)
 	
 	if (settings["levelS"] || settings["IL"]) {
-		if (old.cs == 0 && current.cs == 1 && vars.L == 0) {
+		if (current.cs == old.cs + 1 && vars.L == 0) {
 			return true;
 		}
 	}
