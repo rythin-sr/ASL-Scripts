@@ -1,18 +1,27 @@
 //Kao the Kangaroo 3 Autosplitter + Load Remover by rythin
 //base script and most important addresses by Flower35
 
-state("kao_tw")
+state("kao_tw", "Polish Cracked")
 {
 	int l: 		0x36BE80;	//level ID
 	int m: 		0x35F0B8;	//1 when menu is up
-	byte load: 	0x352500;	//1 when loading
+	int load: 	0x352500;	//1 when loading
 	int s:		0x36C024;	//global spirit counter
 	int a:		0x36C028;	//artifact counter
 	int d:		0x36C26C;	//dynamine counter
 	int cs:		0x36B1E8;	//1 when text on screen or cutscene
 	//1 when boss is dead, might be weird on other levels, untested
 	float b:	0x00360498, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10;
+}
 
+state("kao_tw", "Hungarian") {
+	int l:		0x36BD80;
+	int m:		0x35EFE0;
+	int load:	0x352430;
+	int s:		0x36BF24;
+	int a:		0x36BF28;
+	int d:		0x36C16C;
+	int cs:		0x36B0E8;
 }
 
 //0 - Flight
@@ -31,11 +40,12 @@ startup {
 	settings.Add("IL", false, "Start/Split according to IL rules");
 	settings.Add("ml", true, "Main Levels");
 	settings.Add("mg", true, "Minigames");
+	settings.Add("en", true, "Area Entry");
 	settings.Add("mc", true, "Misc");
+	
 	settings.Add("td", false, "Picking up the dynamite bundle in the tutorial", "mc");
 	settings.Add("ar", false, "Picking up an artifact", "mc");
-	settings.Add("ve", false, "Volcano Entry", "mc");
-	settings.Add("ho", false, "Reaching 100% completion", "mc");
+	settings.Add("ho", false, "Collecting 1000 Spirits", "mc");
 	
 	vars.ds = new List<string>();
 	
@@ -62,6 +72,41 @@ startup {
 	foreach (var Tag in vars.mg) {
 		settings.Add(Tag.Key, false, Tag.Value, "mg");
 	}
+	
+	vars.le = new Dictionary<string, string> {
+		{"2e", "Gardens of Life"},
+		{"3e", "Virtual Race"},
+		{"4e", "Wuthering Heights"},
+		{"5e", "Steersman Test"},
+		{"6e", "Waterfall Island"},
+		{"7e", "Battle in the Sky"},
+		{"8e", "The Well"},
+		{"9e", "The Volcano"}
+	};
+	
+	foreach (var Tag in vars.le) {
+		settings.Add(Tag.Key, false, Tag.Value, "en");
+	}
+}
+
+init {
+	//print(modules.First().ModuleMemorySize.ToString());
+	
+	int v = modules.First().ModuleMemorySize;
+	
+	switch (v) {
+		case 3899392:
+		version = "Hungarian";
+		break;
+		
+		case 3903488:
+		version = "Polish Cracked";
+		break;
+
+		default:
+		version = "Unrecognised Version";
+		break;
+	}
 }
 
 start {
@@ -72,7 +117,7 @@ start {
 
 	
 	if (settings["IL"]) {
-		if (current.l != 1 && current.l != 0 && current.load == 0 && old.load == 1) {
+		if (current.l != 0 && current.l != 1 && current.load == 0 && old.load == 1) {
 			return true;
 		}
 	}
@@ -86,17 +131,17 @@ split {
 		return true;
 	}
 	
+	//level entry splits
+	if (old.l == 1 && current.l > 1 && settings[current.l.ToString() + "e"] && !vars.ds.Contains(current.l.ToString() + "e")) {
+		vars.ds.Add(current.l.ToString() + "e");
+		return true;
+	}
+	
 	//IL splits
 	if (settings["IL"]) {
 		if (current.l != 1 && current.load == 1 && old.load == 0) {
 			return true;
 		}
-	}
-	
-	//volcano entry
-	if (settings["ve"] && current.l == 9 && old.l != 9 && !vars.ds.Contains("ve")) {
-		vars.ds.Add("ve");
-		return true;
 	}
 	
 	//tutorial dynamite pickup
