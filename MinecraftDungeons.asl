@@ -62,6 +62,8 @@ startup {
 
 	refreshRate = 30;
 	
+	settings.Add("csc", true, "Require a cutscene at the start of the level to autostart the timer");
+	settings.SetToolTip("csc", "Disabling this will start the timer in the main menu, can't really do much about that.");
 	settings.Add("seedD", false, "Display the current level's seed");
 	settings.Add("levelS", true, "Split upon completing a level");
 	settings.Add("IL", false, "Enable IL-Mode");
@@ -141,10 +143,14 @@ init {
 
 start {
 	if (settings["IL"] == false) {
- 		if (current.seed != 1 && vars.L == 0) {
-           	return true;
-        }
-    }
+ 		if (settings["csc"] == false && current.seed != 1 && vars.L == 0) {
+           		return true;
+        	}
+		
+		if (settings["csc"] == true && current.seed != 1 && vars.L == 0 && current.cs == 1) {
+           		return true;
+        	}
+    	}
 	
 	if (settings["IL"] == true) {
 		if (current.seed > 1 || current.seed == 0 ) {
