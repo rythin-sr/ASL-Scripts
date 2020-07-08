@@ -4,7 +4,8 @@ state("Garfield", "International") {
 	//string with some file path, includes the map name which is the important part
 	string30 map:		0x1685E7;
 	
-	//different numbers in different menus, seems to be consistently 86 on the "new game" selection menu
+	//a value that goes up/down as the text in menus grows/shrinks
+	//is consistently 215 on the main menu and 86 in the "new game" selection menu
 	byte menuState:		0x1094EC;
 	
 	//final boss hp
@@ -36,8 +37,36 @@ startup {
 		settings.Add(Tag.Key, true, Tag.Value);				
     };
 	
+	vars.startReady = false;
 	vars.doneSplits = new List<string>();	
-	refreshRate = 30;
+}
+
+update {
+	
+	//for the starting condition we check if menuState starts going down from 86,
+	//since the value goes up and down one by one and 86 is the max value for the menu we want
+	//unfortunately, the previous menu is 215 and going to the desired menu goes 215 -> 0 -> 86
+	//which can set off the autostart early (215 -> 86 (midway through) -> 0 -> 86)
+	//this logic should prevent most* misfires of the autostart
+
+	if (current.map == @"Level_00\Level_00.ins") {				//while in the main menu
+		if (current.menuState == 86 && old.menuState < 86) {		//the value just went from <86 to 86
+			vars.startReady = true;					//ready to autostart
+		}
+	
+		else if (current.menuState == 86 && old.menuState > 86) {	//if the value went DOWN to 86 (on the way from 215 to 0)
+			print("[LASAGASPLIT]: Early start prevented"); 		//debug note 
+			vars.startReady = false;				//not ready to autostart
+		}
+										//in case you ever go from the autostart menu (86) to the main menu (215)
+		else if (current.menuState > 86) {				//there's a chance you'll set startReady to true "on the way" from 0 to 215
+			vars.startReady = false;				//this should prevent that, as any menu above the desired one will set startReady to false
+		}
+	}
+	
+	//*autostart will still misfire when you go from the autostart menu back into the main menu
+	//if you ever do that for whatever reason, autoreset will take care of it
+	//it'll just inflate the attempt count a bit
 }
 
 init {
@@ -54,7 +83,8 @@ init {
 }
 
 start {
-	if (current.map == @"Level_00\Level_00.ins" && current.menuState < old.menuState && old.menuState == 86) {
+	if (current.map == @"Level_00\Level_00.ins" && current.menuState < old.menuState && vars.startReady == true) {
+		vars.startReady = false;
 		vars.doneSplits.Clear();
 		return true;
 	}
@@ -74,7 +104,9 @@ split {
 }
 
 reset {
-	if (current.map == @"Level_00\Level_00.ins" && old.map != current.map) {
-		return true;
+	if (current.map == @"Level_00\Level_00.ins") {
+		if (old.map != current.map || current.menuState == 215) {
+			return true;
+		}
 	}
 }
