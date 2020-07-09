@@ -21,16 +21,16 @@ state ("Garfield", "Russian") {
 startup {
 
 	vars.d = new Dictionary<string, string> {
-		{@"Single\Level_01\Level_01.ins", "Downtown"},
-		{@"Single\Race_01\Race_01.ins", "Chase 1"},
-		{@"Single\Level_04\Level_04.ins", "Egypt 1"},
-		{@"Single\Level_05\Level_05.ins", "Egypt 2"},
-		{@"Single\Race_02\Race_02.ins", "Chase 2"},
-		{@"Single\Level_27\Level_27.ins", "Mexican City 1"},
-		{@"Single\Level_08\Level_08.ins", "Mexican City 2"},
-		{@"Single\Level_09\Level_09.ins", "Venice 1"},
-		{@"Single\Level_10\Level_10.ins", "Venice 2"},
-		{@"Single\Level_02\Level_02.ins", "Downtown Redux"},
+		{@"Single\Level_01\Level_01.ins", "Intro"},
+		{@"Single\Race_01\Race_01.ins", "Run, Odie! Run!"},
+		{@"Single\Level_04\Level_04.ins", "Bandages and sarcophagi"},
+		{@"Single\Level_05\Level_05.ins", "Temple almost of doom"},
+		{@"Single\Race_02\Race_02.ins", "Roll, you ball!"},
+		{@"Single\Level_27\Level_27.ins", "The good, the bad and the spicy"},
+		{@"Single\Level_08\Level_08.ins", "For a fistful of lasagna"},
+		{@"Single\Level_09\Level_09.ins", "Meow home is your home"},
+		{@"Single\Level_10\Level_10.ins", "Carnivore carnival"},
+		{@"Single\Level_02\Level_02.ins", "The return of the orange King"},
 	};
 	
 	foreach (var Tag in vars.d) {							
