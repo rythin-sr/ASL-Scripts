@@ -16,7 +16,6 @@ startup {
 	//setting groups
 	settings.Add("boss", true, "Bosses");
 	settings.Add("ups", true, "Upgrades");
-	settings.Add("misc", true, "Misc");
 	
 	//settings
 	settings.Add("bT", true, "Taiyaki", "boss");
@@ -25,36 +24,18 @@ startup {
 	settings.Add("uWJ", false, "Walljump", "ups");
 	settings.Add("hp1", false, "Life Upgrade 1", "ups");
 	settings.Add("hp2", false, "Life Upgrade 2", "ups");
-	settings.Add("dc", false, "Death Counter", "misc");
 	
-	vars.igtD = 0;
-	vars.dc = 0; //dialogue counter used for final split
-	vars.deathc = 0; //death counter
-	vars.done = new List<string>();	//since dying resets progress, we need to prevent splitting a second time upon completing a goal
-
-	vars.SetTextComponent = (Action<string, string>)((id, text) =>
-	{
-		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
-		var textSetting = textSettings.FirstOrDefault(x => (x.GetType().GetProperty("Text1").GetValue(x, null) as string) == id);
-		if (textSetting == null)
-		{
-		var textComponentAssembly = Assembly.LoadFrom("Components\\LiveSplit.Text.dll");
-		var textComponent = Activator.CreateInstance(textComponentAssembly.GetType("LiveSplit.UI.Components.TextComponent"), timer);
-		timer.Layout.LayoutComponents.Add(new LiveSplit.UI.Components.LayoutComponent("LiveSplit.Text.dll", textComponent as LiveSplit.UI.Components.IComponent));
-
-		textSetting = textComponent.GetType().GetProperty("Settings", BindingFlags.Instance | BindingFlags.Public).GetValue(textComponent, null);
-		textSetting.GetType().GetProperty("Text1").SetValue(textSetting, id);
-		}
-
-		if (textSetting != null)
-		textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
-	});
+	vars.igtD = 0;					//IGT used on display, mostly to prevent it going to 0 on quit to menu
+	vars.dc = 0; 					//dialogue counter used for final split
+	vars.saveStart = false;				//used for correct IGT calculation
+	
+	vars.done = new List<string>();			//since dying resets progress, we need to prevent splitting a second time upon completing a goal
 }
 
 start {
 	if (current.roomID == 4 && old.roomID == 2) {
 		vars.done.Clear();
-		vars.deathc = 0;
+		vars.saveStart = false;
 		vars.igtD = 0;
 		vars.dc = 0;
 		return true;
@@ -105,7 +86,7 @@ split {
 	}
 
 	//final split
-	if (vars.dc == 2) {
+	if (current.roomID == 13 && vars.dc == 2) {
 		vars.dc = 0;
 		return true;
 	}
@@ -123,14 +104,29 @@ update {
 		vars.deathc++;
 	}
 	
-	if (settings["dc"]) {
-		vars.SetTextComponent("Deaths:", (vars.deathc).ToString());
+	//dialogue box counter in the first and final room 
+	if (current.roomID == 13 || current.roomID == 4) {
+		if (current.d == 0 && old.d == 1) {
+			vars.dc++;
+		}
 	}
 	
-	//before the credits roll, in the final room 
-	//there happen 2 instances of dialogue, which we need to count
-	if (current.roomID == 13 && current.d == 0 && old.d == 1) {
-		vars.dc++;
+	//logic to figure out whether the run was started from a New Game or an empty save Continue
+	//the latter letting you skip the initial dialogue, adding 24s to the timer
+	//as per community rules
+	if (current.roomID == 3 && old.roomID == 4) {
+		if (vars.dc == 0) {
+			vars.saveStart = true;
+		}
+		
+		if (vars.dc == 2) {
+			vars.saveStart = false;
+			vars.dc = 0;
+		}
+		
+		else if (vars.dc != 0 && vars.dc != 2) {
+			print("SLC_SPLITTER: This shouldn't be possible");
+		}
 	}
 }
 	
@@ -140,5 +136,11 @@ isLoading {
 }
 
 gameTime {
-	return TimeSpan.FromSeconds(vars.igtD);
+	if (vars.saveStart == false) {
+		return TimeSpan.FromSeconds(vars.igtD);
+	}
+	
+	else if (vars.saveStart == true) {
+		return TimeSpan.FromSeconds(vars.igtD + 24);	
+	}
 }
