@@ -45,7 +45,7 @@ startup {
 	settings.Add("mc", true, "Misc");
 	
 	settings.Add("td", false, "Picking up the dynamite bundle in the tutorial", "mc");
-	settings.Add("ar", false, "Picking up an artifact", "mc");
+	//settings.Add("ar", false, "Picking up an artifact", "mc");
 	settings.Add("ho", false, "Collecting 1000 Spirits", "mc");
 	
 	vars.ds = new List<string>();
@@ -88,6 +88,17 @@ startup {
 	foreach (var Tag in vars.le) {
 		settings.Add(Tag.Key, false, Tag.Value, "en");
 	}
+	
+	vars.al = new Dictionary<string, string> {
+		{"2a", "Artifact of Earth"},
+		{"4a", "Artifact of Wind"},
+		{"6a", "Artifact of Water"},
+		{"8a", "Artifact of Fire"}
+	};
+	
+	foreach (var Tag in vars.al) {
+		settings.Add(Tag.Key, false, Tag.Value, "mc");
+	}
 }
 
 init {
@@ -129,18 +140,21 @@ split {
 	//levels (walking into village from x)
 	if (current.l != old.l && current.l == 1 && settings[old.l.ToString()] && !vars.ds.Contains(old.l.ToString())) {
 		vars.ds.Add(old.l.ToString());
+		print("KAO3SPLITTER: Splitting for: Level End " + old.l.ToString());
 		return true;
 	}
 	
 	//level entry splits
 	if (old.l == 1 && current.l > 1 && settings[current.l.ToString() + "e"] && !vars.ds.Contains(current.l.ToString() + "e")) {
 		vars.ds.Add(current.l.ToString() + "e");
+		print("KAO3SPLITTER: Splitting for: Level Entry " + old.l.ToString() + "e");
 		return true;
 	}
 	
 	//IL splits
 	if (settings["IL"]) {
 		if (current.l != 1 && current.load == 1 && old.load == 0) {
+			print("KAO3SPLITTER: Splitting for: IL");
 			return true;
 		}
 	}
@@ -148,16 +162,19 @@ split {
 	//tutorial dynamite pickup
 	if (current.l == 1 && current.d > old.d && settings["td"] && !vars.ds.Contains("td")) {
 		vars.ds.Add("td");
+		print("KAO3SPLITTER: Splitting for: Tutorial Dynamite Pickup");
 		return true;
 	}
 	
 	//artifact pickup
-	if (current.a == old.a + 1 && settings["ar"]) {
+	if (current.a == old.a + 1 && settings[current.l.ToString() + "a"]) {
+		print("KAO3SPLITTER: Splitting for: Artifact Pickup, level: " + current.l.ToString());
 		return true;
 	}
 	
 	//hundo 
 	if (current.s == 1000 && old.s == 999 && settings["ho"] && !vars.ds.Contains("ho")) {
+		print("KAO3SPLITTER: Splitting for: 1000 Spirits");
 		vars.ds.Add("ho");
 		return true;
 	}
@@ -165,6 +182,7 @@ split {
 	//final split
 	if (current.l == 9 && current.b == 1 && old.b == 0 && settings["v"] && !vars.ds.Contains("v")) {
 		vars.ds.Add("v");
+		print("KAO3SPLITTER: Splitting for: Final Split");
 		return true;
 	} 
 	
