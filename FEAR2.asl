@@ -1,17 +1,49 @@
+//FEAR 2 Autosplitter/Load Remover by rythin
+
 state("FEAR2", "Steam") {
-	int gameLoading: 0x32E2E8;
-	int hasControl: 0x002ED454, 0xA4, 0x1C, 0x3EC;
-	int cutsceneWatcher: 0x2EF5DC;
+	int gameLoading: 0x32E2E8;	//0 during gameplay, seemingly random numbers when loading
 	string3 mapName: 0x2F5F98;
+	//int hasControl: 0x002ED454, 0xA4, 0x1C, 0x3EC;
+	//int cutsceneWatcher: 0x2EF5DC;
 }
 
 state("FEAR2", "GOG") {
-	int gameLoading: 0x2F4454;
+	int gameLoading: 0x2F4454;	//random numbers during gameplay, 0 when loading
 	string3 mapName: 0x2F5F98;
 }
 	
 startup {
-  vars.SetTextComponent = (Action<string, string>)((id, text) =>
+
+	settings.Add("missions", true, "Missions");
+	settings.Add("dbg", false, "Display debug info under splits");
+	settings.SetToolTip("dbg", "Might have to remove the extra displays from your layout later");
+	
+	vars.m = new Dictionary<string, string>{
+		{"M01", "Sanctuary"},
+		{"M03", "Awakening"},
+		{"M04", "Discovery"},
+		{"M04a", "Withdrawal"},
+		{"M05", "Replica"}, 
+		{"M06", "Ruin"},
+		{"m07", "Top"},
+		{"M09", "Elementary"},
+		{"m10", "Nurse's Office"},
+		{"M11", "Snake Fist"},
+		{"M14", "Keegan"},
+		{"M15", "Epicenter"},
+		{"M16", "Approach"}
+	};
+
+	foreach (var Tag in vars.m) {							
+		settings.Add(Tag.Key, true, Tag.Value, "missions");					
+    };
+	
+	vars.isGameLoading = 0;
+	vars.setGameTime = false;
+	vars.timerOffset = 48.983;
+	vars.lastMap = "";
+	
+	vars.SetTextComponent = (Action<string, string>)((id, text) =>
 	{
 		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
 		var textSetting = textSettings.FirstOrDefault(x => (x.GetType().GetProperty("Text1").GetValue(x, null) as string) == id);
@@ -29,7 +61,6 @@ startup {
 		textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
 	});
 	
-	settings.Add("dbg", false, "Display debug info under splits");
 }
 	
 init {
@@ -53,10 +84,6 @@ init {
 	if (MD5Hash == "54E27BA4855ADCE4A42B241FB2BF20AE") { 
 		version = "Steam";
 	}
-	
-	vars.isGameLoading = 0;
-	vars.setGameTime = false;
-	vars.timerOffset = 48.983;
 }
 
 update {
@@ -90,6 +117,7 @@ start {
 	if (current.mapName == "M01" && version == "GOG") {
 		if (current.gameLoading != 0 && old.gameLoading == 0) {
 			vars.setGameTime = true;
+			vars.lastMap = "M01";
 			return true;
 		}
 	}
@@ -97,6 +125,7 @@ start {
 	if (current.mapName == "M01" && version == "Steam") {
 		if (current.gameLoading != 0 && old.gameLoading != 0) {
 			vars.setGameTime = true;
+			vars.lastMap = "M01";		
 			return true;
 		}
 		
@@ -104,7 +133,29 @@ start {
 }
 	
 split {
-	return (current.mapName != old.mapName && old.mapName != "");
+	//generic level transition splits
+	if (current.mapName != "" && current.mapName != vars.lastMap && current.map != "men") {
+		if (settings[vars.lastMap]) {
+			vars.lastMap = current.mapName;
+			return true;
+		}
+		
+		else if (!settings[vars.lastMap]) {
+			vars.lastMap = current.mapName;
+		}
+	}
+	
+	//since Withdrawal and Discovery share the same map name (M04), we need some special logic to make it split correctly
+	if (current.mapName == "M04" && old.mapName == "" && vars.lastMap == "M04") {
+		if (settings["M04a"]) {
+			vars.lastMap = "M04a";
+			return true;
+		}
+		
+		else if (!settings["M04a"]) {
+			vars.lastMap = "M04a";
+		}
+	}
 }
 
 gameTime {
