@@ -31,15 +31,37 @@ init {
 	if (MD5Hash == "54E27BA4855ADCE4A42B241FB2BF20AE") { 
 		version = "Steam";
 	}
+	
+	vars.isGameLoading = false;
+	vars.setGameTime = false;
+	vars.timerOffset = 48.983;
 }
 
-start {
-	if (version == "Steam") {
-		return (current.mapName == "M01" && current.hasControl == 256 && old.hasControl == 0 && current.gameLoading == 0);
+update {
+	if (version == "GOG") {
+		if (current.gameLoading == 0) {
+			vars.isGameLoading = true;
+		}
+		
+		else {
+			vars.isGameLoading = false;
+		}
 	}
 	
-	if (version == "GOG"){
-		print("Autostart not supported for GOG version");
+	if (version == "Steam") {
+		if (current.gameLoading != 0) {
+			vars.isGameLoading = true;
+		}
+		
+		else {
+			vars.isGameLoading = false;
+		}
+	}
+
+start {
+	if (current.mapName == "M01" && vars.isGameLoading.Current == false && vars.isGameLoading.Old == true) {
+		vars.setGameTime = true;
+		return true;
 	}
 }
 	
@@ -47,26 +69,15 @@ split {
 	return (current.mapName != old.mapName && old.mapName != "");
 }
 
+gameTime {
+	if (vars.setGameTime == true) {
+		vars.setGameTime = false;
+		return TimeSpan.FromSeconds(-vars.timerOffset);
+	}
+}
+
 isLoading {
-	if (version == "GOG") {
-		if (current.gameLoading == 0) {
-			return true;
-		}
-		
-		else {
-			return false;
-		}
-	}
-	
-	if (version == "Steam") {
-		if (current.gameLoading != 0) {
-			return true;
-		}
-		
-		else {
-			return false;
-		}
-	}
+	return vars.isGameLoading;
 }
 
 exit {
