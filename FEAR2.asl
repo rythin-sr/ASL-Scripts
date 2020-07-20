@@ -124,7 +124,7 @@ start {
 	}
 	
 	if (current.mapName == "M01" && version == "Steam") {
-		if (current.gameLoading != 0 && old.gameLoading != 0) {
+		if (current.gameLoading == 0 && old.gameLoading != 0) {
 			vars.setGameTime = true;
 			vars.lastMap = "M01";		
 			return true;
@@ -135,7 +135,7 @@ start {
 	
 split {
 	//generic level transition splits
-	if (current.mapName != "" && current.mapName != vars.lastMap && current.map != "men") {
+	if (current.mapName != "" && current.mapName != vars.lastMap && current.mapName != "men") {
 		if (settings[vars.lastMap]) {
 			vars.lastMap = current.mapName;
 			return true;
@@ -171,5 +171,5 @@ isLoading {
 }
 
 exit {
-    timer.IsGameTimePaused = true;
+    timer.IsGameTimePaused = true; 
 }
