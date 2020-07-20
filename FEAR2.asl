@@ -110,6 +110,7 @@ update {
 	if (settings["dbg"]) {
 		vars.SetTextComponent("map", (current.mapName).ToString());
 		vars.SetTextComponent("load", (current.gameLoading).ToString());
+		vars.SetTextComponent("load", (vars.lastMap).ToString());
 	}
 }
 
