@@ -2,14 +2,14 @@
 
 state("FEAR2", "Steam") {
 	int gameLoading: 0x32E2E8;	//0 during gameplay, seemingly random numbers when loading
-	string3 mapName: 0x2F5F98;
+	string4 mapName: 0x2F5F98;
 	//int hasControl: 0x002ED454, 0xA4, 0x1C, 0x3EC;
 	//int cutsceneWatcher: 0x2EF5DC;
 }
 
 state("FEAR2", "GOG") {
 	int gameLoading: 0x2F4454;	//random numbers during gameplay, 0 when loading
-	string3 mapName: 0x2F5F98;
+	string4 mapName: 0x2F5F98;
 }
 	
 startup {
@@ -22,7 +22,7 @@ startup {
 		{"M01", "Sanctuary"},
 		{"M03", "Awakening"},
 		{"M04", "Discovery"},
-		{"M04a", "Withdrawal"},
+		{"M04b", "Withdrawal"},
 		{"M05", "Replica"}, 
 		{"M06", "Ruin"},
 		{"m07", "Top"},
@@ -38,6 +38,7 @@ startup {
 		settings.Add(Tag.Key, true, Tag.Value, "missions");					
     };
 	
+	vars.ds = new List<string>();
 	vars.isGameLoading = 0;
 	vars.setGameTime = false;
 	vars.timerOffset = 48.983;
@@ -119,6 +120,7 @@ start {
 		if (current.gameLoading != 0 && old.gameLoading == 0) {
 			vars.setGameTime = true;
 			vars.lastMap = "M01";
+			vars.ds.Clear();
 			return true;
 		}
 	}
@@ -126,7 +128,8 @@ start {
 	if (current.mapName == "M01" && version == "Steam") {
 		if (current.gameLoading == 0 && old.gameLoading != 0) {
 			vars.setGameTime = true;
-			vars.lastMap = "M01";		
+			vars.lastMap = "M01";
+			vars.ds.Clear();			
 			return true;
 		}
 		
@@ -135,26 +138,15 @@ start {
 	
 split {
 	//generic level transition splits
-	if (current.mapName != "" && current.mapName != vars.lastMap && current.mapName != "men") {
+	if (current.mapName != "" && current.mapName != vars.lastMap && current.mapName != "menu" && !vars.ds.Contains(old.mapName)) {
 		if (settings[vars.lastMap]) {
 			vars.lastMap = current.mapName;
+			vars.ds.Add(old.mapName);
 			return true;
 		}
 		
 		else if (!settings[vars.lastMap]) {
 			vars.lastMap = current.mapName;
-		}
-	}
-	
-	//since Withdrawal and Discovery share the same map name (M04), we need some special logic to make it split correctly
-	if (current.mapName == "M04" && old.mapName == "" && vars.lastMap == "M04") {
-		if (settings["M04a"]) {
-			vars.lastMap = "M04a";
-			return true;
-		}
-		
-		else if (!settings["M04a"]) {
-			vars.lastMap = "M04a";
 		}
 	}
 }
