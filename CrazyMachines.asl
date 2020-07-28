@@ -5,54 +5,53 @@
 //Twitter: rythin_sr
 //Twitch:  rythin_sr
 
+//Basically i had to re-write everything because apparently pointers break after a long time for Reasons
+//so from now on im only using static addresses, which severely limits what i can do with the script
+//autostart is particularly annoying here, activating on ANY textbox appearance
+//autosplit also fires when going back to the main menu, which is most likely preventable with some simple logic but I Do Not Want To Bother
+
 state("CrazyMachines") {
-	int	endTB:		0x001103AC, 0xD0, 0x234; //1 when a level end textbox is up, 0 otherwise
-	int 	isTB:		0x11066C; //1 when there's a textbox on screen, 0 otherwise
-	string8 levName:	0x0010F344, 0xE4, 0xA8, 0x54, 0x834; //level name, doesnt reset on quit to menu
+	int 	tb:			0x11066C; 	//1 when there's a textbox on screen, 0 otherwise
+	int	counter:		0x112430;	//seems to go up by 2 when level changes
 }
 
 startup {
 	settings.Add("allsplit", true, "Split upon completion of every level");
 	settings.SetToolTip("allsplit", "Disabling this option will still split at the end of the run, just not in the middle.");
+
+	vars.splitCount = 0;		//for final split logic
+	vars.noEarlySplit = false;	//same as above
 }
 
 start {
-	//start on entering the first level
-	//i could not for the life of me find an address for being in the main menu 
-	//so instead i start when the first textbox appears in the first level
-	//this can cause issues if the runner resets on the first level and then brings up a textbox in the main menu
-	//but it's a very rare edge case and honestly i cant be bothered 
-	//todo: get first level name for new challenges
-	
-	if (current.levName == "Cleaning" && current.isTB == 1 && old.isTB == 0) {
+	if (current.tb == 1 && old.tb == 0) {
+		vars.splitCount = 0;
+		vars.noEarlySplit = false;
 		return true;
 	}
 }
 
 split {
-
-	//split for every level
-	if (settings["allsplit"] == true) {
-		if (current.endTB == 1 && old.endTB == 0) {
+	if (current.counter > old.counter) {
+		vars.splitCount++;
+		vars.noEarlySplit = true;
+		if (settings["allsplit"]) {
+			print("CrazySplitter: Transition split triggered, split count at: " + vars.splitCount.ToString());
 			return true;
 		}
 	}
 	
-	//if the setting is disabled, only split for the final level
-	//todo: get the name of the final level from new challenges
-	
-	else if (settings["allsplit"] == false) {
-		if (current.levName == "The End" && current.endTB == 1 && old.endTB == 0) {
+	if (vars.splitCount == 101 && current.tb == 1 && old.tb == 0) {
+		if (vars.noEarlySplit == false) {
+			print("CrazySplitter: Final split triggered");
 			return true;
+		}
+		
+		else if (vars.noEarlySplit == true) {
+			print("CrazySplitter: Early split prevented!");
+			vars.noEarlySplit = false;
 		}
 	}
 }
+		
 
-reset {
-	//reset when going into the first level from not the first level
-	//todo: figure out some logic in case the runner resets on the first level
-	
-	if (current.levName == "Cleaning" && old.levName != "Cleaning") {
-		return true;
-	}
-}
