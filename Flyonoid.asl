@@ -10,7 +10,6 @@ state("mask") {
 	string20 level:		0x6A987;	//level name
 	int load:		0x8F95C;	//1 when loading
 	int end:		0x87504;	//garbage values in most levels, 0 -> 1 on game end
-	int isPaused:		0x87A7C;	//1 when paused, 0 in gameplay and main menu
 }
 
 startup {
@@ -57,7 +56,7 @@ start {
 	
 	//autostart for IL runs
 	else if (settings["IL"] == true) {
-		if (current.isPaused == 0 && current.load == 0 && old.load == 1) {
+		if (current.load == 0 && old.load == 1) {
 			return true;
 		}
 	}
@@ -90,7 +89,9 @@ split {
 reset {
 	
 	if (settings["IL"] == true) {
-		return current.isPaused == 1;
+		if (current.load == 0 && old.load == 1) {
+			return true;
+		}
 	}
 	
 	if (settings["IL"] == false) {
