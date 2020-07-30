@@ -79,10 +79,8 @@ split {
 	}
 	
 	//final split
-	if (current.level.ToLowerInvariant() == "base4/planet.txt" || current.level == "") {
-		if (current.end == 1 && old.end != 1) {
-			return true;
-		}
+	if (old.level.ToLowerInvariant() == "base4/planet.txt" && current.level == "") {
+		return true;
 	}
 }
 
