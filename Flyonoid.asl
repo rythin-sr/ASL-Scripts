@@ -1,5 +1,5 @@
 //Flyonoid Autosplitter + Load Remover by rythin
-//Todo: IL Mode, potentially support for Max Energy runs, autoreset?
+//Todo: support for Max Energy runs?
 
 //Contanct info in case issues arise:
 //Discord: rythin#0135
@@ -7,13 +7,15 @@
 //Twitch:  rythin_sr
 
 state("mask") {
-	string20 level:	0x6A987;	//level name
+	string20 level:		0x6A987;	//level name
 	int load:		0x8F95C;	//1 when loading
 	int end:		0x87504;	//garbage values in most levels, 0 -> 1 on game end
+	int isPaused:		0x87A7C;	//1 when paused, 0 in gameplay and main menu
 }
 
 startup {
 
+	settings.Add("IL", false, "IL Mode");
 	settings.Add("levels", true, "Levels");
 	
 	vars.d = new Dictionary<string, string> {
@@ -44,8 +46,18 @@ startup {
 }
 
 start {
-	if (current.level == "White1/Planet.txt") {
-		if (current.load == 0 && old.load == 1) {
+	//autostart for full game runs
+	if (settings["IL"] == false) {
+		if (current.level == "White1/Planet.txt") {
+			if (current.load == 0 && old.load == 1) {
+				return true;
+			}
+		}
+	}
+	
+	//autostart for IL runs
+	else if (settings["IL"] == true) {
+		if (current.isPaused == 0 && current.load == 0 && old.load == 1) {
 			return true;
 		}
 	}
@@ -58,7 +70,11 @@ split {
 	
 	//level splits according to settings
 	if (current.level != old.level) {
-		if (settings[old.level.ToLowerInvariant()] == true) {
+		if (settings[old.level.ToLowerInvariant()] == true && settings["IL"] == false) {
+			return true;
+		}
+		
+		else if (settings["IL"] == true) {
 			return true;
 		}
 	}
@@ -71,7 +87,21 @@ split {
 	}
 }
 
+reset {
+	
+	if (settings["IL"] == true) {
+		return current.isPaused == 1;
+	}
+	
+	if (settings["IL"] == false) {
+		if (current.level == "White1/Planet.txt") {
+			if (current.load == 0 && old.load == 1) {
+				return true;
+			}
+		}
+	}
+}
+
 isLoading {
 	return current.load == 1;
 }
-		
