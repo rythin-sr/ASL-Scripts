@@ -68,7 +68,7 @@ split {
 	//forcing the names to all lowercase removes this issue
 	
 	//level splits according to settings
-	if (current.level != old.level) {
+	if (current.level != old.level && current.level.ToLowerInvariant() != "white1/planet.txt") {
 		if (settings[old.level.ToLowerInvariant()] == true && settings["IL"] == false) {
 			return true;
 		}
