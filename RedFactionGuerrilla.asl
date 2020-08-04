@@ -9,18 +9,19 @@
 //(31/05/2020) 1.0 - initial script
 //(27/06/2020) 1.1 - added support for re-mars-tered edition
 //(04/08/2020) 1.2 - added support for DLC missions, rewrote everything cutscene-based 
+//(04/08/2020) 1.2.1 - hopefully fixed early split for marauder cutscene 
 
 state("RFG", "Steam") {
 
 	//basic splitting
 	int missions:			0xDDC350;	//completed mission counter
-	string35 missionVid:		0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
+	string35 missionVid:	0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
 	int activities:			0xDDC3BC;	//completed guerrilla activity counter
 	int cutscene:			0x10FF210;	//1 in cutscene, 0 otherwise
 	int loading:			0x768D90;	//0 in loads, menu and the first cutscene (why?), 1 otherwise
 	
 	//collectibles & hundo related
-	int ores:			0xDDDC34;
+	int ores:				0xDDDC34;
 	int radioLogs:			0x1102CD8;
 	int pwrCells:			0xDECFA0;
 	
@@ -33,13 +34,13 @@ state("RFG", "Remarstered") {
 
 	//basic splitting
 	int missions:			0x21126B0;	
-	string35 missionVid:		0x27DB1F5; 	
+	string35 missionVid:	0x27DB1F5; 	
 	int activities:			0x211275C;	
 	int cutscene:			0x21338B4;	
 	int loading:			0x125E86C;
 	
 	//collectibles & hundo related
-	int ores:			0x2114E54;
+	int ores:				0x2114E54;
 	int radioLogs:			0x279DCE0;
 	int pwrCells:			0x212D200;
 }
@@ -200,7 +201,7 @@ split {
 	}
 	
 	//split on marauder cutscene
-	if (current.cutscene == 0 && old.cutscene == 1 && settings["marauderCS"] == true && current.missionVid == "save_the_guerrilla_camp.bik") {
+	if (current.cutscene == 0 && old.cutscene == 1 && settings["marauderCS"] == true && current.missions == 16 && old.missions != 15) {
 		return true;
 	}
 	
