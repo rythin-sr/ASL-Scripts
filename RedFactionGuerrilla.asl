@@ -5,9 +5,10 @@
 //Twitter: rythin_sr
 //Twitch:  rythin_sr
 
-//todo:
-//smarter splits for gurriella activities/side missions (address for activity name needed)
-//(im not doing this)
+//changelog:
+//(31/05/2020) 1.0 - initial script
+//(27/06/2020) 1.1 - added support for re-mars-tered edition
+//(04/08/2020) 1.2 - added support for DLC missions, rewrote everything cutscene-based 
 
 state("RFG", "Steam") {
 
@@ -15,12 +16,13 @@ state("RFG", "Steam") {
 	int missions:			0xDDC350;	//completed mission counter
 	string35 missionVid:		0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
 	int activities:			0xDDC3BC;	//completed guerrilla activity counter
-	int cutscene:			0x7EACD0;	//20 first cutscene, 29 cs after intro
-	int loading:			0x768D90;
+	int cutscene:			0x10FF210;	//1 in cutscene, 0 otherwise
+	int loading:			0x768D90;	//0 in loads, menu and the first cutscene (why?), 1 otherwise
 	
 	//collectibles & hundo related
 	int ores:			0xDDDC34;
 	int radioLogs:			0x1102CD8;
+	int pwrCells:			0xDECFA0;
 	
 	//currently unused 
 	//int crates:			0xDDDE50;	//EDF Supply Crates counter
@@ -33,19 +35,18 @@ state("RFG", "Remarstered") {
 	int missions:			0x21126B0;	
 	string35 missionVid:		0x27DB1F5; 	
 	int activities:			0x211275C;	
-	int cutscene:			0x124BEB4;	
+	int cutscene:			0x21338B4;	
 	int loading:			0x125E86C;
 	
 	//collectibles & hundo related
 	int ores:			0x2114E54;
 	int radioLogs:			0x279DCE0;
+	int pwrCells:			0x212D200;
 }
 	
 startup {
 
-	settings.Add("missions" , true, "Missions");
-	settings.SetToolTip("missions", "There is no setting for Mars Attacks as the end of that mission will always autosplit and cannot be disabled");
-	//i think this makes sense for any% runs but i guess it might cause issues for 100%? if thats the case i'll make it a setting too
+	settings.Add("missions", true, "Main Missions");
 	
 	//missions
 	
@@ -73,23 +74,46 @@ startup {
 	vars.ml = new List<string>();						
 	foreach (var Tag in vars.m1) {							
 		settings.Add(Tag.Key, true, Tag.Value, "missions");					
-    vars.ml.Add(Tag.Key); };
+    };
 	
 	//splitting the dictionary here because this split requires a different condition than the other mission splits
 	//but i still want the list in livesplit to be in order
 	settings.Add("marauderCS", true, "Marauder Negotiations (Cutscene)", "missions");
-	settings.SetToolTip("marauderCS", "Untested, might split on other cutscenes, if so please contact me and tell me where it splits");
 	
 	vars.m2 = new Dictionary<string,string> {
 		{"ants_vs_magnifying_glass.bik", "Manual Override"},
 		{"emergency_broadcast_system.bik", "Emergency Broadcast System"},
-		{"assault_the_edf_central_command.bik", "Guerrillas at the Gates"}
-		//{"final_mission.bik", "Mars Attacks"}
+		{"assault_the_edf_central_command.bik", "Guerrillas at the Gates"},
+		{"final_mission.bik", "Mars Attacks"}
 	};
 
 	foreach (var Tag in vars.m2) {							
 		settings.Add(Tag.Key, true, Tag.Value, "missions");					
-    vars.ml.Add(Tag.Key); };
+	};
+	
+	settings.Add("dlc", true, "DLC Missions");
+	
+	vars.dlcm = new Dictionary<string, string> {
+		{"dlc_mission_1.bik", "Rescue"},
+		{"dlc_mission_2.bik", "Retribution"},
+		{"dlc_mission_3.bik", "Redemption"}
+	};
+	
+	foreach (var Tag in vars.dlcm) {							
+		settings.Add(Tag.Key, true, Tag.Value, "dlc");					 
+	};
+	
+	//while technically this should never be necessary, i noticed the mission count flicker to 0
+	//in loading screens, which may cause issues in case of dying after the first mission
+	//i suppose it could still cause issues if you die on the 2nd mission, but this is 
+	//an edge case i dont feel like preventing atm
+	
+	//update: preventing splitting in loading screens actually makes this obsolete but i'll keep 
+	//it around since there's no real reason not to
+	vars.doneSplit = new List<string>();
+	
+	//variable used to split correctly at the end of the intro
+	vars.introSplit = 0;
 	
 	//activities *WIP*
 	
@@ -112,13 +136,14 @@ startup {
 	settings.Add("ore300", false, "Split upon having destroyed all 300 ore clusters", "col");
 	settings.Add("log1", false, "Split upon collecting a Radio Log", "col");
 	settings.Add("log36", false, "Split upon collecting all 36 Radio Logs", "col");
+	settings.Add("pwr1", false, "(DLC) Split upon collecting a Power Cell", "col");
+	settings.Add("pwr75", false, "(DLC) Split upon collecting all 75 Power Cells", "col");
 	//crates are probably not necessary for hundo
 	//settings.Add("crate1", false, "Split upon destroying an EDF Supply Crate", "col");
 	//settings.Add("crate250", false, "Split upon having destroyed all 250 EDF Supply Crates", "col");
 }
 
 init {
-	vars.startReady = 0;
 	
 	if (modules.First().ModuleMemorySize == 60276736) {
 		version = "Remarstered";
@@ -140,19 +165,19 @@ update {
 	if (version == "Unsupported") {
 		return false;
 	}
-
-	//logic used to start the timer after the load that happens after the first cutscene
-	//not used currently but might be in the future
-	//if (current.cutscene == 0 && old.cutscene == 20) {
-	//	vars.startReady = 1;
-	//}
+	
+	if (current.cutscene == 0 && old.cutscene == 1) {
+		vars.introSplit++;
+	}
 	
 }
 
 start {
-	//this start condition has one false positive ~1 hour into the run
-	//basically what im saying is ill let it exist and dont really care
-	if (current.cutscene == 20 && old.cutscene == 0) {
+	//most likely has a couple false-positives but cutscenes in this game are so few and far between
+	//i dont really care honestly
+	if (current.cutscene == 1 && old.cutscene == 0 && current.missions == 0) {
+		vars.introSplit = 0;
+		vars.doneSplit.Clear();
 		return true;
 	}
 }
@@ -164,24 +189,18 @@ split {
 	//intro split
 	//seems like there's 2 cutscenes in the game that share the same ID, but since this is not one of them
 	//its convenient enough to use for the split after the intro
-	if (current.cutscene == 0 && old.cutscene == 29 && settings["tutorial"] == true) {
+	if (current.cutscene == 0 && old.cutscene == 1 && settings["tutorial"] == true && vars.introSplit == 2 && current.missions == 0) {
 		return true;
 	}
 	
 	//split on completing a mission
-	if (current.missions > old.missions && settings[current.missionVid] == true && vars.ml.Contains(current.missionVid)) {
+	if (current.missions == old.missions + 1 && settings[current.missionVid] == true && !vars.doneSplit.Contains(current.missionVid) && current.loading != 0) {
+		vars.doneSplit.Add(current.missionVid);
 		return true;
 	}
 	
 	//split on marauder cutscene
-	if (current.cutscene == 0 && old.cutscene == 23 && settings["marauderCS"] == true) {
-		return true;
-	}
-	
-	//final split
-	//this is just so the final split can't be disabled
-	//forcing everyone to have the same timing on run end reduces the possibility of people doing manual split for that for no reason
-	if (current.missions == 20 && old.missions == 19) {
+	if (current.cutscene == 0 && old.cutscene == 1 && settings["marauderCS"] == true && current.missionVid == "save_the_guerrilla_camp.bik") {
 		return true;
 	}
 	
@@ -189,7 +208,7 @@ split {
 	
 	//to be improved at a later date
 	//for now it just splits on any activity completion
-	if (current.activities > old.activities && settings["actAll"]) {
+	if (current.activities == old.activities + 1 && settings["actAll"] && current.loading != 0) {
 		return true;
 	}
 	
@@ -220,10 +239,21 @@ split {
 	if (settings["log1"] == true && current.radioLogs > old.radioLogs) {
 		return true;
 	}
+	
+	//power cells
+	if (settings["pwr75"] == true && settings["pwr1"] == false) {
+		if (current.pwrCells == 75 && old.pwrCells == 74) {
+			return true;
+		}
+	}
+	
+	if (settings["pwr1"] == true && current.pwrCells > old.pwrCells) {
+		return true;
+	}
 }
 
 isLoading {
 	//pauses the timer from the moment a loading screen appears until gaining control of mason after a load
 	//id prefer it to unpause the moment the loading screen disappears but i cba looking for a better address
-	return current.loading == 0;
+	return current.loading == 0 && current.cutscene != 1;
 }
