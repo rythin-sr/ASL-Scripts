@@ -10,18 +10,19 @@
 //(27/06/2020) 1.1 - added support for re-mars-tered edition
 //(04/08/2020) 1.2 - added support for DLC missions, rewrote everything cutscene-based 
 //(04/08/2020) 1.2.1 - hopefully fixed early split for marauder cutscene 
+//(05/08/2020) 1.2.1.1 - fixed the name of the first mission
 
 state("RFG", "Steam") {
 
 	//basic splitting
 	int missions:			0xDDC350;	//completed mission counter
-	string35 missionVid:	0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
+	string35 missionVid:		0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
 	int activities:			0xDDC3BC;	//completed guerrilla activity counter
 	int cutscene:			0x10FF210;	//1 in cutscene, 0 otherwise
 	int loading:			0x768D90;	//0 in loads, menu and the first cutscene (why?), 1 otherwise
 	
 	//collectibles & hundo related
-	int ores:				0xDDDC34;
+	int ores:			0xDDDC34;
 	int radioLogs:			0x1102CD8;
 	int pwrCells:			0xDECFA0;
 	
@@ -51,7 +52,7 @@ startup {
 	
 	//missions
 	
-	settings.Add("tutorial", true, "Intro", "missions");
+	settings.Add("tutorial", true, "Welcome to Mars", "missions");
 	
 	vars.m1 = new Dictionary<string,string> { 				
 		{"intro_1.bik", "Better Red Than Dead"}, 					
