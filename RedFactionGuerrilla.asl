@@ -19,6 +19,7 @@ state("RFG", "Steam") {
 	string35 missionVid:		0x1C8FF0D; 	//name of the little video that plays before each mission, updates when a new one plays
 	int activities:			0xDDC3BC;	//completed guerrilla activity counter
 	int cutscene:			0x10FF210;	//1 in cutscene, 0 otherwise
+	int subCS:			0x7EACD0;	//different values on different cutscenes, only when subtitles are on
 	int loading:			0x768D90;	//0 in loads, menu and the first cutscene (why?), 1 otherwise
 	
 	//collectibles & hundo related
@@ -35,13 +36,14 @@ state("RFG", "Remarstered") {
 
 	//basic splitting
 	int missions:			0x21126B0;	
-	string35 missionVid:	0x27DB1F5; 	
+	string35 missionVid:		0x27DB1F5; 	
 	int activities:			0x211275C;	
-	int cutscene:			0x21338B4;	
+	int cutscene:			0x21338B4;
+	int subCS:			0x124BEB4;
 	int loading:			0x125E86C;
 	
 	//collectibles & hundo related
-	int ores:				0x2114E54;
+	int ores:			0x2114E54;
 	int radioLogs:			0x279DCE0;
 	int pwrCells:			0x212D200;
 }
@@ -80,7 +82,9 @@ startup {
 	
 	//splitting the dictionary here because this split requires a different condition than the other mission splits
 	//but i still want the list in livesplit to be in order
+	//im sure theres a better way to do that but also No Fuck You This Works
 	settings.Add("marauderCS", true, "Marauder Negotiations (Cutscene)", "missions");
+	settings.SetToolTip("marauderCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
 	
 	vars.m2 = new Dictionary<string,string> {
 		{"ants_vs_magnifying_glass.bik", "Manual Override"},
@@ -202,7 +206,7 @@ split {
 	}
 	
 	//split on marauder cutscene
-	if (current.cutscene == 0 && old.cutscene == 1 && settings["marauderCS"] == true && current.missions == 16 && old.missions != 15) {
+	if (current.subCS == 0 && old.subCS == 23 && settings["marauderCS"] == true) {
 		return true;
 	}
 	
