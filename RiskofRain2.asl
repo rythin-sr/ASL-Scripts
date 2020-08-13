@@ -81,9 +81,9 @@ split {
 	}
 	
 	//final split (experimental)
-	if (vars.curLev == "moon" && current.load == 1 && old.load == 0) {
-		return true;
-	}
+	//if (vars.curLev == "moon" && current.load == 1 && old.load == 0) {
+	//	return true;
+	//}
 	
 }
 		
