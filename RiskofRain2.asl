@@ -4,7 +4,7 @@
 //(while still managing to make it look like it was coded by a 3 year old)
 
 state("Risk of Rain 2") {
-
+	byte load: "mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
 }
 
 startup {
@@ -40,14 +40,6 @@ update {
 	
 	
 	if (vars.line != null) {
-	
-		if (vars.line.StartsWith("Unloaded scene")) {
-			vars.loading = true;
-		}
-	
-		if (vars.line.StartsWith("Client ready")) {
-			vars.loading = false;
-		}
 		
 		if (vars.line.StartsWith("Active scene changed")) {
 			vars.curLev = vars.line.Split(' ')[6];
@@ -88,10 +80,11 @@ split {
 		}
 	}
 	
-	//final split
-	if (vars.line != null && vars.line.StartsWith("Parent of RectTransform is being set") && vars.curLev == "mysteryspace") {
+	//final split (experimental)
+	if (vars.curLev == "moon" && current.load == 1 && old.load == 0) {
 		return true;
 	}
+	
 }
 		
 start {
@@ -106,7 +99,7 @@ reset {
 }
 		
 isLoading {
-	return vars.loading;
+	return (current.load == 1);
 }
 
 exit {
