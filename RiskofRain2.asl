@@ -4,6 +4,7 @@
 //(13/04/2020) 1.0 - initial release, autosplitting and sketchy load removal through unity log
 //(13/08/2020) 2.0 - full game released, switched load removal over to an actual address
 //(14/08/2020) 2.1 - switched autosplitting to actual addresses aswell, reading logs is slow
+//(14/08/2020) 2.1.1 - bugfixes, bugfixes, bugfixes
 
 state("Risk of Rain 2") {
 	
@@ -21,7 +22,7 @@ startup {
 
 	settings.Add("stages", true, "Stages");
 	settings.Add("reset", false, "Auto-reset the timer when starting a new run.");
-	settings.SetToolTip("reset", "This option has not been tested. It may reset the timer in the middle of the run. Someone pls test ty.");
+	settings.SetToolTip("reset", "Auto-resets only if you reset from stages 1-4, stage 5 onwards need to be reset manually.");
 
 	vars.l = new Dictionary<int, string> {
 		{1,"Titanic Plains/Distant Roost"},
@@ -74,7 +75,7 @@ start {
 
 reset {
 	if (settings["reset"]) {
-		if (current.inGame != 0 && old.inGame == 0) {
+		if (current.inGame != 0 && old.inGame == 0 && current.stageCount < 4) {
 			vars.setOffset = true;
 			return true;
 		}
