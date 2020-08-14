@@ -1,107 +1,102 @@
 //Risk of Rain 2 Autosplitter + Load Remover by rythin
-//Huge shoutout to Ero for teaching me how to use Unity output logs for this
-//Also the Untitled Goose Game community and their autosplitter which I heavily based this off of
-//(while still managing to make it look like it was coded by a 3 year old)
+
+//Changelog: 
+//(13/04/2020) 1.0 - initial release, autosplitting and sketchy load removal through unity log
+//(13/08/2020) 2.0 - full game released, switched load removal over to an actual address
+//(14/08/2020) 2.1 - switched autosplitting to actual addresses aswell, reading logs is slow
 
 state("Risk of Rain 2") {
-	byte load: "mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	
+	//1 from fade-out to the moment the next stage loads, 0 otherwise
+	byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	
+	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x6B0;
+	
+	//0 in title and lobby, some random number in other stages
+	//i just realised its a sound engine thing, yeah no clue either. it works for what i need it so good enough for me
+	int inGame:		"AkSoundEngine.dll", 0x20DC04;
 }
 
 startup {
-	settings.Add("teleS", false, "Split when activating the Teleporter");
-	settings.Add("levS", true, "Split when changing level");
-	settings.Add("bazaarS", false, "Split upon entering the Bazaar", "levS");
+
+	settings.Add("stages", true, "Stages");
+	settings.Add("reset", false, "Auto-reset the timer when starting a new run.");
+	settings.SetToolTip("reset", "This option has not been tested. It may reset the timer in the middle of the run. Someone pls test ty.");
+
+	vars.l = new Dictionary<int, string> {
+		{1,"Titanic Plains/Distant Roost"},
+		{2,"Abandoned Aqueduct/Wetlands Aspect"},
+		{3,"Rallypoint Delta/Scorched Acres"},
+		{4,"Siren's Call/Abyssal Depths"},
+		{5,"Sky Meadow"},
+		{6,"Commencement"}
+	};
+
+	foreach (var Tag in vars.l) {							
+		settings.Add(Tag.Key.ToString(), true, Tag.Value, "stages");					
+    };
+	
+	settings.SetToolTip("1", "Splits when entering the Bazaar. Due to current limitations splitting after bazaar is not possible");
+
+	//variable used to set the offset of the timer start, to account for timing rules
+	vars.setOffset = false;
 }
 
 init {
-	//yea i have no idea what this does but UGG does this and it works here too so ill take it
-	string logPath = Environment.GetEnvironmentVariable("appdata")+"\\..\\LocalLow\\Hopoo Games, LLC\\Risk of Rain 2\\output_log.txt";
-	try {
-		FileStream fs = new FileStream(logPath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
-		fs.SetLength(0);
-		fs.Close();
-	} catch {
-		print("Cant open ror2 log");
-	}
-	vars.line = "";
-	vars.reader = new StreamReader(new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 	
-	vars.loading = false;
-	vars.curLev = "";
-	vars.oldLev = "";
-	vars.runStarted = false;
-	vars.firstsList = new List<string>();
-	string[] firsts = { "golemplains", "golemplains2", "blackbeach", "blackbeach2" };
+	//timing method reminder from Amnesia TDD autosplitter, all credits to those guys
+	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
+        	var timingMessage = MessageBox.Show (
+           		"This game uses Loadless (real time without loads) as the main timing method.\n"+
+            	"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
+            	"Would you like the timing method to be set to Loadless for you?",
+           		"RoR2 Autosplitter | LiveSplit",
+           		 MessageBoxButtons.YesNo,MessageBoxIcon.Question
+       		);
+		
+        	if (timingMessage == DialogResult.Yes) {
+			timer.CurrentTimingMethod = TimingMethod.GameTime;
+		}
+	}
+	
+	//version detection goes here in the future, cba atm
+	//if (modules.First().ModuleMemorySize == ) {
+	//	version = "1.0";
+	//}
 }
 
-update {
-	if (vars.reader == null) return false;
-	vars.line = vars.reader.ReadLine();
-	
-	
-	if (vars.line != null) {
-		
-		if (vars.line.StartsWith("Active scene changed")) {
-			vars.curLev = vars.line.Split(' ')[6];
-		}
-		
-		if (vars.runStarted == false && vars.curLev != "lobby" && vars.curLev != "title") {
-			vars.runStarted = true;
-			vars.oldLev = vars.curLev;
-		}
-		
-		//if (vars.curLev != vars.oldLev) {
-		//	print("OLD:"+vars.oldLev.ToString()+"CUR:"+vars.curLev.ToString());
-		//}
+start {
+	if (current.inGame != 0 && old.inGame == 0) {
+		vars.setOffset = true;
+		return true;
+	}
+}
 
+reset {
+	if (settings["reset"]) {
+		if (current.inGame != 0 && old.inGame == 0) {
+			vars.setOffset = true;
+			return true;
+		}
 	}
 }
 
 split {
-	//level splits
-	if (settings["levS"]) {
-		if (vars.curLev != vars.oldLev && vars.curLev != "" && vars.oldLev != "") {			
-			if (vars.curLev != "bazaar" && !settings["bazaarS"]) {
-				vars.oldLev = vars.curLev;
-				return true;
-			}
-			
-			if (settings["bazaarS"]) {
-				vars.oldLev = vars.curLev;
-				return true;
-			}
-		}
-	}
-	
-	//tele splits
-	if (settings["teleS"]) {
-		if (vars.line != null && vars.line.StartsWith("<style=cEvent>You activated the <style=cDeath>Teleporter")) {
+	if (current.stageCount == old.stageCount + 1) {
+		if (settings[old.stageCount.ToString()]) {
 			return true;
 		}
 	}
-	
-	//final split (experimental)
-	//if (vars.curLev == "moon" && current.load == 1 && old.load == 0) {
-	//	return true;
-	//}
-	
 }
-		
-start {
-	if (vars.curLev == "golemplains" || vars.curLev == "golemplains2" || vars.curLev == "blackbeach" || vars.curLev == "blackbeach2") {
-		vars.oldLev = vars.curLev;
-		return true;
+
+gameTime {
+	//timer offset from the script's starting point to the rule-defined starting point
+	if (vars.setOffset == true) {
+		vars.setOffset = false;
+		return TimeSpan.FromSeconds(-0.56);
 	}
-}
-		
-reset {
-	return (vars.curLev == "title" || vars.curLev == "lobby");
 }
 		
 isLoading {
 	return (current.load == 1);
-}
-
-exit {
-	vars.reader = null;
 }
