@@ -6,6 +6,7 @@ state("Garfield", "International") {
 	
 	//a value that goes up/down as the text in menus grows/shrinks
 	//is consistently 215 on the main menu and 86 in the "new game" selection menu
+	//may be related to the text font size?
 	byte menuState:		0x1094EC;
 	
 	//final boss hp
