@@ -40,7 +40,7 @@ start {
 			print("CrazySplitter: Expecting 102 Levels");
 		}
 		
-		vars.splitCount = 100;
+		vars.splitCount = 0;
 		vars.noEarlySplit = false;
 		return true;
 	}
