@@ -12,7 +12,7 @@
 
 state("CrazyMachines") {
 	int 	tb:			0x11066C; 	//1 when there's a textbox on screen, 0 otherwise
-	int	counter:		0x112430;	//seems to go up by 2 when level changes
+	int		counter:	0x112430;	//seems to go up by 2 when level changes
 }
 
 startup {
@@ -21,11 +21,26 @@ startup {
 
 	vars.splitCount = 0;		//for final split logic
 	vars.noEarlySplit = false;	//same as above
+	vars.splitTotal = 0;		//same as above
+}
+
+init {
+	
 }
 
 start {
 	if (current.tb == 1 && old.tb == 0) {
-		vars.splitCount = 0;
+		if (timer.Run.CategoryName == "New Challenges") {
+			vars.splitTotal = 103;
+			print("CrazySplitter: Expecting 103 Levels");
+		}
+	
+		else {
+			vars.splitTotal = 102;
+			print("CrazySplitter: Expecting 102 Levels");
+		}
+		
+		vars.splitCount = 100;
 		vars.noEarlySplit = false;
 		return true;
 	}
@@ -41,7 +56,8 @@ split {
 		}
 	}
 	
-	if (vars.splitCount == 101 && current.tb == 1 && old.tb == 0) {
+	
+	if ((vars.splitCount == vars.splitTotal - 1) && current.tb == 1 && old.tb == 0) {
 		if (vars.noEarlySplit == false) {
 			print("CrazySplitter: Final split triggered");
 			return true;
@@ -53,5 +69,3 @@ split {
 		}
 	}
 }
-		
-
