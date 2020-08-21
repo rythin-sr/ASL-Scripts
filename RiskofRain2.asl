@@ -5,11 +5,15 @@
 //(13/08/2020) 2.0 - full game released, switched load removal over to an actual address
 //(14/08/2020) 2.1 - switched autosplitting to actual addresses aswell, reading logs is slow
 //(14/08/2020) 2.1.1 - bugfixes, bugfixes, bugfixes
+//(21/08/2020) 2.1.2 - added extra load removal address as the first one didnt work for 1 (one) person in the community
 
 state("Risk of Rain 2") {
 	
 	//1 from fade-out to the moment the next stage loads, 0 otherwise
 	byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	
+	//the above address didn't work for a singular person in the community, so adding this one just for them lol
+	byte load2:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
 	
 	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x6B0;
 	
@@ -99,5 +103,5 @@ gameTime {
 }
 		
 isLoading {
-	return (current.load == 1);
+	return (current.load == 1 || current.load2 == 1);
 }
