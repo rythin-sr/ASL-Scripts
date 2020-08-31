@@ -1,11 +1,19 @@
 //Risk of Rain 2 Autosplitter + Load Remover by rythin
 
+//INSTALL INSTRUCTIONS:
+//Go to Edit Splits in LiveSplit
+//Set the game name to "Risk of Rain 2"
+//Click "Activate"
+//You can change the settings as you wish, though it is recommended to keep autostart and at least the last split enabled
+//Make sure to exit out of the Edit Splits menu by pressing OK, and not the red X. IF YOU DO NOT PRESS "OK", THE CHANGES WILL NOT BE SAVED
+
 //Changelog: 
 //(13/04/2020) 1.0 - initial release, autosplitting and sketchy load removal through unity log
 //(13/08/2020) 2.0 - full game released, switched load removal over to an actual address
 //(14/08/2020) 2.1 - switched autosplitting to actual addresses aswell, reading logs is slow
 //(14/08/2020) 2.1.1 - bugfixes, bugfixes, bugfixes
 //(21/08/2020) 2.1.2 - added extra load removal address as the first one didnt work for 1 (one) person in the community
+//(31/08/2020) 2.1.2.1 - added install instructions, cleaned up some extra settings
 
 state("Risk of Rain 2") {
 	
@@ -25,8 +33,7 @@ state("Risk of Rain 2") {
 startup {
 
 	settings.Add("stages", true, "Stages");
-	settings.Add("reset", false, "Auto-reset the timer when starting a new run.");
-	settings.SetToolTip("reset", "Auto-resets only if you reset from stages 1-4, stage 5 onwards need to be reset manually.");
+	settings.SetToolTip("stages", "The settings below indicate the END of which stage to split on. I.E. ticking \"Sky Meadow\" will split at the end of Sky Meadow etc.");
 
 	vars.l = new Dictionary<int, string> {
 		{1,"Titanic Plains/Distant Roost"},
@@ -41,29 +48,28 @@ startup {
 		settings.Add(Tag.Key.ToString(), true, Tag.Value, "stages");					
     };
 	
-	settings.SetToolTip("1", "Splits when entering the Bazaar. Due to current limitations splitting after bazaar is not possible");
+	settings.SetToolTip("1", "Splits when entering the Bazaar. Due to current limitations splitting after bazaar automatically is not possible");
 
 	//variable used to set the offset of the timer start, to account for timing rules
 	vars.setOffset = false;
-}
-
-init {
 	
 	//timing method reminder from Amnesia TDD autosplitter, all credits to those guys
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
-           		"This game uses Loadless (real time without loads) as the main timing method.\n"+
-            	"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
-            	"Would you like the timing method to be set to Loadless for you?",
-           		"RoR2 Autosplitter | LiveSplit",
-           		 MessageBoxButtons.YesNo,MessageBoxIcon.Question
+          		"This game uses Loadless (time without loads) as the main timing method.\n"+
+          		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
+          		"Would you like the timing method to be set to Loadless for you?",
+         		"RoR2 Autosplitter | LiveSplit",
+         		MessageBoxButtons.YesNo,MessageBoxIcon.Question
        		);
 		
         	if (timingMessage == DialogResult.Yes) {
 			timer.CurrentTimingMethod = TimingMethod.GameTime;
 		}
 	}
-	
+}
+
+init {
 	//version detection goes here in the future, cba atm
 	//if (modules.First().ModuleMemorySize == ) {
 	//	version = "1.0";
@@ -78,11 +84,9 @@ start {
 }
 
 reset {
-	if (settings["reset"]) {
-		if (current.inGame != 0 && old.inGame == 0 && current.stageCount < 4) {
-			vars.setOffset = true;
-			return true;
-		}
+	if (current.inGame != 0 && old.inGame == 0 && current.stageCount < 4) {
+		vars.setOffset = true;
+		return true;
 	}
 }
 
