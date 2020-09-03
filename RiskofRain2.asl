@@ -34,7 +34,7 @@ state("Risk of Rain 2", "1.0.0") {
 
 state("Risk of Rain 2", "1.0.1") {
 	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
-	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
+	int stageCount:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
 	int inGame:		"AkSoundEngine.dll", 0x20DC04;
 }
 
