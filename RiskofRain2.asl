@@ -14,19 +14,27 @@
 //(14/08/2020) 2.1.1 - bugfixes, bugfixes, bugfixes
 //(21/08/2020) 2.1.2 - added extra load removal address as the first one didnt work for 1 (one) person in the community
 //(31/08/2020) 2.1.2.1 - added install instructions, cleaned up some extra settings
+//(03/09/2020) 2.2 - added version detection and support for 1.0.1, added extra splitting setting
 
-state("Risk of Rain 2") {
+state("Risk of Rain 2", "1.0.0") {
 	
 	//1 from fade-out to the moment the next stage loads, 0 otherwise
-	byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	//unused as the below address seems to work better
+	//byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
 	
 	//the above address didn't work for a singular person in the community, so adding this one just for them lol
-	byte load2:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
 	
 	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x6B0;
 	
 	//0 in title and lobby, some random number in other stages
 	//i just realised its a sound engine thing, yeah no clue either. it works for what i need it so good enough for me
+	int inGame:		"AkSoundEngine.dll", 0x20DC04;
+}
+
+state("Risk of Rain 2", "1.0.1") {
+	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
 	int inGame:		"AkSoundEngine.dll", 0x20DC04;
 }
 
@@ -50,6 +58,8 @@ startup {
 	
 	settings.SetToolTip("1", "Splits when entering the Bazaar. Due to current limitations splitting after bazaar automatically is not possible");
 
+	settings.Add("alwaysSplit", false, "Ignore the above setting and split on every stage counter increase (and credits)");
+	
 	//variable used to set the offset of the timer start, to account for timing rules
 	vars.setOffset = false;
 	
@@ -70,10 +80,30 @@ startup {
 }
 
 init {
-	//version detection goes here in the future, cba atm
-	//if (modules.First().ModuleMemorySize == ) {
-	//	version = "1.0";
-	//}
+
+	string dll_path = modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll";
+	
+	long dll_size = new System.IO.FileInfo(dll_path).Length;
+ 
+	//print("ROR2ASL: Version: " + dll_size.ToString()); 
+	
+	//[17256] ROR2ASL: Version: 2858496 - 1.0.0.6
+	//[17256] ROR2ASL: Version: 2865664 - 1.0.1.1
+
+	switch (dll_size) {
+	
+		case 2858496:
+		version = "1.0.0";
+		break;
+		
+		case 2865664:
+		version = "1.0.1";
+		break;
+		
+		default:
+		version = "Unrecognised";
+		break;
+	}
 }
 
 start {
@@ -91,8 +121,13 @@ reset {
 }
 
 split {
-	if (current.stageCount == old.stageCount + 1) {
-		if (settings[old.stageCount.ToString()]) {
+	if (current.stageCount == old.stageCount + 1 && current.stageCount > 1) {
+		
+		if (settings["alwaysSplit"]) {
+			return true;
+		}
+		
+		if (!settings["alwaysSplit"] && settings[old.stageCount.ToString()]) {
 			return true;
 		}
 	}
@@ -107,5 +142,5 @@ gameTime {
 }
 		
 isLoading {
-	return (current.load == 1 || current.load2 == 1);
+	return (current.load == 1);
 }
