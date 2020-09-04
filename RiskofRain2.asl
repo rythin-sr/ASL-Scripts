@@ -19,11 +19,10 @@
 state("Risk of Rain 2", "1.0.0") {
 	
 	//1 from fade-out to the moment the next stage loads, 0 otherwise
-	//unused as the below address seems to work better
-	//byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
 	
 	//the above address didn't work for a singular person in the community, so adding this one just for them lol
-	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	byte load2:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
 	
 	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x6B0;
 	
@@ -34,6 +33,7 @@ state("Risk of Rain 2", "1.0.0") {
 
 state("Risk of Rain 2", "1.0.1") {
 	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	byte load2:		"mono-2.0-bdwgc.dll", 0x049C218, 0x108, 0x80, 0x20, 0x78, 0x8C, 0x38;
 	int stageCount:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
 	int inGame:		"AkSoundEngine.dll", 0x20DC04;
 }
@@ -142,5 +142,6 @@ gameTime {
 }
 		
 isLoading {
-	return (current.load == 1);
+	//using 2 different load addresses, mostly because unity sucks and one only works for some people and the combination of these two seems to work for everyone
+	return (current.load == 1 || current.load2 == 1);
 }
