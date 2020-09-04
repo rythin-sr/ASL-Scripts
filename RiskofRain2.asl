@@ -15,6 +15,7 @@
 //(21/08/2020) 2.1.2 - added extra load removal address as the first one didnt work for 1 (one) person in the community
 //(31/08/2020) 2.1.2.1 - added install instructions, cleaned up some extra settings
 //(03/09/2020) 2.2 - added version detection and support for 1.0.1, added extra splitting setting
+//(04/09/2020) 2.2.1 - added new address for 1.0.1 load removal, hopefully should work better for some people
 
 state("Risk of Rain 2", "1.0.0") {
 	
