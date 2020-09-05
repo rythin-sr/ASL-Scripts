@@ -116,7 +116,6 @@ start {
 
 reset {
 	if (current.inGame != 0 && old.inGame == 0 && current.stageCount < 4) {
-		vars.setOffset = true;
 		return true;
 	}
 }
