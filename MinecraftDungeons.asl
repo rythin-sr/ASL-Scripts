@@ -62,7 +62,7 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.4.3.0") {
 state("Dungeons", "Windows Store, 1.4.3.0") {
     byte what:      	0x3C12CA8;
     byte lc:        	0x4079842;
-    int seed:       	0x03EAE618, , 0x90, 0x8, 0x218, 0x3C0, 0x20, 0x498;
+    int seed:       	0x03EAE618, 0x90, 0x8, 0x218, 0x3C0, 0x20, 0x498;
     int cs:         	0x040B0AE8, 0x8;
 }
 
@@ -151,7 +151,7 @@ init {
 	}
 	
 	else if (modules.First().ModuleMemorySize == 94683136) {
-		version = "Launcher, 1.4.3.0";
+		version = "Windows Store, 1.4.3.0";
 	}
 	
 	else {
