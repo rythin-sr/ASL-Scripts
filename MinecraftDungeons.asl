@@ -231,6 +231,7 @@ update {
 		vars.SetTextComponent("lc:", (current.lc).ToString());
 		vars.SetTextComponent("seed:", (current.seed).ToString());
 		vars.SetTextComponent("cs:", (current.cs).ToString());
+		vars.SetTextComponent("ModuleMemorySize:", (modules.First().ModuleMemorySize).ToString());
 	}
 	
 	//logic for determining when the game is loading
