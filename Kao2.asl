@@ -1,3 +1,5 @@
+//Kao the Kangaroo: Round 2 Autosplitter + Load Remover for the Retail version by rythin
+//base script by RibShark, Mr. Mary, with help from Flower35
 
 state("Kao2", "Polish Retail") {
 	int level: 		0x22B7D4;
