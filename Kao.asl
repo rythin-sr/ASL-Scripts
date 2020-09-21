@@ -1,3 +1,6 @@
+//Kao the Kangaroo Autosplitter + Load Remover by rythin
+//Base script by Mr. Mary, expanded upon by me 
+
 state("kao", "Legendsworld (Patched)") {
 	int level:		0xDB2A4;
 	int load:		0xD3D24;
