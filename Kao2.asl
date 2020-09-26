@@ -1,12 +1,13 @@
 //Kao the Kangaroo: Round 2 Autosplitter + Load Remover for the Retail version by rythin
 //base script by RibShark, Mr. Mary, with help from Flower35
 
+
 state("Kao2", "Polish Retail") {
-	int level: 		0x22B7D4;
-	int menu: 		0x23D9AC;
-	int loading:	 	0x22451C;
+    	int level: 		0x22B7D4;
+    	int menu: 		0x23D9AC;
+    	int loading: 		0x22451C;
 	int cs: 		0x21E6EC;
-	float hunterHealth: 	0x227080, 0x44, 0x08, 0x44, 0x1C, 0x44, 0x00, 0x44, 0x38, 0x0114, 0x5C, 0x30, 0x20, 0x0C;
+	float hunterHealth:	0x227080, 0x44, 0x08, 0x44, 0x1C, 0x44, 0x00, 0x44, 0x38, 0x0114, 0x5C, 0x30, 0x20, 0x0C;
 }
 
 startup {
@@ -35,7 +36,12 @@ startup {
 		{18, "The Volcano"},
 		{19, "Pirate's Bay"},
 		{20, "Abandoned Town"},
-		{21, "Hunter's Galleon"}
+		{21, "Hunter's Galleon"},
+		{23, "Bonus: Jumprope"},
+		{24, "Bonus: Trees"},
+		{25, "Bonus: Shooting"},
+		{26, "Bonus: The Race"},
+		{27, "Bonus: Mini Baseball"},
 	};
 	
 	vars.levelEntry = new Dictionary<string, string> {
@@ -53,6 +59,8 @@ startup {
 	foreach (var Tag in vars.levelEntry) {
 		settings.Add(Tag.Key, false, Tag.Value, "le");
 	};
+	
+	vars.doneSplits = new List<string>();
 }
 
 init {
@@ -68,6 +76,7 @@ init {
 
 start {
     if (current.level == 0 && old.menu == 1 && current.menu == 0 && current.cs == 1) {
+		vars.doneSplits.Clear();
 		return true;
 	}
 } 
@@ -75,11 +84,13 @@ start {
 split {
 	if (current.level != old.level && current.level != 0) {
 		//level completion splits
-		if (settings[old.level.ToString()]) {
+		if (settings[old.level.ToString()] && !vars.doneSplits.Contains(old.level.ToString())) {
+			vars.doneSplits.Add(old.level.ToString());
 			return true;
 		}
 		//level entry splits
-		if (settings[current.level.ToString() + "e"]) {
+		if (settings[current.level.ToString() + "e"] && !vars.doneSplits.Contains(current.level.ToString() + "e")) {
+			vars.doneSplits.Add(current.level.ToString() + "e");
 			return true;
 		}	
 	}
@@ -91,5 +102,5 @@ split {
 }
 
 isLoading {
-	return (current.loading == 1);
+    return (current.loading == 1);
 }
