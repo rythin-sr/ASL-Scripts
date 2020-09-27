@@ -12,7 +12,7 @@
 
 state("CrazyMachines") {
 	int 	tb:			0x11066C; 	//1 when there's a textbox on screen, 0 otherwise
-	int		counter:	0x112430;	//seems to go up by 2 when level changes
+	int	counter:		0x112430;	//seems to go up by 2 when level changes
 }
 
 startup {
@@ -40,7 +40,6 @@ start {
 			print("CrazySplitter: Expecting 102 Levels");
 		}
 		
-		vars.splitCount = 0;
 		vars.noEarlySplit = false;
 		return true;
 	}
@@ -48,23 +47,22 @@ start {
 
 split {
 	if (current.counter > old.counter) {
-		vars.splitCount++;
 		vars.noEarlySplit = true;
 		if (settings["allsplit"]) {
-			print("CrazySplitter: Transition split triggered, split count at: " + vars.splitCount.ToString());
+			//print("CrazySplitter: Transition split triggered, split count at: " + vars.splitCount.ToString());
 			return true;
 		}
 	}
 	
 	
-	if ((vars.splitCount == vars.splitTotal - 1) && current.tb == 1 && old.tb == 0) {
+	if ((timer.CurrentSplitIndex == vars.splitTotal) && current.tb == 1 && old.tb == 0) {
 		if (vars.noEarlySplit == false) {
-			print("CrazySplitter: Final split triggered");
+			//print("CrazySplitter: Final split triggered");
 			return true;
 		}
 		
 		else if (vars.noEarlySplit == true) {
-			print("CrazySplitter: Early split prevented!");
+			//print("CrazySplitter: Early split prevented!");
 			vars.noEarlySplit = false;
 		}
 	}
