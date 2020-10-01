@@ -66,6 +66,20 @@ state("Dungeons", "Windows Store, 1.4.3.0") {
     int cs:         	0x040B0AE8, 0x8;
 }
 
+state("Dungeons-Win64-Shipping", "Launcher, 1.4.6.0") {
+    byte what:      	0x4023924;
+    byte lc:        	0x4075802;
+    int seed:       	0x03C13328, 0x230, 0x8, 0x170, 0x170, 0x2A8, 0x20, 0x498;
+    int cs:         	0x040ACAA8, 0x8;
+}
+
+state("Dungeons", "Windows Store, 1.4.6.0") {
+    byte what:      	0x3C25C48;
+    byte lc:        	0x3FB4DC2;
+    int seed:       	0x040B2B18, 0x8, 0x7F8, 0x1F8, 0x20, 0x498;
+    int cs:         	0x040B2BE8, 0x8;
+}
+
 startup {
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
@@ -122,6 +136,8 @@ init {
 		}
 	}
 	
+	//one day i will make this a switch statement but today is not that day
+	
 	if (modules.First().ModuleMemorySize == 93192192) {
 		version = "Launcher, 1.0";
 	}
@@ -152,6 +168,14 @@ init {
 	
 	else if (modules.First().ModuleMemorySize == 94683136) {
 		version = "Windows Store, 1.4.3.0";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 94937088) {
+		version = "Launcher, 1.4.6.0";
+	}
+	
+	else if (modules.First().ModuleMemorySize == 94216192) {
+		version = "Windows Store, 1.4.6.0";
 	}
 	
 	else {
