@@ -7,16 +7,6 @@
 //You can change the settings as you wish, though it is recommended to keep autostart and at least the last split enabled
 //Make sure to exit out of the Edit Splits menu by pressing OK, and not the red X. IF YOU DO NOT PRESS "OK", THE CHANGES WILL NOT BE SAVED
 
-//Changelog: 
-//(13/04/2020) 1.0 - initial release, autosplitting and sketchy load removal through unity log
-//(13/08/2020) 2.0 - full game released, switched load removal over to an actual address
-//(14/08/2020) 2.1 - switched autosplitting to actual addresses aswell, reading logs is slow
-//(14/08/2020) 2.1.1 - bugfixes, bugfixes, bugfixes
-//(21/08/2020) 2.1.2 - added extra load removal address as the first one didnt work for 1 (one) person in the community
-//(31/08/2020) 2.1.2.1 - added install instructions, cleaned up some extra settings
-//(03/09/2020) 2.2 - added version detection and support for 1.0.1, added extra splitting setting
-//(04/09/2020) 2.2.1 - added new address for 1.0.1 load removal, hopefully should work better for some people
-
 state("Risk of Rain 2", "1.0.0") {
 	
 	//1 from fade-out to the moment the next stage loads, 0 otherwise
@@ -67,7 +57,7 @@ startup {
 	//timing method reminder from Amnesia TDD autosplitter, all credits to those guys
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
-          		"This game uses Loadless (time without loads) as the main timing method.\n"+
+          		"This game uses time without loads as the main timing method.\n"+
           		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
           		"Would you like the timing method to be set to Loadless for you?",
          		"RoR2 Autosplitter | LiveSplit",
@@ -81,10 +71,8 @@ startup {
 }
 
 init {
-
-	string dll_path = modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll";
 	
-	long dll_size = new System.IO.FileInfo(dll_path).Length;
+	long dll_size = new System.IO.FileInfo(modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll").Length;
  
 	//print("ROR2ASL: Version: " + dll_size.ToString()); 
 	
@@ -127,7 +115,7 @@ split {
 			return true;
 		}
 		
-		if (!settings["alwaysSplit"] && settings[old.stageCount.ToString()]) {
+		else if (settings[old.stageCount.ToString()]) {
 			return true;
 		}
 	}
