@@ -4,8 +4,8 @@
 state("game") {
 	int gameLoading: 		0x1BC48C;	//1 during gameplay, 0 in loads
 	int gameLoading2: 		0x1C50CC;	//non 0 during gameplay
-	int fmv: 				0x1BC668;	//2 outside of fmv
-	int save: 				0x1C1A21;	//non 0 during saving lag
+	int fmv: 			0x1BC668;	//2 outside of fmv
+	int save: 			0x1C1A21;	//non 0 during saving lag
 	string10 level: 		0x1C616D;	//map name
 }
 
