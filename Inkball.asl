@@ -5,6 +5,8 @@ state("inkball") {
 }
 
 startup {
+	refreshRate = 100;
+
 	settings.Add("10k", true, "10000");
 	settings.Add("100k", true, "100000");
 }
