@@ -1,5 +1,7 @@
 state("inkball") {
-	int score:	0x0AEFC0, 0x280, 0x2F8, 0xDF0;
+	int score:	0xAEFC0, 0x280, 0x2F8, 0xDF0;
+	int room:	0xAEF38;
+	//int score 0xAFFD4, 0x8, 0x668, 0x1D0, 0x1D0, 0xAF8;
 }
 
 startup {
@@ -8,7 +10,7 @@ startup {
 }
 
 start {
-	return (current.score == 0 && old.score > 0);
+	return (current.score == 0 && old.room != current.room);
 }
 
 split {
@@ -22,7 +24,5 @@ split {
 }
 
 reset {
-	return (current.score == 0 && old.score > 0);
+	return (current.score == 0 && old.room != current.room);
 }
-	
-	
