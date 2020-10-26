@@ -24,19 +24,18 @@ startup {
 	vars.l = new Dictionary<int, string> {
 		{16, "Plizzanet"},
 		{28, "Swing Factory"},
-		{31, "Domino Dungeon"},
-		{10, "???"}
+		{31, "Domino Dungeon"}
 	};
 	
 	foreach (var Tag in vars.l) {
 		settings.Add(Tag.Key.ToString(), true, Tag.Value, "lc");
-		settings.Add(Tag.Key.ToString() + "e", true, Tag.Value, "le");
+		settings.Add(Tag.Key.ToString() + "e", false, Tag.Value, "le");
 		vars.validLevels.Add(Tag.Key); 
 	};
 	
+	settings.Add("10e", false, "???", "le");
+	
 	vars.timerStart = false;
-	vars.timerStop = false;
-	vars.currentTime = new TimeSpan (0, 0, 0);
 }
 
 //start timer offset = 1.081
@@ -50,7 +49,6 @@ start {
 		vars.lastLevel = 5;
 		vars.flickerPrevention = 0;
 		vars.timerStart = true;
-		vars.timerStop = false;
 		vars.doneLevels.Clear();
 		return true;
 	}
@@ -77,24 +75,11 @@ split {
 		vars.doneLevels.Add(vars.lastLevel.ToString());
 		return (settings[vars.lastLevel.ToString()]);
 	}
-	
-	//final split
-	//might need to make sure you're on the last split but idk how to set that up right now
-	if (current.level == 4 && vars.lastLevel == 10 && settings["10"]) {
-		vars.timerStop = true;
-		//print(timer.CurrentTime.RealTime.Value.TotalSeconds.ToString());
-		return true;
-	}
 }
 
 gameTime {
 	if (vars.timerStart == true) {
 		vars.timerStart = false;
 		return TimeSpan.FromSeconds(1.081);
-	}
-	
-	if (vars.timerStop == true) {
-		vars.timerStop = false;
-		return vars.currentTime.Subtract(new TimeSpan (0, 0, 0, 16, 502));
 	}
 }
