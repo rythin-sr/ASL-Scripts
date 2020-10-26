@@ -17,6 +17,7 @@ startup {
 	vars.doneLevels = new List<string>();
 	vars.validLevels = new List<int>();
 	vars.validLevels.Add(5);
+	vars.validLevels.Add(10);
 	vars.lastLevel = 0;
 	vars.flickerPrevention = 0;
 	vars.stopwatch = new Stopwatch();
