@@ -5,7 +5,7 @@
 state("Dungeons-Win64-Shipping", "Launcher, 1.0") {
 
 	//increases by 1 every frame, up to 255 then back to 0, counting pauses during loads or lag
-	byte counter:	0x3B1C7B8;
+	byte what:	0x3B1C7B8;
 	
 	//0 during loading AND end-of-mission chest animations
 	byte lc:	0x3F5D26A;
@@ -18,66 +18,66 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.0") {
 }
 
 state("Dungeons", "Windows Store, 1.0") {
-	byte counter:	0x3F1A789;
+	byte what:	0x3F1A789;
 	byte lc:	0x3F5F32A;
 	int seed:	0x03CED8A8, 0x20, 0xD80, 0x4E8;
 	int cs:		0x03FA3BB8, 0x8;
 }
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.2.1.0") {
-	byte counter:	0x3B2B648;
+	byte what:	0x3B2B648;
 	byte lc:	0x3F6C6E5;
 	int seed:	0x03FB1018, 0xD80, 0x380, 0x50;
 	int cs:		0x03FB0F78, 0x8;
 }
 
 state("Dungeons", "Windows Store, 1.2.1.0") {
-	byte counter:	0x3B2E648;
-	byte lc:       	0x3F6F7A5;
+	byte what:      0x3B2E648;
+	byte lc:        0x3F6F7A5;
 	int seed:      	0x03FB40D8, 0xCA0, 0xD80, 0x380, 0x50;
 	int cs:         0x03FB4038, 0x8;
 }
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.3.2.0") {
-	byte counter:	0x3F4F414;
+	byte what:	0x3F4F414;
 	byte lc:	0x3FA12E5;
 	int seed:	0x03FD84B8, 0x8, 0x2F0, 0x50;
 	int cs:		0x03FD8588, 0x8;
 }
 
 state("Dungeons", "Windows Store, 1.3.2.0") {
-    	byte counter:   0x3B58688;
-    	byte lc:        0x3FA7425;
-    	int seed:       0x03FDE5F8, 0x8, 0x4D8, 0x20, 0x438;
-    	int cs:         0x03FDE6C8, 0x8;
+    byte what:      	0x3B58688;
+    byte lc:        	0x3FA7425;
+    int seed:       	0x03FDE5F8, 0x8, 0x4D8, 0x20, 0x438;
+    int cs:         	0x03FDE6C8, 0x8;
 }
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.4.3.0") {
-	byte counter:	0x4021824;
+	byte what:	0x4021824;
 	byte lc:	0x4073702;
 	int seed:	0x040AA8D8, 0x8, 0xB8, 0x498;
 	int cs:		0x040AA9A8, 0x8;
 }
 
 state("Dungeons", "Windows Store, 1.4.3.0") {
-    	byte counter:	0x3C23B98;
-    	byte lc:       	0x4079842;
-    	int seed:      	0x03EAE618, 0x90, 0x8, 0x218, 0x3C0, 0x20, 0x498;
-    	int cs:        	0x040B0AE8, 0x8;
+    byte what:      	0x3C23B98;
+    byte lc:        	0x4079842;
+    int seed:       	0x03EAE618, 0x90, 0x8, 0x218, 0x3C0, 0x20, 0x498;
+    int cs:         	0x040B0AE8, 0x8;
 }
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.4.6.0") {
-    	byte counter:	0x4023924;
-    	byte lc:        0x4075802;
-    	int seed:      	0x03C13328, 0x230, 0x8, 0x170, 0x170, 0x2A8, 0x20, 0x498;
-    	int cs:        	0x040ACAA8, 0x8;
+    byte what:      	0x4023924;
+    byte lc:        	0x4075802;
+    int seed:       	0x03C13328, 0x230, 0x8, 0x170, 0x170, 0x2A8, 0x20, 0x498;
+    int cs:         	0x040ACAA8, 0x8;
 }
 
 state("Dungeons", "Windows Store, 1.4.6.0") {
-   	byte counter:	0x3C25C48;
-   	byte lc:        0x3FB4DC2;
-   	int seed:       0x040B2B18, 0x8, 0x7F8, 0x1F8, 0x20, 0x498;
-   	int cs:         0x040B2BE8, 0x8;
+    byte what:      	0x3C25C48;
+    byte lc:        	0x3FB4DC2;
+    int seed:       	0x040B2B18, 0x8, 0x7F8, 0x1F8, 0x20, 0x498;
+    int cs:         	0x040B2BE8, 0x8;
 }
 
 state("Dungeons-Win64-Shipping", "Launcher, 1.5") {
@@ -88,11 +88,10 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.5") {
 }
 
 startup {
-	vars.pause_check = 0;								//used for isLoading logic
-	vars.inTut = 0;										//used for dumb shit fuck you
-	vars.dispS = 1;										//used for seed display
-	vars.L = 0;											//for some split logic dependant on loads
-	vars.stopwatch = new Stopwatch();					//used for isLoading logic
+	vars.h = 0;						//used for isLoading logic
+	vars.inTut = 0;						//used for dumb shit fuck you
+	vars.dispS = 1;						//used for seed display
+	vars.L = 0;						//for some split logic dependant on loads
 	vars.aslName = "Minecraft Dungeons Autosplitter";	//for the text popup
 
 
@@ -132,7 +131,7 @@ init {
 
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
-           		"This game uses time without loads as the main timing method.\n"+
+           		"This game uses Loadless (time without loads) as the main timing method.\n"+
             	"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
             	"Would you like the timing method to be set to Loadless for you?",
            		 vars.aslName + " | LiveSplit",
@@ -143,8 +142,6 @@ init {
 			timer.CurrentTimingMethod = TimingMethod.GameTime;
 		}
 	}
-	
-	//one day i will make this a switch statement but today is not that day
 	
 	var mem_size = modules.First().ModuleMemorySize;
 	
@@ -215,7 +212,7 @@ start {
     	}
 	
 	if (settings["IL"] == true) {
-		if (current.seed != 1) {
+		if (current.seed > 1 || current.seed == 0 ) {
 			if (current.cs == 0 && old.cs == 1 || current.cs == 0 && vars.L == 0) {
 				return true;
 			}
@@ -227,7 +224,7 @@ split {
 	//mission splits (also final split)
 	
 	if (settings["levelS"] || settings["IL"]) {
-		if (current.cs == old.cs + 1 && current.lc != 0) {
+		if (current.cs == old.cs + 1 && vars.L == 0) {
 			return true;
 		}
 	}
@@ -278,40 +275,46 @@ update {
 	}
 	
 	if (settings["dbg"]) {
-		vars.SetTextComponent("count:", (current.counter).ToString());
+		vars.SetTextComponent("count:", (current.what).ToString());
 		vars.SetTextComponent("lc:", (current.lc).ToString());
 		vars.SetTextComponent("seed:", (current.seed).ToString());
 		vars.SetTextComponent("cs:", (current.cs).ToString());
-		vars.SetTextComponent("pause:", (vars.pause_check).ToString());
-		vars.SetTextComponent("sw:", (vars.stopwatch.ElapsedMilliseconds).ToString());
-		vars.SetTextComponent("L:", (vars.L).ToString());
-
 		vars.SetTextComponent("ModuleMemorySize:", (modules.First().ModuleMemorySize).ToString());
 	}
 	
 	//logic for determining when the game is loading
 	//this needs to be in update so that the variable updates even when the timer isnt running
-	
-	if (current.lc != 0 && old.lc == 0) {	//when leaving a load or chest screen
-		vars.stopwatch.Reset();				//reset the stopwatch
-		vars.L = 0;							//set the loading variable to 0
-	}
-	
-	if (current.lc == 0 && old.lc != 0) {			//when entering a load or chest screen
-		if (current.counter == old.counter) {		//if the counter is paused
-			vars.pause_check = current.counter;		//store the value of the counter
-			vars.stopwatch.Restart();				//set the stopwatch to 0 and start it
+	if (current.lc == 0) {					//only run this logic during loads (and chest anims but shh)
+		Thread.Sleep(50);				//specifically on win store version the value flickers mid-load, so have 50ms of leeway
+		if (current.lc == 0) {				//check again just to be sure
+			if (old.what == current.what) {		//when the value stops updating
+				vars.h = current.what;		//set h to that value	
+				Thread.Sleep(10);		//wait 10ms
+				if (vars.h == current.what) {	//if the value is still the same
+					vars.L = 1;
+				}
+		
+				else if (current.what == vars.h + 1) {	//sometimes the value can advance 1 during loads
+					vars.L = 1;
+				}
+		
+				else {
+					vars.L = 0;
+				}
+			}
+		
+			else {
+				vars.L = 0;
+			}
 		}
-	}
-	
-	if (vars.stopwatch.ElapsedMilliseconds >= 20) {		//after 20ms have passed
-		vars.stopwatch.Stop();							//stop the stopwatch
-		if (vars.pause_check == current.counter || current.counter < vars.pause_check + 3) {
-			vars.L = 1;									//if the counter is still the same(or up to 2 bigger) as the value stored
-		}												//set loading to 1
+		
 		else {
-			vars.L = 0;
+				vars.L = 0;
 		}
+	}
+	
+	else {
+		vars.L = 0;
 	}
 }
 
