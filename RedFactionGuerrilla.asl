@@ -54,9 +54,8 @@ startup {
 	
 	//missions
 	
-	settings.Add("tutorial", true, "Welcome to Mars", "missions");
-	
-	vars.m1 = new Dictionary<string,string> { 				
+	var m = new Dictionary<string,string> { 				
+		{"tutorial", "Welcome to Mars"},
 		{"intro_1.bik", "Better Red Than Dead"}, 					
 		{"intro_2.bik", "Ambush"},
 		{"we_know_where_you_are.bik", "Start Your Engines"},
@@ -72,40 +71,27 @@ startup {
 		{"guns_of_tharsis.bik", "The Guns of Tharsis"},
 		{"death_by_committee.bik", "Death by Committee"},
 		{"sniper_hunter.bik", "The Dogs of War"},
-		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"}
-	};
-	
-	vars.ml = new List<string>();						
-	foreach (var Tag in vars.m1) {							
-		settings.Add(Tag.Key, true, Tag.Value, "missions");					
-    };
-	
-	//splitting the dictionary here because this split requires a different condition than the other mission splits
-	//but i still want the list in livesplit to be in order
-	//im sure theres a better way to do that but also No Fuck You This Works
-	settings.Add("marauderCS", true, "Marauder Negotiations (Cutscene)", "missions");
-	settings.SetToolTip("marauderCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
-	
-	vars.m2 = new Dictionary<string,string> {
+		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"},
+		{"marauderCS", "Marauder Negotiations (Cutscene)"},
 		{"ants_vs_magnifying_glass.bik", "Manual Override"},
 		{"emergency_broadcast_system.bik", "Emergency Broadcast System"},
 		{"assault_the_edf_central_command.bik", "Guerrillas at the Gates"},
 		{"final_mission.bik", "Mars Attacks"}
 	};
 
-	foreach (var Tag in vars.m2) {							
+	foreach (var Tag in m) {							
 		settings.Add(Tag.Key, true, Tag.Value, "missions");					
 	};
 	
-	settings.Add("dlc", true, "DLC Missions");
+	settings.SetToolTip("marauderCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
 	
-	vars.dlcm = new Dictionary<string, string> {
+	var dlcm = new Dictionary<string, string> {
 		{"dlc_mission_1.bik", "Rescue"},
 		{"dlc_mission_2.bik", "Retribution"},
 		{"dlc_mission_3.bik", "Redemption"}
 	};
 	
-	foreach (var Tag in vars.dlcm) {							
+	foreach (var Tag in dlcm) {							
 		settings.Add(Tag.Key, true, Tag.Value, "dlc");					 
 	};
 	
@@ -127,14 +113,14 @@ startup {
 	settings.Add("actAll", false, "Split on completing any Guerrilla Activity", "act");
 	
 	//initially i wanted to be able to enable/disable every activity but nah its not happening lol
-	//vars.a = new Dictionary<string, string> {
+	//var a = new Dictionary<string, string> {
 	//	{"", ""}
 	//};
 	
 	//vars.al = new List<string>();						
 	//foreach (var Tag in vars.a) {							
 	//	settings.Add(Tag.Key, true, Tag.Value, "act");					
-	//vars.al.Add(Tag.Key); };
+	//};
 	
 	//collectibles
 	settings.Add("col", false, "Collectibles");
@@ -261,5 +247,7 @@ split {
 isLoading {
 	//pauses the timer from the moment a loading screen appears until gaining control of mason after a load
 	//id prefer it to unpause the moment the loading screen disappears but i cba looking for a better address
+	
+	//the loading address also goes to 0 in the first cutscene as you start a run, where it shouldn't be paused
 	return current.loading == 0 && current.cutscene != 1;
 }
