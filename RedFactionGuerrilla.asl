@@ -51,6 +51,7 @@ state("RFG", "Remarstered") {
 startup {
 
 	settings.Add("missions", true, "Main Missions");
+	settings.Add("dlc", true, "DLC Missions");
 	
 	//missions
 	
