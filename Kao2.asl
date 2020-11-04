@@ -1,19 +1,34 @@
 //Kao the Kangaroo: Round 2 Autosplitter + Load Remover for the Retail version by rythin
-//base script by RibShark, Mr. Mary, with help from Flower35
+//base script by RibShark, Mr. Mary
+
 
 
 state("Kao2", "Polish Retail") {
-    	int level: 		0x22B7D4;
-    	int menu: 		0x23D9AC;
-    	int loading: 		0x22451C;
-	int cs: 		0x21E6EC;
-	float hunterHealth:	0x227080, 0x44, 0x08, 0x44, 0x1C, 0x44, 0x00, 0x44, 0x38, 0x0114, 0x5C, 0x30, 0x20, 0x0C;
+   	int level: 			0x22B7D4;
+   	int menu: 			0x23D9AC;
+    	int loading: 			0x22451C;
+	int cs: 			0x21E6EC;
+	float Xpos:			0x22C64C;
+	float Ypos:			0x22C648;
+	float Zpos:			0x22C650;
+}
+
+state("Kao2", "Australian Rerelease") {
+	int level:			0x28DFC4;
+	int menu:			0x282E18;
+	int loading:			0x2806A4;
+	int cs:				0x27A65C;
+	float Xpos:			0x28EE98;
+	float Ypos:			0x28EE9C;
+	float Zpos:			0x28EEA0; 
 }
 
 startup {
 	
 	settings.Add("lc", true, "Level Completion");
 	settings.Add("le", true, "Level Entry");
+	settings.Add("newb", true, "Newbie-friendly auto-resets");
+	settings.SetToolTip("newb", "Only auto-reset if going to the menu before The Race, but after The Ship");
 	
 	vars.level = new Dictionary<int, string> {
 		{0, "The Ship"},
@@ -69,6 +84,10 @@ init {
 		version = "Polish Retail";
 	}
 	
+	if (modules.First().ModuleMemorySize == 2940928) { 
+		version = "Australian Rerelease";
+	}
+	
 	else {
 		version = "Unsupported";
 	}
@@ -77,11 +96,13 @@ init {
 start {
     if (current.level == 0 && old.menu == 1 && current.menu == 0 && current.cs == 1) {
 		vars.doneSplits.Clear();
+		vars.counter = 0;
 		return true;
 	}
 } 
 
 split {
+
 	if (current.level != old.level && current.level != 0) {
 		//level completion splits
 		if (settings[old.level.ToString()] && !vars.doneSplits.Contains(old.level.ToString())) {
@@ -96,11 +117,24 @@ split {
 	}
 	
 	//final split
-	if (current.level == 22 && current.hunterHealth == 0 && current.cs == 1 && old.cs == 0) {
+	if (current.level == 22 && current.cs == 1 && old.cs == 0 && current.Ypos > 9000) {
 		return true;
+	}	
+}
+
+reset {
+	if (current.level == 0) {
+		if (settings["newb"] && old.level < 13 && old.level > 0) {
+			return true;
+		}
+		if (!settings["newb"] && current.loading == 0 && old.loading == 1) {
+			return true;
+		}
 	}
 }
 
 isLoading {
     return (current.loading == 1);
+}
+urn (current.loading == 1);
 }
