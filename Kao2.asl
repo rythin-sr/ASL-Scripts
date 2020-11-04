@@ -1,8 +1,6 @@
 //Kao the Kangaroo: Round 2 Autosplitter + Load Remover for the Retail version by rythin
 //base script by RibShark, Mr. Mary
 
-
-
 state("Kao2", "Polish Retail") {
    	int level: 			0x22B7D4;
    	int menu: 			0x23D9AC;
@@ -135,6 +133,4 @@ reset {
 
 isLoading {
     return (current.loading == 1);
-}
-urn (current.loading == 1);
 }
