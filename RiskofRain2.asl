@@ -29,6 +29,14 @@ state("Risk of Rain 2", "1.0.1") {
 	int inGame:		"AkSoundEngine.dll", 0x20DC04;
 }
 
+state("Risk of Rain 2", "1.0.2") {
+	//same addresses as 1.0.1 but I want the version to display correctly on the splits and idk if theres a way to do that otherwise
+	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	byte load2:		"mono-2.0-bdwgc.dll", 0x049C218, 0x108, 0x80, 0x20, 0x78, 0x8C, 0x38;
+	int stageCount:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
+	int inGame:		"AkSoundEngine.dll", 0x20DC04;
+}
+
 startup {
 
 	settings.Add("stages", true, "Stages");
@@ -87,6 +95,10 @@ init {
 		
 		case 2865664:
 		version = "1.0.1";
+		break;
+		
+		case 2875392:
+		version = "1.0.2";
 		break;
 		
 		default:
