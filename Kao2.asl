@@ -6,8 +6,8 @@ state("Kao2", "Polish Retail") {
    	int menu: 			0x23D9AC;
     	int loading: 			0x22451C;
 	int cs: 			0x21E6EC;
-	float Xpos:			0x22C64C;
-	float Ypos:			0x22C648;
+	float Xpos:			0x22C648;
+	float Ypos:			0x22C64C;
 	float Zpos:			0x22C650;
 }
 
