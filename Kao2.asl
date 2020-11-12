@@ -1,28 +1,24 @@
-//Kao the Kangaroo: Round 2 Autosplitter + Load Remover for the Retail version by rythin
-//base script by RibShark, Mr. Mary
+//Kao the Kangaroo: Round 2 Autosplitter + Load Remover by RibShark
+//base script by rythin, Mr. Mary
 
-state("Kao2", "Polish Retail") {
-   	int level: 			0x22B7D4;
-   	int menu: 			0x23D9AC;
-    	int loading: 			0x22451C;
-	int cs: 			0x21E6EC;
-	float Xpos:			0x22C648;
-	float Ypos:			0x22C64C;
-	float Zpos:			0x22C650;
+/*state("Kao2", "Polish Retail") {
 }
 
-state("Kao2", "Australian Rerelease") {
-	int level:			0x28DFC4;
-	int menu:			0x282E18;
-	int loading:			0x2806A4;
-	int cs:				0x27A65C;
-	float Xpos:			0x28EE98;
-	float Ypos:			0x28EE9C;
-	float Zpos:			0x28EEA0; 
+state("Kao2", "European Retail") {
 }
+
+state("Kao2", "Russian Retail") {
+}
+
+state("Kao2", "Australian Retail") {
+}
+
+state("Kao2", "United States Retail") {}*/
+
+state("Kao2") {}
+
 
 startup {
-	
 	settings.Add("lc", true, "Level Completion");
 	settings.Add("le", true, "Level Entry");
 	settings.Add("newb", true, "Newbie-friendly auto-resets");
@@ -43,7 +39,7 @@ startup {
 		{12, "The Race"},
 		{13, "Hostile Reef"},
 		{14, "Deep Ocean"},
-		{15, "Liar of Poison"},
+		{15, "Lair of Poison"},
 		{16, "Trip to Island"},
 		{17, "Treasure Island"},
 		{18, "The Volcano"},
@@ -72,27 +68,163 @@ startup {
 	foreach (var Tag in vars.levelEntry) {
 		settings.Add(Tag.Key, false, Tag.Value, "le");
 	};
-	
+
 	vars.doneSplits = new List<string>();
 }
 
 init {
-	
-	if (modules.First().ModuleMemorySize == 2523136) { 
+	var module = modules.First();
+	IntPtr baseaddr = module.BaseAddress;
+	string name = module.ModuleName.ToLower();
+	int memsize = module.ModuleMemorySize;
+	if(!name.Contains("kao2")) return; // fix for when first module isn't Kao2
+
+	if (memsize == 2523136) {
 		version = "Polish Retail";
+		vars.level		= new MemoryWatcher<int>(baseaddr+0x22B7D4);
+		vars.menu		= new MemoryWatcher<int>(baseaddr+0x23D9AC);
+		vars.loading		= new MemoryWatcher<int>(baseaddr+0x22451C);
+		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x21E6EC);
+		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x22C648);
+		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x22C64C);
+		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x22C650);
 	}
 	
-	if (modules.First().ModuleMemorySize == 2940928) { 
-		version = "Australian Rerelease";
+	else if (memsize == 2912256) {
+		version = "European Retail";
+		vars.level		= new MemoryWatcher<int>(baseaddr+0x28765C);
+		vars.menu		= new MemoryWatcher<int>(baseaddr+0x27C4B0);
+		vars.loading		= new MemoryWatcher<int>(baseaddr+0x279D44);
+		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x273CFC);
+		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x29E278);
+		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29E27C);
+		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x29E280);
 	}
-	
+	else if (memsize == 2920448) {
+		version = "Russian Retail";
+		vars.level		= new MemoryWatcher<int>(baseaddr+0x28765C);
+		vars.menu		= new MemoryWatcher<int>(baseaddr+0x27C4B0);
+		vars.loading		= new MemoryWatcher<int>(baseaddr+0x279D44);
+		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x273CFC);
+		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x29E278);
+		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29E27C);
+		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x29E280);
+	}
+	else if (memsize == 2940928) {
+		version = "Australian Retail";
+		vars.level		= new MemoryWatcher<int>(baseaddr+0x28DFC4);
+		vars.menu		= new MemoryWatcher<int>(baseaddr+0x282E18);
+		vars.loading		= new MemoryWatcher<int>(baseaddr+0x2806A4);
+		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x27A65C);
+		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x28EE98);
+		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x28EE9C);
+		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x28EEA0);
+	}
+	else if (memsize == 15024128) {
+		version = "United States Retail";
+		vars.level		= new MemoryWatcher<int>(baseaddr+0x290584);
+		vars.menu		= new MemoryWatcher<int>(baseaddr+0x2A4914);
+		vars.loading		= new MemoryWatcher<int>(baseaddr+0x282C64);
+		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x27CC18);
+		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x291478);
+		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29147C);
+		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x291480);
+	}
+	else if (memsize == 8679424 // itch.io
+		  || memsize == 8826880 // steam
+	) {
+		version = "Digital";
+		
+		// init memory watches
+		vars.watcher = new MemoryWatcherList();
+		print("Running signature scans...");
+		IntPtr ptr;
+		foreach (var page in game.MemoryPages(true)){
+			var scanner = new SignatureScanner(game, baseaddr, (int)page.RegionSize);
+			
+			// level
+			{
+				ptr = IntPtr.Zero;
+				ptr = scanner.Scan(
+					new SigScanTarget(12,
+					"83 E8 01 50 8B 8D E8 FB FF FF 51 B9 ?? ?? ?? ??"
+					));
+				if (ptr != IntPtr.Zero) {
+					vars.level = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr) + 0xC);
+				}
+			}
+			
+			// menu
+			{
+				ptr = IntPtr.Zero;
+				ptr = scanner.Scan(
+					new SigScanTarget(13,
+					"0F B6 8D CF FE FF FF 85 C9 74 73 C6 05 ?? ?? ?? ??"
+					));
+				if (ptr != IntPtr.Zero) {
+					vars.menu = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
+				}
+			}
+			
+			// loading
+			{
+				ptr = IntPtr.Zero;
+				ptr = scanner.Scan(
+					new SigScanTarget(2,
+					"C6 05 ?? ?? ?? ?? 01 8B 85 94"
+					));
+				if (ptr != IntPtr.Zero) {
+					vars.loading = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
+				}
+			}
+			
+			// cutscene
+			{
+				ptr = IntPtr.Zero;
+				ptr = scanner.Scan(
+					new SigScanTarget(2,
+					"89 0D ?? ?? ?? ?? 8B 55 08 C6 42 40 01"
+					));
+				if (ptr != IntPtr.Zero) {
+					vars.cutscene = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
+				}
+			}
+			
+			// pos
+			{
+				ptr = IntPtr.Zero;
+				ptr = scanner.Scan(
+					new SigScanTarget(1,
+					"BF ?? ?? ?? ?? F3 A5 5F 5E 8B E5"
+					));
+				if (ptr != IntPtr.Zero) {
+					vars.Xpos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x10);
+					vars.Ypos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x14);
+					vars.Zpos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x18);
+				}
+			}
+			
+		}
+	}
 	else {
 		version = "Unsupported";
 	}
 }
 
+update {
+	vars.level.Update(game);
+	vars.menu.Update(game);
+	vars.loading.Update(game);
+	vars.cutscene.Update(game);
+	vars.Xpos.Update(game);
+	vars.Ypos.Update(game);
+	vars.Zpos.Update(game);
+}
+
 start {
-    if (current.level == 0 && old.menu == 1 && current.menu == 0 && current.cs == 1) {
+    if (vars.level.Current == 0 && vars.menu.Old == 1 
+		&& vars.menu.Current == 0 && vars.cutscene.Current == 1)
+	{
 		vars.doneSplits.Clear();
 		vars.counter = 0;
 		return true;
@@ -100,37 +232,42 @@ start {
 } 
 
 split {
-
-	if (current.level != old.level && current.level != 0) {
+	if (vars.level.Current != vars.level.Old && vars.level.Current != 0) 
+	{
 		//level completion splits
-		if (settings[old.level.ToString()] && !vars.doneSplits.Contains(old.level.ToString())) {
-			vars.doneSplits.Add(old.level.ToString());
+		if (settings[vars.level.Old.ToString()] 
+			&& !vars.doneSplits.Contains( vars.level.Old.ToString() )) {
+			vars.doneSplits.Add(vars.level.Old.ToString());
 			return true;
 		}
 		//level entry splits
-		if (settings[current.level.ToString() + "e"] && !vars.doneSplits.Contains(current.level.ToString() + "e")) {
-			vars.doneSplits.Add(current.level.ToString() + "e");
+		if (settings[vars.level.Current.ToString() + "e"]
+			&& !vars.doneSplits.Contains( vars.level.Current.ToString() + "e" )) {
+			vars.doneSplits.Add(vars.level.Current.ToString() + "e");
 			return true;
-		}	
+		}
 	}
-	
+
 	//final split
-	if (current.level == 22 && current.cs == 1 && old.cs == 0 && current.Ypos > 9000) {
+	if (vars.level.Current == 22 && vars.cutscene.Current == 1
+		&& vars.cutscene.Old == 0 && vars.Ypos.Current > 9000)
+	{
 		return true;
-	}	
+	}
 }
 
 reset {
-	if (current.level == 0) {
-		if (settings["newb"] && old.level < 13 && old.level > 0) {
+	if (vars.level.Current == 0)
+	{
+		if (settings["newb"] && vars.level.Old < 13 && vars.level.Old > 0) {
 			return true;
 		}
-		if (!settings["newb"] && current.loading == 0 && old.loading == 1) {
+		if (!settings["newb"] && vars.loading.Current == 0 && vars.loading.Old == 1) {
 			return true;
 		}
 	}
 }
 
 isLoading {
-    return (current.loading == 1);
+    return (vars.loading.Current == 1);
 }
