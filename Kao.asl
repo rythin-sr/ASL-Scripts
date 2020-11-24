@@ -1,9 +1,10 @@
 //Kao the Kangaroo Autosplitter + Load Remover by rythin
 //Base script by Mr. Mary, expanded upon by me 
 
-state("kao", "Legendsworld (Patched)") {
-	int level:		0xDB2A4;
+state("kao") {
+	int level:		0xDB1F0;
 	int load:		0xD3D24;
+	byte hunterAnim:	0x1149D0;
 }
 
 startup {
@@ -48,18 +49,6 @@ startup {
 	vars.lastLevel = 0;
 }
 
-init {
-	//print("Kao Version: " + modules.First().ModuleMemorySize.ToString());
-	
-	int memSize = modules.First().ModuleMemorySize;
-	
-	switch (memSize) {
-		case 2486272:
-		version = "Legendsworld (Patched)";
-		break;
-	}
-}
-
 start {
 	if (current.level == 1 && old.level == 100 || current.level == 1 && old.level == 101) {
 		vars.doneLevels.Clear();
@@ -82,7 +71,7 @@ split {
 	}
 	
 	//final split
-	if (old.level == 30 && current.level != 101 && current.level != 100 && current.level != old.level) {
+	if (old.level == 30 && current.hunterAnim == 5 && old.hunterAnim != 5) {
 		if (settings["30"]) {
 			return true;
 		}
