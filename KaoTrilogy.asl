@@ -1,13 +1,13 @@
 state("kao") {
-	int level:			0xDB1F0;
-	int load:			0xD3D24;
+	int level:		0xDB1F0;
+	int load:		0xD3D24;
 	byte hunterAnim:	0x1149D0;
 }
 
 state("kao2") {
 	int level: 		0x22B7D4;
    	int menu: 		0x23D9AC;
-    int load:		0x22451C;
+   	int load:		0x22451C;
 	int cs: 		0x21E6EC;
 	float Xpos:		0x22C648;
 	float Ypos:		0x22C64C;
