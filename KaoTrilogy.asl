@@ -1,28 +1,28 @@
 state("kao") {
 	int level:			0xDB1F0;
 	int load:			0xD3D24;
-	byte hunterAnim:		0x1149D0;
+	byte hunterAnim:	0x1149D0;
 }
 
 state("kao2") {
-	int level: 			0x22B7D4;
-   	int menu: 			0x23D9AC;
-    	int load:			0x22451C;
-	int cs: 			0x21E6EC;
-	float Xpos:			0x22C648;
-	float Ypos:			0x22C64C;
-	float Zpos:			0x22C650;
+	int level: 		0x22B7D4;
+   	int menu: 		0x23D9AC;
+    int load:		0x22451C;
+	int cs: 		0x21E6EC;
+	float Xpos:		0x22C648;
+	float Ypos:		0x22C64C;
+	float Zpos:		0x22C650;
 }
 
 state("kao_tw") {
-	int l:				0x36BD80;
-	int m:				0x35EFE0;
-	int load:			0x352430;
-	int s:				0x36BF24;
-	int a:				0x36BF28;
-	int d:				0x36C16C;
-	int cs:				0x36B0E8;
-	float b:			0x003603C0, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10;
+	int l:			0x36BD80;
+	int m:			0x35EFE0;
+	int load:		0x352430;
+	int s:			0x36BF24;
+	int a:			0x36BF28;
+	int d:			0x36C16C;
+	int cs:			0x36B0E8;
+	float b:		0x003603C0, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10;
 }
 
 startup {
@@ -237,7 +237,7 @@ split {
 	}
 	
 	//kao2 splits
-	if (game.ProcessName == "kao2") {
+	if (game.ProcessName == "kao2" && !timer.Run[timer.CurrentSplitIndex].Name.ToLower().Replace(" ", "").Contains("gameswitch")) {
 		if (current.level != old.level && current.level != 0) {
 			//level completion splits
 			if (settings["kao2-" + old.level.ToString()] && !vars.done_levels.Contains("kao2-" + old.level.ToString())) {
