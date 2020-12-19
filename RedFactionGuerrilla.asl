@@ -73,7 +73,7 @@ startup {
 		{"death_by_committee.bik", "Death by Committee"},
 		{"sniper_hunter.bik", "The Dogs of War"},
 		{"save_the_guerrilla_camp.bik", "Hammer of the Gods"},
-		{"marauderCS", "Marauder Negotiations (Cutscene)"},
+		{"mCS", "Marauder Negotiations (Cutscene)"},
 		{"ants_vs_magnifying_glass.bik", "Manual Override"},
 		{"emergency_broadcast_system.bik", "Emergency Broadcast System"},
 		{"assault_the_edf_central_command.bik", "Guerrillas at the Gates"},
@@ -81,10 +81,14 @@ startup {
 	};
 
 	foreach (var Tag in m) {							
-		settings.Add(Tag.Key, true, Tag.Value, "missions");					
+		settings.Add(Tag.Key, true, Tag.Value, "missions");	
+		if (Tag.Key != "mCS" && Tag.Key != "tutorial") {
+			settings.Add(Tag.Key + "c", true, "Split on mission completion", Tag.Key);
+			settings.Add(Tag.Key + "s", false, "Split on mission start", Tag.Key);
+		}
 	};
 	
-	settings.SetToolTip("marauderCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
+	settings.SetToolTip("mCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
 	
 	var dlcm = new Dictionary<string, string> {
 		{"dlc_mission_1.bik", "Rescue"},
@@ -187,13 +191,19 @@ split {
 	}
 	
 	//split on completing a mission
-	if (current.missions == old.missions + 1 && settings[current.missionVid] == true && !vars.doneSplit.Contains(current.missionVid) && current.loading != 0) {
-		vars.doneSplit.Add(current.missionVid);
+	if (current.missions == old.missions + 1 && settings[current.missionVid + "c"] && !vars.doneSplit.Contains(current.missionVid + "c") && current.loading != 0) {
+		vars.doneSplit.Add(current.missionVid + "c");
+		return true;
+	}
+	
+	//split on mission start
+	if (current.missionVid != old.missionVid && settings[current.missionVid + "s"] && !vars.doneSplit.Contains(current.missionVid + "s")) {
+		vars.doneSplit.Add(current.missionVid + "s");
 		return true;
 	}
 	
 	//split on marauder cutscene
-	if (current.subCS == 0 && old.subCS == 23 && settings["marauderCS"] == true) {
+	if (current.subCS == 0 && old.subCS == 23 && settings["mCS"] == true) {
 		return true;
 	}
 	
