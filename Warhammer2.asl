@@ -1,7 +1,7 @@
 state("Warhammer2") {
 	byte loading_start:		0x385D412;
 	byte loading_stop:		0x3771BA9;
-	byte not_end_of_turn:	0x34EC67C;
+	byte not_end_of_turn:		0x34EC67C;
 	byte world_event:		0x375CB4C;
 }
 
