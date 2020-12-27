@@ -18,32 +18,6 @@ state("Super Blue Boy Planet", "2.0") {
 	int	roomID:		0x6C2D90;
 } 
 
-startup {
-	settings.Add("disp", false, "Display level currently being played");
-
-	vars.levelsDone = new List<int>();
-	vars.lvlDisp = "Menu";	//for making the level display neater
-	
-	//got this from the super meat boy autosplitter, cheers for that
-	vars.SetTextComponent = (Action<string, string>)((id, text) =>
-	{
-		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
-		var textSetting = textSettings.FirstOrDefault(x => (x.GetType().GetProperty("Text1").GetValue(x, null) as string) == id);
-		if (textSetting == null)
-		{
-		var textComponentAssembly = Assembly.LoadFrom("Components\\LiveSplit.Text.dll");
-		var textComponent = Activator.CreateInstance(textComponentAssembly.GetType("LiveSplit.UI.Components.TextComponent"), timer);
-		timer.Layout.LayoutComponents.Add(new LiveSplit.UI.Components.LayoutComponent("LiveSplit.Text.dll", textComponent as LiveSplit.UI.Components.IComponent));
-
-		textSetting = textComponent.GetType().GetProperty("Settings", BindingFlags.Instance | BindingFlags.Public).GetValue(textComponent, null);
-		textSetting.GetType().GetProperty("Text1").SetValue(textSetting, id);
-		}
-
-		if (textSetting != null)
-		textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
-	});
-}
-
 init {
 	vars.prevLevel = 0;
 	
@@ -59,26 +33,6 @@ init {
 		version = "2.0";
 	}
 }   
-
-update {
-
-	if (current.roomID == 0) {
-		vars.lvlDisp = "Menu";
-	}
-		
-	else if (current.roomID == 24 || current.roomID == 25) {
-		vars.lvlDisp = "Ending";
-	}
-	
-	else {
-		vars.lvlDisp = current.roomID;
-	}
-	
-	
-	if (settings["disp"] == true) {
-		vars.SetTextComponent("Level", (vars.lvlDisp).ToString());
-	}
-}
 
 start {
 	if (old.roomID == 0 && current.roomID == 1) {
