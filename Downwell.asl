@@ -1,46 +1,35 @@
-//Downwell Autosplitter by JPlay and rythin.
-
+// By Ero, JPlay, rythin.
 // to do: final split
 
 state("Downwell_v1_0_5") {
-	double frameCount:		0x00445C40, 0x60, 0x10, 0x448, 0x3A0;
-	bool gamePaused:		0x00420EA0, 0x54, 0x7C, 0x2C, 0xCC;						//1 when game paused
-	bool levelTransition:	0x00420EA8, 0x10, 0x2EC;								//1 when in a level, 0 when in a level transition	
-	double health:			0x00662A3C, 0x84, 0x28, 0x770;
-	double money:			0x0041C858, 0x8, 0x4F8, 0x8, 0x50, 0x18, 0x2F8, 0xA70;	//initially was gonna use this for resets but then i realised you could just spend all your money in a shop so lol
+	double health        : 0x445C40, 0x60, 0x10, 0xD18, 0x10;
+	double pauseDouble   : 0x445C40, 0x60, 0x10, 0xD18, 0x330;
+	double inLevelDouble : 0x445C40, 0x60, 0x10, 0xD18, 0x3F0;
+	double money         : 0x445C40, 0x60, 0x10, 0xD18, 0x7F0;
+	double frameCount    : 0x445C40, 0x60, 0x10, 0xD18, 0x880;
+}
 
+update {
+	current.isPaused = current.pauseDouble == 1.0;
+	current.isInLevel = current.inLevelDouble == 1.0;
 }
 
 start {
-	if (current.frameCount != old.frameCount && old.frameCount <= 1) {
-		return true;
-	}
+	return current.frameCount != old.frameCount && old.frameCount <= 1;
 }
 
-
 split {
-	// split on level transitions
-	if (current.levelTransition && !old.levelTransition && !current.gamePaused && !old.gamePaused) {
-		return true;
-	}
+	return current.isInLevel && !old.isInLevel && !current.isPaused && !old.isPaused;
 }
 
 reset {
-	//reset on death to prevent extra split shenanigans
-	if (current.health == 0 && old.health > 0) {
-		return true;
-	}
-	
-	//reset on retry from menu
-	if (current.frameCount < old.frameCount) {
-		return true;
-	}
-}
-
-isLoading {
-	return true;
+	return current.health == 0 && old.health > 0 || current.frameCount < old.frameCount;
 }
 
 gameTime {
 	return TimeSpan.FromSeconds(current.frameCount / 60);
+}
+
+isLoading {
+	return true;
 }
