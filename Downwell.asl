@@ -31,7 +31,7 @@ start {
 split {
 	return
 		current.isInLevel && !old.isInLevel && !current.isPaused && !old.isPaused ||
-		!current.isPaused && vars.stopWatch.ElapsedMilliseconds >= 50;
+		current.isInLevel && !current.isPaused && vars.stopWatch.ElapsedMilliseconds >= 50;
 }
 
 reset {
