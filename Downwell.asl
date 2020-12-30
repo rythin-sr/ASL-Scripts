@@ -1,37 +1,26 @@
 // By Ero, JPlay, rythin.
 
 state("Downwell_v1_0_5") {
-	//double level         : 0x445C40, 0x60, 0x10, 0xDB4, 0x10;
+	double level         : 0x445C40, 0x60, 0x10, 0xDB4, 0x10;
 	//double world         : 0x445C40, 0x60, 0x10, 0xDB4, 0x20;
 	double health        : 0x445C40, 0x60, 0x10, 0xDB4, 0x140;
 	//double air           : 0x445C40, 0x60, 0x10, 0xDB4, 0x2F0;
-	double pauseDouble   : 0x445C40, 0x60, 0x10, 0xDB4, 0x460;
+	//double ammo          : 0x445C40, 0x60, 0x10, 0xDB4, 0x370;
 	//double money         : 0x445C40, 0x60, 0x10, 0xDB4, 0x920;
 	double frameCount    : 0x445C40, 0x60, 0x10, 0xDB4, 0x9B0;
-	double inLevelDouble : 0x445C40, 0x60, 0x10, 0xDB4, 0xA50;
+	double bossState     : 0x43550C, 0x710, 0x60, 0x10, 0x670, 0x0;
 }
 
 startup {
 	vars.timerModel = new TimerModel {CurrentState = timer};
-	vars.stopWatch = new Stopwatch();
-}
-
-update {
-	current.isPaused = current.pauseDouble == 1.0;
-	current.isInLevel = current.inLevelDouble == 1.0;
-	
-	if (old.frameCount == current.frameCount) vars.stopWatch.Start();
-	if (old.frameCount != current.frameCount) vars.stopWatch.Reset();
 }
 
 start {
-	return current.frameCount != old.frameCount && old.frameCount <= 1;
+	return current.frameCount != old.frameCount && old.frameCount <= 1.0;
 }
 
 split {
-	return
-		current.isInLevel && !old.isInLevel && !current.isPaused && !old.isPaused ||
-		current.isInLevel && !current.isPaused && vars.stopWatch.ElapsedMilliseconds >= 50;
+	return old.level != current.level || old.bossState == 4.0 && current.bossState == 5.0;
 }
 
 reset {
@@ -47,6 +36,5 @@ isLoading {
 }
 
 exit {
-	vars.stopWatch.Reset();
 	vars.timerModel.Reset();
 }
