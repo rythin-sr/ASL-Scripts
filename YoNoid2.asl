@@ -37,10 +37,8 @@ startup {
 		vars.validLevels.Add(Tag.Key); 
 	};
 	
-	vars.timerStart = false;
+	timer.Run.Offset = TimeSpan.FromSeconds(1.05);
 }
-
-//start timer offset = 1.081
 
 update {
 	vars.currentTime = timer.CurrentTime.GameTime;
@@ -50,7 +48,6 @@ start {
 	if (current.level == 1 && old.level != 1) {
 		vars.lastLevel = 5;
 		vars.flickerPrevention = 0;
-		vars.timerStart = true;
 		vars.doneLevels.Clear();
 		return true;
 	}
@@ -85,12 +82,5 @@ split {
 	
 	if (current.level == 10 && current.bossState == 6 && old.bossState == 5) {
 		return settings["mikestart"];
-	}
-}
-
-gameTime {
-	if (vars.timerStart == true) {
-		vars.timerStart = false;
-		return TimeSpan.FromSeconds(1.081);
 	}
 }
