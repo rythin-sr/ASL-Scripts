@@ -4,7 +4,6 @@
 state("noid") {
 	//different number on different levels, flickers a bunch during level transitions
 	int level:	0xFFC710;
-	int bossState:	"mono.dll", 0x1F4648, 0x400, 0xBC, 0xC, 0x38, 0x28, 0x2C, 0x24, 0x7C;
 	byte dialogue:	"mono.dll", 0x20C574, 0x10, 0xBC, 0x0, 0x8, 0xA8, 0xCC, 0x74, 0x40, 0xD8, 0x74;
 }
 
@@ -40,14 +39,15 @@ startup {
 	timer.Run.Offset = TimeSpan.FromSeconds(1.05);
 }
 
-update {
-	vars.currentTime = timer.CurrentTime.GameTime;
+init {
+	current.miketalk = 0;
 }
 
 start {
 	if (current.level == 1 && old.level != 1) {
 		vars.lastLevel = 5;
 		vars.flickerPrevention = 0;
+		current.miketalk = 0;
 		vars.doneLevels.Clear();
 		return true;
 	}
@@ -76,11 +76,12 @@ split {
 	}
 	
 	//mike splits
-	if (current.level == 10 && current.bossState == 7 && current.dialogue == old.dialogue - 1) {
-		return settings["10"];
+	if (current.level == 10 && current.dialogue == old.dialogue - 1) {
+		current.miketalk++;
 	}
 	
-	if (current.level == 10 && current.bossState == 6 && old.bossState == 5) {
-		return settings["mikestart"];
+	if (current.miketalk == old.miketalk + 1) {
+		return current.miketalk == 1 && settings["mikestart"];
+		return current.miketalk == 2 && settings["10"];
 	}
 }
