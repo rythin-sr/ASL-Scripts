@@ -16,13 +16,8 @@ start {
 }
 
 split {
-	if (current.score >= 10000 && old.score < 10000) {
-		return settings["10k"];
-	}
-	
-	if (current.score >= 100000 && old.score < 100000) { 
-		return settings["100k"];
-	}
+	return (current.score >= 10000 && old.score < 10000 && settings["10k"]);
+	return (current.score >= 100000 && old.score < 100000 && settings["100k"]);
 }
 
 reset {
