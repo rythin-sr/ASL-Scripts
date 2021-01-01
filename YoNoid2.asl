@@ -81,7 +81,7 @@ split {
 	}
 	
 	if (current.miketalk == old.miketalk + 1) {
-		return current.miketalk == 1 && settings["mikestart"];
-		return current.miketalk == 2 && settings["10"];
+		if (current.miketalk == 1) return settings["mikestart"];
+		if (current.miketalk == 2) return settings["10"];
 	}
 }
