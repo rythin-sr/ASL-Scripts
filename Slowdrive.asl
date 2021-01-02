@@ -63,6 +63,7 @@ startup {
 init {
 	current.mist_counter = 0;
 	current.finish_counter = 0;
+	vars.igt = 0;
 }
 
 update {
@@ -78,12 +79,17 @@ update {
 	if (settings["leaf_disp"]) vars.SetTextComponent("Leaves:", current.leaves_stat);
 	if (settings["wheel_disp"]) vars.SetTextComponent("Gold Wheels:", current.gwheels_stat);
 	if (settings["fail_disp"]) vars.SetTextComponent("Retries:", current.retries_stat);
+	
+	if (current.raceTime == 0 && old.raceTime > 0) {
+		vars.igt += old.raceTime;
+	}
 }
 
 start {
 	if (current.stars == 0 && current.inDaLevel && !old.inDaLevel) {
 		current.mist_counter = 0;
 		current.finish_counter = 0;
+		vars.igt = 0;
 		return true;
 	}
 }
@@ -108,7 +114,7 @@ split {
 	}
 	
 	if (current.mist_counter >= 11) {
-		if (current.finished == old.finished - 1) {
+		if (!current.finished && old.finished) {
 			current.finish_counter++;
 		}
 		
@@ -127,3 +133,11 @@ split {
 		return settings["allwheels"];
 	}
 } 
+
+isLoading {
+	return true;
+}
+
+gameTime {
+	return TimeSpan.FromSeconds(Convert.ToSingle(vars.igt + current.raceTime - 1) / 60.0);
+}
