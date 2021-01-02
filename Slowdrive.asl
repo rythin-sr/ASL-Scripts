@@ -4,7 +4,8 @@ state("Slowdrive") {
 	string20 leaves_stat:	"mono.dll", 0x1F40AC, 0xA8C, 0xC, 0x1C, 0x5C, 0xC;
 	string20 retries_stat:	"mono.dll", 0x1F40AC, 0xA8C, 0xC, 0x20, 0x5C, 0xC;
 	bool inDaLevel:		"mono.dll", 0x1F40AC, 0x2C4, 0x50;
-	//bool cs:		"mono.dll", 0x1F40AC, 0x5F0, 0x10, 0x8, 0xB4, 0x148;
+	int raceTime:		"mono.dll", 0x1F40AC, 0x94C, 0x14C;
+	bool finished:		"mono.dll", 0x1F40AC, 0x94C, 0x15A;
 }
 
 startup {
@@ -61,9 +62,8 @@ startup {
 
 init {
 	current.mist_counter = 0;
+	current.finish_counter = 0;
 }
-
-//also find creditsComic address
 
 update {
 	string[] stars = current.stars_stat.Split('/');
@@ -82,7 +82,8 @@ update {
 
 start {
 	if (current.stars == 0 && current.inDaLevel && !old.inDaLevel) {
-		vars.mist_counter = 0;
+		current.mist_counter = 0;
+		current.finish_counter = 0;
 		return true;
 	}
 }
@@ -103,6 +104,16 @@ split {
 			if ((current.mist_counter == 4 || current.mist_counter == 8) && old.mist_counter == current.mist_counter - 1) {
 				return settings["bullets_mist"];
 			}
+		}
+	}
+	
+	if (current.mist_counter >= 11) {
+		if (current.finished == old.finished - 1) {
+			current.finish_counter++;
+		}
+		
+		if (current.finish_counter == 2 && old.finish_counter == 1) {
+			return settings["bullets_mist"];
 		}
 	}
 	
