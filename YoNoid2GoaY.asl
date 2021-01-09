@@ -74,7 +74,7 @@ split {
 			}
 			
 			else if (current.level.ToLower().Contains("mike")) {
-				return settings["mike"];
+				return settings["mikee"];
 			}
 		}
 	}
