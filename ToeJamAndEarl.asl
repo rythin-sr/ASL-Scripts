@@ -1,19 +1,15 @@
 state("backinthegroove") {
 	//ElevatorUp
-	byte goingUp:	"mono-2.0-bdwgc.dll", 0x44EB18, 0x2F0, 0x30, 0xB8, 0xB8, 0x430;
-	byte isVisible:	"mono-2.0-bdwgc.dll", 0x44EB18, 0x2F0, 0x30, 0xB8, 0xB8, 0x1C9;
-	byte level:	"mono-2.0-bdwgc.dll", 0x44EB18, 0x2F0, 0x30, 0xB8, 0xB8, 0x1D8;
+	byte goingUp:	"UnityPlayer.dll", 0x1450E68, 0x128, 0x10, 0x30, 0x30, 0x18, 0x28, 0x430;
+	byte isVisible:	"UnityPlayer.dll", 0x1450E68, 0x128, 0x10, 0x30, 0x30, 0x18, 0x28, 0x1C9;
+	byte level:	"UnityPlayer.dll", 0x1450E68, 0x128, 0x10, 0x30, 0x30, 0x18, 0x28, 0x1D8;
 	
 	//JShipPiece has a bool called "done", which could probably be used for final split eventually
 	//theres also an int called "shipPiece", maybe that's a piece counter?
 }
 
 init {
-	timer.Run.Offset = TimeSpan.FromSeconds(-2);
-}
-
-start {
-	return (current.level == 1 && current.isVisible == 1 && old.isVisible == 0);
+	timer.Run.Offset = TimeSpan.FromSeconds(0);
 }
 
 split {
