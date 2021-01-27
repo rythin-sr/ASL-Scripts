@@ -8,13 +8,13 @@ state("cm2", "Steam") {
 	//-116 in experiment complete screen
 	//-88 in experiments
 	//64 in the main menu from profile select, 28 otherwise
-	sbyte state:		"cm2.dll", 0x1FFF74, 0x18;
+	sbyte state:	"cm2.dll", 0x1FFF74, 0x18;
 	
 	//current chapter you're in - 1 (so 0 for 1-7, 3 for 4-2 etc)
-	int chapter:		"faktum.dll", 0x30ACA4, 0x10, 0x174;
+	int chapter:	"faktum.dll", 0x30ACA4, 0x10, 0x174;
 	
 	//current level you're in - 1 (so 1 for 1-2, 2 for 1-3 etc)
-	int level:			"faktum.dll", 0x30ACA4, 0x10, 0x178;
+	int level:	"faktum.dll", 0x30ACA4, 0x10, 0x178;
 }
 
 startup {
