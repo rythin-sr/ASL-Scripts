@@ -1,44 +1,51 @@
-//Crazy Machines 2 Autosplitter by rythin
-//Steam version only for now
+//someone get me the german 1.0 retail so i can support that too
 
-state("cm2") {
-	//loading address not reliable
-	//just changes randomly fuck off lmao
-	//the game uses IGT for timing anyway, whatever
-	//int load:		"faktum.dll", 0x2F2498;
+state("cm2", "Steam") {
 	
-	//current level you're in - 1 (so 1 for 1-2, 2 for 1-3 etc)
-	int level:		"faktum.dll", 0x0030ACA4, 0x10, 0x178;
+	//different values depending on game state, most importantly:
+	//8 in loads
+	//16 in profile select
+	//-116 in experiment complete screen
+	//-88 in experiments
+	//64 in the main menu from profile select, 28 otherwise
+	sbyte state:		"cm2.dll", 0x1FFF74, 0x18;
 	
 	//current chapter you're in - 1 (so 0 for 1-7, 3 for 4-2 etc)
-	int chapter:	"faktum.dll", 0x0030ACA4, 0x10, 0x174;
+	int chapter:		"faktum.dll", 0x30ACA4, 0x10, 0x174;
 	
-	//0 when in menu, 1 when in level select and in levels
-	int menu:		"faktum.dll", 0x0030ACA4, 0x10, 0x170;
+	//current level you're in - 1 (so 1 for 1-2, 2 for 1-3 etc)
+	int level:			"faktum.dll", 0x30ACA4, 0x10, 0x178;
 }
 
 startup {
-	settings.Add("l", true, "Split on level change");
-	settings.Add("c", false, "Split on chapter change");	
+	for (int i = 0; i < 11; i++) {
+		settings.Add("ch" + i.ToString(), true, "Chapter " + (i + 1).ToString());
+		for (int j = 0; j < 10; j++) {
+			settings.Add(i.ToString() + "-" + j.ToString(), true, (i + 1).ToString() + "-" + (j + 1).ToString(), "ch" + i.ToString());
+		}
+	}
+	
+	vars.done = new List<string>();
 }
 
 start {
-	if (current.level == 0 && current.chapter == 0 && current.load == 0 && old.load == 1) {
+	if (current.level == 0 && current.chapter == 0 && current.state != 8 && old.state == 8) {
+		vars.done.Clear();
 		return true;
 	}
 }
 
 split {
-	
-	if (settings["l"]) {
-		if (current.level != old.level) {
-			return true;
-		}
+	if (current.state == -116 && current.state != old.state) {
+		vars.done.Add(current.chapter.ToString() + "-" + current.level.ToString());
+		return settings[current.chapter.ToString() + "-" + current.level.ToString()];
 	}
-	
-	if (settings["c"] && !settings["l"]) {
-		if (current.chapter > old.chapter) {
-			return true;
-		}
-	}
+}
+
+reset {
+	return current.state == 16;
+}
+
+isLoading {
+	return current.state == 8;
 }
