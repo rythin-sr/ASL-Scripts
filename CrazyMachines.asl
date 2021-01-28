@@ -1,69 +1,26 @@
-//Crazy Machines Autosplitter by rythin
-
-//Contanct info in case issues arise:
-//Discord: rythin#0135
-//Twitter: rythin_sr
-//Twitch:  rythin_sr
-
-//Basically i had to re-write everything because apparently pointers break after a long time for Reasons
-//so from now on im only using static addresses, which severely limits what i can do with the script
-//autostart is particularly annoying here, activating on ANY textbox appearance
-//autosplit also fires when going back to the main menu, which is most likely preventable with some simple logic but I Do Not Want To Bother
-
 state("CrazyMachines") {
-	int 	tb:			0x11066C; 	//1 when there's a textbox on screen, 0 otherwise
-	int	counter:		0x112430;	//seems to go up by 2 when level changes
-}
-
-startup {
-	settings.Add("allsplit", true, "Split upon completion of every level");
-	settings.SetToolTip("allsplit", "Disabling this option will still split at the end of the run, just not in the middle.");
-
-	vars.splitCount = 0;		//for final split logic
-	vars.noEarlySplit = false;	//same as above
-	vars.splitTotal = 0;		//same as above
-}
-
-init {
 	
+	//bool related to a textbox being on screen
+	byte tb:	0x11066C; 	
+	
+	//2 when a level is finished
+	byte win:	0x10F344, 0xE0, 0xC, 0x4, 0x4, 0x8, 0x50;
+}
+
+state("cm_family"){
+	byte tb:	0x1117BC;
+	byte win:	0x110484, 0xE0, 0xC, 0x4, 0x4, 0x8, 0x50;
+}
+
+state("cmntfl") {
+	byte tb:	0x113ABC;
+	byte win:	0x112764, 0xE0, 0xC, 0x4, 0x4, 0x8, 0x50;
 }
 
 start {
-	if (current.tb == 1 && old.tb == 0) {
-		if (timer.Run.CategoryName == "New Challenges") {
-			vars.splitTotal = 103;
-			print("CrazySplitter: Expecting 103 Levels");
-		}
-	
-		else {
-			vars.splitTotal = 102;
-			print("CrazySplitter: Expecting 102 Levels");
-		}
-		
-		vars.noEarlySplit = false;
-		return true;
-	}
+	return current.tb == old.tb + 1 && current.win == 0;
 }
 
 split {
-	if (current.counter > old.counter) {
-		vars.noEarlySplit = true;
-		if (settings["allsplit"]) {
-			//print("CrazySplitter: Transition split triggered, split count at: " + vars.splitCount.ToString());
-			return true;
-		}
-	}
-	
-	
-	if ((timer.CurrentSplitIndex == vars.splitTotal) && current.tb == 1 && old.tb == 0) {
-		if (vars.noEarlySplit == false) {
-			//print("CrazySplitter: Final split triggered");
-			return true;
-		}
-		
-		else if (vars.noEarlySplit == true) {
-			//print("CrazySplitter: Early split prevented!");
-			vars.noEarlySplit = false;
-		}
-	}
+	return current.win > old.win;
 }
