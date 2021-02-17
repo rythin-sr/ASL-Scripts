@@ -25,19 +25,33 @@ startup {
 	//list with info on all the boss areas and soul rewards
 	//x_max, x_min, y_max, y_min, z_max, z_min, souls
 	vars.boss_area = new List<Tuple<float, float, float, float, float, float, int>>{
-		tB_b(22, -6, -14, -15, 296, 270, 12000),	//0, dragonrider
-		tB_b(0, 0, 0, 0, 0, 0, 0),					//a load of empty entries to prevent errors
-		tB_b(0, 0, 0, 0, 0, 0, 0),					//i could actually solve this issue the smart way
-		tB_b(0, 0, 0, 0, 0, 0, 0),					//however i am not smart and this works
-		tB_b(0, 0, 0, 0, 0, 0, 0)					//as long as both boss_area and pos_area have the same amount of entries
+		tB_b(113, 86, -39, -41, -112, -143, 10000),		//00, Last Giant
+		tB_b(145, 130, 11, 9, -175, -220, 17000),		//01, Pursuer, normal kill
+		tB_b(82, 78, 2, 1, -181, -185, 17000),			//02, Pursuer, 17k
+		tB_b(22, -7, -14, -15, 290, 275, 12000),		//03, Dragonrider
+		tB_b(-240, -285, -225, -228, -93, -128, 47000),		//04, Rotten NG
+		tB_b(-240, -285, -225, -228, -93, -128, 94000),		//05, Rotten NG+
+		tB_b(-144, -184, 9, 7, 185, 144, 20000),		//06, Dragonslayer
+		tB_b(23, 1, -71, -72, 532, 518, 14000),			//07, Flexile
+		tB_b(-393, -435, 40, 36, 267, 226, 15000),		//08, Skeleton Lords
+		tB_b(-520, -550, 54, 52, 558, 530, 13000),		//09, Covetous Demon
+		tB_b(-548, -576, 87, 85, 565, 534, 20000),		//10, Mytha 
+		tB_b(-706, -731, 177, 176, 667, 645, 32000),		//11, Smelter Demon (Red)
+		tB_b(-627, -653, 167, 166, 731, 710, 48000),		//12, Old Iron King
+		tB_b(-144, -170, 12, -1, 564, 531, 33000),		//13, Sentinels
+		tB_b(-187, -227, 15, 12, 524, 498, 25000),		//14, Gargoyles
+		tB_b(-110, -136, -76, -78, 553, 518, 45000)		//15, Sinner
 	};
 	
+	//pos_area is redundant and can be substituted with an entry in boss_area with the soul count of 0
+	//will be fixed once i have all the boss entries set up
+	
 	vars.pos_area = new List<Tuple<float, float, float, float, float, float>>{
-		tB_a(-217, -227.5f, 12, 10, -166, -170),	//0, bridge in things betwixt
-		tB_a(8, 5, -6, -7, 280, 276),				//1, bonfire after dragonrider
-		tB_a(-180, -190, 14, 13, -137, -147),		//2, after character creation
-		tB_a(-25, -28, 20, 19, -90, -95),			//3, majula entrance
-		tB_a(7, 3, -9.5f, -10.3f, 165, 153)			//4, heide's tower of flame entry
+		tB_a(-217, -227.5f, 12, 10, -166, -170),	//00, bridge in things betwixt
+		tB_a(8, 5, -6, -7, 280, 276),			//01, bonfire after dragonrider
+		tB_a(-180, -190, 14, 13, -137, -147),		//02, after character creation
+		tB_a(-25, -28, 20, 19, -90, -95),		//03, majula entrance
+		tB_a(7, 3, -9.5f, -10.5f, 165, 153)		//04, heide's tower of flame entry
 	};
 	
 	//array of possible routes for each category
@@ -47,15 +61,15 @@ startup {
 	// - a number, indicating which entry in the appropriate list should be checked
 	// - a letter, either 'l', 'i' or 'n', indicating whether the split should happen on the next load, instantly or not at all (useful if you're revisiting an area in the route and only want the split to happen on the second instance of visiting, for example)
 	
-	vars.route = new[,]{
-	//	{},	//any
-	//	{},	//17k
-	//	{},	//4 rotten
-	//	{},	//5 rotten
-	//	{},	//crs
-	//	{},	//ab
-	//	{},	//ab no dlc
-		{"a0i", "a2i", "a3i", "a4i", "b0i", "a1l", "b0i"}	//rbo (just testing stuff on this one for now)
+	vars.route = new string[][] {
+		new string[] {"a00i"},	//any
+		new string[] {"a00i"},	//17k
+		new string[] {"a00i"},	//4 rotten
+		new string[] {"a00i"},	//5 rotten
+		new string[] {"a00i"},	//crs
+		new string[] {"a00i"},	//ab
+		new string[] {"b03i", "b00i", "b01i", "b13i", "b06i"},	//ab no dlc
+		new string[] {"a00i", "a02i", "a03i", "a04i", "b00i", "a01l", "b00i"}	//rbo (just testing stuff on this one for now)
 	};
 	
 	//todo: add scholar categories/routes
@@ -83,14 +97,16 @@ startup {
 }
 
 init {
-	var m = modules.First().ModuleMemorySize;
-	
-	if (m == 34299904 || m == 34361344) {
-		version = "Scholar";
-	} else if (m == 33902592 || m == 33927168) {
+	switch (modules.First().ModuleMemorySize) {
+		case 34299904: case 34361344:
+		version = "Scholar of the First Sin";
+		break;
+		case 33902592: case 33927168:
 		version = "1.11";
-	} else {
+		break;
+		default:
 		version = "1.02";
+		break;
 	}
 }
 
@@ -100,9 +116,10 @@ start {
 	current.xPos > -323.0f && current.zPos > -214.0f) {
 		
 		vars.category = 0;
-		while (!settings[vars.cat[vars.category, 0]]) {
+		while (vars.category < vars.cat.GetLength(0) && !settings[vars.cat[vars.category, 0]]) {
 			vars.category++;
 		}
+		print("CATEGORY: " + vars.category.ToString());
 		vars.doneSplits = 0;
 		vars.wait_for_load = false;
 		return true;
@@ -110,23 +127,28 @@ start {
 }
 
 split {
-	if (vars.category < 8) {
-		//eventually I'd like to have the route 
-		string split_data = vars.route[vars.category, vars.doneSplits];
-		var split_a = vars.pos_area[Int32.Parse(split_data[1].ToString())];
-		var split_b = vars.boss_area[Int32.Parse(split_data[1].ToString())];	
+	if (vars.category < vars.cat.GetLength(0)) {
+		string split_data = vars.route[vars.category][vars.doneSplits];
+		int route_index = int.Parse(String.Join("", split_data.Where(Char.IsDigit)));
+		Tuple<float, float, float, float, float, float> split_a = null;
+		Tuple<float, float, float, float, float, float, int> split_b = null;
+
+		if (vars.pos_area.Count > route_index) split_a = vars.pos_area[route_index];
+		if (vars.boss_area.Count > route_index) split_b = vars.boss_area[route_index];
+		//if (split_a != null) print(split_a.Item1.ToString());
 		
-		if (split_data[0] == 'a') {
+		//todo: see line 46
+		if (split_data[0] == 'a' && split_a != null) {
 			if (current.xPos <= split_a.Item1 && current.xPos >= split_a.Item2 &&
 			current.yPos <= split_a.Item3 && current.yPos >= split_a.Item4 &&
 			current.zPos <= split_a.Item5 && current.zPos >= split_a.Item6) {
-				if (split_data[2] == 'i') {
+				if (split_data[3] == 'i') {
 					vars.doneSplits++;
 					print("Area splitting for route entry: " + split_data);
 					return (old.xPos > split_a.Item1 || old.xPos < split_a.Item2 ||
 					old.yPos > split_a.Item3 || old.yPos < split_a.Item4 ||
 					old.zPos > split_a.Item5 || old.zPos < split_a.Item6);
-				} else if (split_data[2] == 'l') {
+				} else if (split_data[3] == 'l') {
 					vars.wait_for_load = true;
 				} else {
 					vars.doneSplits++;
@@ -134,16 +156,16 @@ split {
 			}
 		}
 		
-		if (split_data[0] == 'b') {
+		if (split_data[0] == 'b' && split_b != null) {
 			if (current.xPos < split_b.Item1 && current.xPos > split_b.Item2 &&
 			current.yPos < split_b.Item3 && current.yPos > split_b.Item4 &&
 			current.zPos < split_b.Item5 && current.zPos > split_b.Item6 &&
 			current.souls >= old.souls + split_b.Item7 && current.souls <= old.souls + (split_b.Item7 * 1.69)) {
-				if (split_data[2] == 'i') {
+				if (split_data[3] == 'i') {
 					vars.doneSplits++;
 					print("Boss splitting for route entry: " + split_data);
 					return true;
-				} else if (split_data[2] == 'l') {
+				} else if (split_data[3] == 'l') {
 					vars.wait_for_load = true;
 				} else {
 					vars.doneSplits++;
@@ -170,7 +192,8 @@ split {
 reset {
 	if (current.load == 1 && current.xPos != old.xPos &&
 	current.xPos < -322.0f && current.zPos < -213.0f &&
-	current.xPos > -323.0f && current.zPos > -214.0f) {
+	current.xPos > -323.0f && current.zPos > -214.0f &&
+	current.souls == 0) {
 		return true;
 	}
 }
