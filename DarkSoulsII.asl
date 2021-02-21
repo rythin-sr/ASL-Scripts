@@ -153,7 +153,7 @@ startup {
 	
 	//additional variables used for keeping track of split order
 	vars.doneSplits = 0;
-	vars.category = 0;
+	vars.category = 50;
 	vars.wait_for_load = false;
 	vars.wait_for_cutscene = false;
 }
