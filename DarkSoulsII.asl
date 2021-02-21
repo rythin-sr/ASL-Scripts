@@ -1,6 +1,7 @@
 //Dark Souls II Autosplitter + Load Remover
 //huge thank you to Dread for the original load remover,
-//as well as pseudostripy for help finding correct coordinates and Ero for helping with the code
+//as well as pseudostripy for help finding correct coordinates, Ero for helping with the code
+//Nyk for helping with SotFS routes
 
 state("DarkSoulsII", "1.11")
 {
@@ -121,7 +122,8 @@ startup {
 		new string[] {"b04l", "b05n", "b06l", "b07l", "b08l", "b24i", "b25n", "a03i", "b26n", "a04i", "b27l", "b28n", "a02i", "a00l", "b30l", "a09n"},	//crs
 		new string[] {"b00l", "b01l", "b03l", "b04l", "b09l", "b10l", "b11n", "a10i", "b12i", "b13n", "a11i", "b14n", "a12i", "b15l", "b16n", "a13i", "b17l", "b18l", "b19i", "b20i", "b21i", "b22l", "b23l", "b24i", "b25i", "b26i", "b27l", "b28i", "b29l", "b30l", "b31l", "b32l", "b33l", "b34l", "b35i", "b36l", "b37l", "b38n", "a14i", "b39l", "b40l", "b41l", "b42l", "a09n"},	//ab
 		new string[] {"b03l", "b11l", "b23i", "b24i", "b25i", "b26i", "b27l", "b28i", "b29l", "b41l", "b12i", "b13i", "b14i", "b15l", "b00l", "b30l", "b16l", "b17l", "b18l", "b34l", "b19i", "b20i", "b21i", "b22l", "b04l", "b09l", "b10l", "b42l", "a09n"},	//ab no dlc
-		new string[] {"a00l", "a01l", "b43l", "b44l", "b29l", "b28l", "b34l", "b27l", "b26l", "b25l", "b24l", "b42l", "b04l", "b23l", "b22l", "b21l", "b20l", "b19l", "b15l", "b14l", "b13l", "b12l", "b11l", "b41l", "b18l", "b17l", "b16l", "b10l", "b09l", "b03l", "b00l", "a09n"}	//rbo
+		new string[] {"a00l", "a01l", "b43l", "b44l", "b29l", "b28l", "b34l", "b27l", "b26l", "b25l", "b24l", "b42l", "b04l", "b23l", "b22l", "b21l", "b20l", "b19l", "b15l", "b14l", "b13l", "b12l", "b11l", "b41l", "b18l", "b17l", "b16l", "b10l", "b09l", "b03l", "b00l", "a09n"},	//rbo
+		new string[] {"b00l", "b04l", "b19i", "b21l", "b16l", "b05l", "b06l", "b07l", "b24i", "b25n", "a03i", "b26n", "a04i", "b27l", "b28n", "a02i", "a00l", "b30l", "a09n"} //SOFTS Any%
 	};
 	
 	//todo: add scholar categories/routes
@@ -135,14 +137,15 @@ startup {
 		{"crs", "Any% (Cat Ring Skip)", " -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
 		{"ab", "All Bosses", " -Every boss, splitting on a following load, instantly on boss or in a specific area, based on WR splits with small adjustments.\nNon-boss splits currently not automated."},
 		{"abnodlc", "All Bosses No DLC", " -Every boss, splitting on a following load or instantly on boss death if no load happens"},
-		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup (load)\n -Dragonrider Skip (load)\n -Every boss, splitting on a following load or instantly on boss death if no load happens"}
+		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup (load)\n -Dragonrider Skip (load)\n -Every boss, splitting on a following load or instantly on boss death if no load happens"},
+		{"sotfs_any", "Scholar Any%", "-Last Giant (load)\n-Rotten (load)\n-Najka (boss death)\n-Congregation (load)\n-Sentinels (load)\n-Rotten 2 (load)\n-Rotten 3 (load)\n-Rotten 4 (load)\n-Dragonriders (boss death)\n-Mirror Knight (elevator)\n-Demon of Song (door)\n-Velstadt (load)\n-Guardian Dragon (elevator)\n-Ashen Mist Heart pickup (load)\n-Giant Lord (load)"}
 	};
 	
 	settings.Add("rt", true, "Route");
 	
 	for (int i = 0; i < vars.cat.GetLength(0); i++) {
 		settings.Add(vars.cat[i, 0], false, vars.cat[i, 1], "rt");
-		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nThe following autosplits are supported:\n" + vars.cat[i, 2]);
+		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nThe following autosplits are supported:\n" + vars.cat[i, 2] + "\n-Nashandra (final cutscene)");
 	}
 	
 	settings.Add("ffleret", false, "Split on every loading screen");
