@@ -4,12 +4,12 @@
 //Nyk for helping with SotFS routes
 
 state("DarkSoulsII", "1.11") {
-	float xPos:	0x114A5B4, 0x8, 0x88, 0xC;			//horizontal
-	float yPos:	0x114A5B4, 0x8, 0x88, 0x10;			//vertical
-	float zPos:	0x114A5B4, 0x8, 0x88, 0x14;			//horizontal
-	int state:	0x11493F4, 0x74, 0xB8, 0x2D4;		//1 in cutscenes and backstabs/ripostes (lol), 2 when falling, 0 otherwise
+	float xPos:	0x114A5B4, 0x8, 0x88, 0xC;         //horizontal
+	float yPos:	0x114A5B4, 0x8, 0x88, 0x10;        //vertical
+	float zPos:	0x114A5B4, 0x8, 0x88, 0x14;        //horizontal
+	int state:	0x11493F4, 0x74, 0xB8, 0x2D4;      //1 in cutscenes and backstabs/ripostes (lol), 2 when falling, 0 otherwise
 	int souls:	0x11493F4, 0x74, 0x2EC, 0x238;		
-	int load: 	0x118E8E0, 0x1D4;					//1 in loads
+	int load: 	0x118E8E0, 0x1D4;                  //1 in loads
 }
 
 state("DarkSoulsII", "1.02") {
@@ -127,7 +127,7 @@ startup {
 		{"4r", "Any% (4 Rotten)", " -Last Giant (load)\n -Pursuer (load)\n -Rotten (load)\n -Sentinels (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
 		{"5r", "Any% (5 Rotten)", " -Last Giant (load)\n -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
 		{"crs", "Any% (Cat Ring Skip)", " -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
-		{"ab", "All Bosses", " -Every boss, splitting on a following load or instantly on boss death if no load happens"},
+		{"ab", "All Bosses", " -Every boss, splitting on a following load, instantly on boss or in a specific area, based on WR splits with small adjustments.\nNon-boss splits currently not automated."},
 		{"abnodlc", "All Bosses No DLC", " -Every boss, splitting on a following load or instantly on boss death if no load happens"},
 		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup (load)\n -Dragonrider Skip (load)\n -Every boss, splitting on a following load or instantly on boss death if no load happens"},
 		{"sotfs_any", "Scholar Any%", "-Last Giant (load)\n-Rotten (load)\n-Najka (boss death)\n-Congregation (load)\n-Sentinels (load)\n-Rotten 2 (load)\n-Rotten 3 (load)\n-Rotten 4 (load)\n-Dragonriders (boss death)\n-Mirror Knight (elevator)\n-Demon of Song (door)\n-Velstadt (load)\n-Guardian Dragon (elevator)\n-Ashen Mist Heart pickup (load)\n-Giant Lord (load)"}
@@ -137,7 +137,7 @@ startup {
 	
 	for (int i = 0; i < vars.cat.GetLength(0); i++) {
 		settings.Add(vars.cat[i, 0], false, vars.cat[i, 1], "rt");
-		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nThe following autosplits are supported:\n" + vars.cat[i, 2]);
+		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nThe following autosplits are supported:\n" + vars.cat[i, 2] + "\n-Nashandra (final cutscene)");
 	}
 	
 	settings.Add("ffleret", false, "Split on every loading screen");
