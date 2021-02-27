@@ -112,8 +112,8 @@ startup {
 		new string[] {"00l", "01l", "04l", "16l", "05n", "06l", "07l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//4 rotten
 		new string[] {"00l", "04l", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//5 rotten
 		new string[] {"04l", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//crs
-		new string[] {"00l", "01l", "03l", "04l", "09l", "10l", "11n", "55i", "12i", "13n", "56i", "14n", "57i", "15l", "16n", "58i", "17l", "18l", "19i", "20i", "21i", "22l", "23l", "24i", "25i", "26i", "27l", "28i", "29l", "30l", "31l", "32l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"},	//ab
-		new string[] {"03l", "11l", "23i", "24i", "25i", "26i", "27l", "28i", "29l", "41l", "12i", "13i", "14i", "15l", "00l", "30l", "16l", "17l", "18l", "34l", "19i", "20i", "21i", "22l", "04l", "09l", "10l", "42l", "54n"},	//ab no dlc
+		new string[] {"00l", "01l", "03l", "04l", "09l", "10l", "11n", "55i", "12i", "13n", "56i", "14n", "57i", "15l", "16n", "58i", "17l", "18l", "19i", "20i", "21i", "22l", "23l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "31l", "32l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"},	//ab
+		new string[] {"03l", "11l", "23i", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "41l", "12i", "13n", "56i", "14n", "57i", "15l", "00l", "30l", "16l", "17l", "18l", "34l", "19i", "20i", "21i", "22l", "04l", "09l", "10l", "42l", "54n"},	//ab no dlc
 		new string[] {"45l", "46l", "43l", "44l", "29l", "28l", "34l", "27l", "26l", "25l", "24l", "42l", "04l", "23l", "22l", "21l", "20l", "19l", "15l", "14l", "13l", "12l", "11l", "41l", "18l", "17l", "16l", "10l", "09l", "03l", "00l", "54n"},	//rbo
 		new string[] {"00l", "04l", "19i", "21l", "16l", "05l", "06l", "07l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"} //SOFTS Any%
 	};
@@ -122,22 +122,29 @@ startup {
 	
 	//array of supported categories
 	vars.cat = new[,]{
-		{"any", "Any%", " -Giant Lord (load)"},
-		{"17k", "Any% (17000 Souls)", " -Pursuer (load)\n -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
-		{"4r", "Any% (4 Rotten)", " -Last Giant (load)\n -Pursuer (load)\n -Rotten (load)\n -Sentinels (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
-		{"5r", "Any% (5 Rotten)", " -Last Giant (load)\n -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
-		{"crs", "Any% (Cat Ring Skip)", " -Rotten (load)\n -Rotten 2 & 3 (load)\n -Rotten 4 (load)\n -Rotten 5 (load)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt (load)\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup (load)\n -Giant Lord (load)"},
-		{"ab", "All Bosses", " -Every boss, splitting on a following load, instantly on boss or in a specific area, based on WR splits with small adjustments.\nNon-boss splits currently not automated."},
-		{"abnodlc", "All Bosses No DLC", " -Every boss, splitting on a following load or instantly on boss death if no load happens"},
-		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup (load)\n -Dragonrider Skip (load)\n -Every boss, splitting on a following load or instantly on boss death if no load happens"},
-		{"sotfs_any", "Scholar Any%", "-Last Giant (load)\n-Rotten (load)\n-Najka (boss death)\n-Congregation (load)\n-Sentinels (load)\n-Rotten 2 (load)\n-Rotten 3 (load)\n-Rotten 4 (load)\n-Dragonriders (boss death)\n-Mirror Knight (elevator)\n-Demon of Song (door)\n-Velstadt (load)\n-Guardian Dragon (elevator)\n-Ashen Mist Heart pickup (load)\n-Giant Lord (load)"}
+		{"any", "Any%", " -Giant Lord"},
+		{"17k", "Any% CP (17000 Souls)", " -Pursuer\n -Rotten\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
+		{"4r", "Any% CP (4 Rotten)", " -Last Giant\n -Pursuer\n -Rotten\n -Sentinels\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
+		{"5r", "Any% CP (5 Rotten)", " -Last Giant\n -Rotten\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
+		{"crs", "Any% CP (Cat Ring Skip)", " -Rotten\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
+		{"ab", "All Bosses", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Dragonslayer\n -Flexile\n -Skeleton Lords (lever)\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Sentinels (bonfire room)\n -Gargoyles\n -Sinner\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Royal Rat Vanguard\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Giant Lord\n -Fume Knight\n -Smelter Demon (Blue)\n -Sir Alonne\n -Vendrick\n -Elana (boss death)\n -Sinh\n -Gank Squad\n -Aava (door)\n -Burnt Ivory King\n -Twin Pets\n -Chariot\n -Darklurker"},
+		{"abnodlc", "All Bosses No DLC", " -Dragonrider\n -Skeleton Lords\n -Royal Rat Vanguard (boss death)\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Chariot\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Last Giant\n -Giant Lord\n -Sentinels\n -Gargoyles\n -Sinner\n -Vendrick\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Rotten\n -Dragonslayer\n- Flexile\n -Darklurker"},
+		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup\n -Dragonrider Skip\n -Throne Duo\n -Nashandra\n -Ancient Dragon\n -Guardian Dragon\n -Vendrick\n -Velstadt\n -Demon of Song\n -Mirror Knight\n -Dragonriders\n -Darklurker\n -Rotten\n -Royal Rat Vanguard\n -Freja\n -Congregation\n -Rat Authority\n -Najka\n -Old Iron King\n -Smelter Demon\n -Mytha\n -Covetous\n -Skeleton Lords\n -Chariot\n -Sinner\n -Gargoyles\n -Sentinels\n -Flexile\n -Dragonslayer\n -Dragonrider\n -Last Giant"},
+		{"sotfs_any", "Any%", " -Last Giant\n -Rotten\n -Najka (boss death)\n -Congregation\n -Sentinels\n -Rotten 2\n -Rotten 3\n -Rotten 4\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Heart pickup\n -Giant Lord"}
 	};
 	
 	settings.Add("rt", true, "Route");
+	settings.Add("vanilla", true, "Dark Souls II", "rt");
+	settings.Add("scholar", true, "Scholar of the First Sin", "rt");
+	
 	
 	for (int i = 0; i < vars.cat.GetLength(0); i++) {
-		settings.Add(vars.cat[i, 0], false, vars.cat[i, 1], "rt");
-		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nThe following autosplits are supported:\n" + vars.cat[i, 2] + "\n-Nashandra (final cutscene)");
+		if (vars.cat[i, 0].Contains("sotfs")) {
+			settings.Add(vars.cat[i, 0], false, vars.cat[i, 1], "scholar");
+		} else {
+			settings.Add(vars.cat[i, 0], false, vars.cat[i, 1], "vanilla");
+		}
+		settings.SetToolTip(vars.cat[i, 0], "Feel free to add manual splits at your own leisure.\nAutosplits on load unless stated otherwise. The following are supported:\n" + vars.cat[i, 2] + "\n -Final Cutscene");
 	}
 	
 	settings.Add("ffleret", false, "Split on every loading screen");
