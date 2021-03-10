@@ -104,7 +104,7 @@ state("Dungeons", "Windows Store, 1.7.2") {
 state("Dungeons-Win64-Shipping", "Launcher, 1.8.0.0") {
 	byte counter:    0x42CE2E4;
 	byte lc:         0x43201C2;
-	int seed:        0x436A050, 0x10, 0x0, 0x128, 0x10, 0x330, 0x20, 0x4F0;
+	int seed:        0x4357398, 0x8, 0x678, 0x20, 0x4F0;	//'Fixed' for Panda smh
 	int cs:          0x4357468, 0x8;
 }
 
