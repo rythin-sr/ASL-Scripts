@@ -151,13 +151,13 @@ start {
 
 split {
 	if (current.stars > old.stars) {
-		if (current.stars >= 40 && old.stars < 40) return settings["40"] && !settings["allstar"];
-		if (current.stars >= 54 && old.stars < 54) return settings["54"] && !settings["allstar"];
-		if (current.stars >= 60 && old.stars < 60) return settings["60"] && !settings["allstar"];
-		if (current.stars >= 85 && old.stars < 85) return settings["85"] && !settings["allstar"];
-		if (current.stars >= 108 && old.stars < 108) return settings["108"] && !settings["allstar"];
-		if (current.stars >= 162 && old.stars < 162) return settings["162"] && !settings["allstar"];
-		if (current.stars >= 216 && old.stars < 216) return settings["216"] && !settings["allstar"];
+		if (current.stars >= 40 && old.stars < 40) return settings["40"] && !settings["every3"];
+		if (current.stars >= 54 && old.stars < 54) return settings["54"] && !settings["every3"];
+		if (current.stars >= 60 && old.stars < 60) return settings["60"] && !settings["every3"];
+		if (current.stars >= 85 && old.stars < 85) return settings["85"] && !settings["every3"];
+		if (current.stars >= 108 && old.stars < 108) return settings["108"] && !settings["every3"];
+		if (current.stars >= 162 && old.stars < 162) return settings["162"] && !settings["every3"];
+		if (current.stars >= 216 && old.stars < 216) return settings["216"] && !settings["every3"];
 		if (current.stars % 3 == 0 && settings["every3"]) return true;
 	}
 	
