@@ -74,6 +74,7 @@ start {
 	
 	if (vars.start_ready == true && current.start == 0 && old.start != 0) {
 		vars.last_area = "";
+		vars.area_ready = "";
 		vars.wait_for_jingle = false;
 		vars.start_ready = false;
 		vars.wait_for_cutscene = false;
@@ -84,20 +85,46 @@ start {
 
 split {
 	
-	if (current.area != null && current.area != old.area && vars.valid_areas.Contains(current.area.Split(',')[0].Substring(1))) {
+	if (current.area != null && current.area != old.area && vars.valid_areas.Contains(current.area.Split(',')[0].Substring(1)) && current.load == 0 && current.dialogue == 0) {
 		vars.last_area = current.area.Split(',')[0].Substring(1);
 	}
 	
-	if (vars.last_area == "Heliodor Castle") {
-		if (current.xPos > -152 && current.xPos < 152 && current.yPos <= -5394 && current.zPos > 1795 && current.zPos < 1956) {
-			vars.area_ready = "tyr";
+	if (vars.area_ready == "" || vars.area_ready == "mordegon") {
+		if (vars.last_area == "Heliodor Castle") {
+			if (current.xPos > -152 && current.xPos < 152 && current.yPos <= -5394 && current.zPos > 1795 && current.zPos < 1956 && !vars.doneSplits.Contains("Tyriant")) {
+				vars.area_ready = "tyr";
+			}
+			else if (!vars.doneSplits.Contains("MordegonSolo")) {
+				vars.area_ready = "mordegon";
+			}
 		}
-		else if (vars.area_ready != "tyr" && vars.area_ready != "arena3") {
-			vars.area_ready = "mordegon";
+	}
+	
+	if (vars.area_ready == "") {
+		if (vars.last_area == "Arena - Waiting Room" && !vars.doneSplits.Contains("arena3")) {
+			vars.area_ready = "arena1";
 		}
-	} else if (vars.area_ready != "arena3" && !vars.area_ready.Contains("mordy")) {
-		vars.area_ready = "";
-	}		
+		
+		if (vars.last_area.Contains("The Cryptic Crypt") && !vars.doneSplits.Contains("Jarvis1")) {
+			vars.area_ready = "Jarvis1";
+		}
+		
+		if (vars.last_area.Contains("The Void") && !vars.doneSplits.Contains("Rab")) {
+			vars.area_ready = "Rab";
+		}
+		
+		if (vars.last_area.Contains("Lonalulu") && !vars.doneSplits.Contains("squid")) {
+			vars.area_ready = "squid";
+		}
+		
+		if (vars.last_area.Contains("The World Tree") && !vars.doneSplits.Contains("WTJasper")) {
+			vars.area_ready = "WTJasper";
+		}
+		
+		if (vars.last_area == "Fortress of Fear - Palace of Malice" && !vars.doneSplits.Contains("MordegonTail")) {
+			vars.area_ready = "mordy0";
+		}
+	}
 	
 	//money based
 	if (current.gold > old.gold && old.gold != 0) {
@@ -121,7 +148,7 @@ split {
 			break;
 			
 			case 120: case 150:
-			if (vars.last_area == "Arena - Waiting Room") {
+			if (vars.area_ready == "arena1") {
 				if (settings[reward.ToString()] && !vars.doneSplits.Contains(reward.ToString())) {
 					vars.wait_for_cutscene = true;
 					vars.doneSplits.Add(reward.ToString());
@@ -138,21 +165,25 @@ split {
 			break;
 			
 			case 500: case 4000:
-			if (vars.last_area.Contains("The Cryptic Crypt") && settings["Jarvis1"] && !vars.doneSplits.Contains("Jarvis1")) {
+			if (vars.area_ready == "Jarvis1" && settings["Jarvis1"] && !vars.doneSplits.Contains("Jarvis1")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("Jarvis1");
+				vars.area_ready = "";
 			} 
-			else if (vars.last_area.Contains("The Void") && settings["Rab"] && !vars.doneSplits.Contains("Rab")) {
+			else if (vars.area_ready == "Rab" && settings["Rab"] && !vars.doneSplits.Contains("Rab")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("Rab");
+				vars.area_ready = "";
 			}
-			else if (vars.last_area.Contains("Lonalulu") && settings["squid"] && !vars.doneSplits.Contains("squid")) {
+			else if (vars.area_ready == "squid" && settings["squid"] && !vars.doneSplits.Contains("squid")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("squid");
+				vars.area_ready = "";
 			}
-			else if (vars.last_area.Contains("The World Tree") && settings["WTJasper"] && !vars.doneSplits.Contains("WTJasper")) {
+			else if (vars.area_ready == "WTJasper" && settings["WTJasper"] && !vars.doneSplits.Contains("WTJasper")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("WTJasper");
+				vars.area_ready = "";
 			}
 			break;
 			
@@ -160,13 +191,14 @@ split {
 			if (vars.area_ready == "mordegon" && settings["MordegonSolo"] && !vars.doneSplits.Contains("MordegonSolo")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("MordegonSolo");
+				vars.area_ready = "";
 			}
 			
 			else if (vars.area_ready == "tyr" && settings["Tyriant"] && !vars.doneSplits.Contains("Tyriant")) {
 				vars.wait_for_cutscene = true;
 				vars.doneSplits.Add("Tyriant");
+				vars.area_ready = "";
 			}
-			
 			break;
 			
 			default:
@@ -220,9 +252,9 @@ split {
 		return settings["Calasmos"];
 	}
 	
-	//mordegon health based
+	//any% end split
 	//i hate this code but im so done with this game at this point that im not improving it
-	if (vars.last_area == "Fortress of Fear - Palace of Malice" && current.xPos == 0 && current.yPos == 0 && current.zPos == 0 && old.xPos > 0) {
+	if (vars.area_ready == "mordy0" && current.xPos == 0 && current.yPos == 0 && current.zPos == 0 && old.xPos > 0) {
 		if (!vars.area_ready.Contains("mordy")) {
 			vars.area_ready = "mordy";
 		}
@@ -244,11 +276,11 @@ split {
 		vars.wait_for_jingle = true;
 	}
 	
-	if (current.jingle == 0 && old.jingle > 0 && vars.wait_for_jingle) {
+	if (current.dialogue == 1 && current.jingle == 0 && old.jingle > 0 && vars.wait_for_jingle) {
 		vars.wait_for_jingle = false;
 		vars.area_ready = "";
 		vars.doneSplits.Add("MordegonTail");
-		return settings["MordegonTail"];
+		return true;
 	}
 	
 	if (current.cs == old.cs + 1 && vars.wait_for_cutscene == true) {
