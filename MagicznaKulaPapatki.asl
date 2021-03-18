@@ -1,9 +1,3 @@
-// Magiczna Kula Papatki Autosplitter + Load Remover by rythin
-// Contact info:
-// Discord - rythin#0135
-// Twitter - @rythin_sr
-// Twitch - rythin_sr
-
 state("gratka3d") {
 	string7 mapName: 0xB2968; 
 	int gameLoading: 0xB3818; //0 when gameplay is happening, some high number when loading. Seems more accurate than other pointers?
