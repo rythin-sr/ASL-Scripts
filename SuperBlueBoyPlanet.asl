@@ -22,6 +22,13 @@ state("Super Blue Boy Planet", "2.0") {
 	int levelID: 0x6C2D90;
 }
 
+startup {
+	vars.timerStart = (EventHandler) ((s, e) => vars.storedLevel = 0);
+	timer.OnStart += vars.timerStart;
+
+	vars.timerStart(null, null);
+}
+
 init {
 	switch (modules.First().ModuleMemorySize) {
 		case 16973824: case 6225920: version = "1.1"; break;
@@ -34,19 +41,20 @@ init {
 }
 
 start {
-	if (old.levelID == 0 && current.levelID == 1) {
-		vars.storedLevel = 0;
-		return true;
-	}
+	return old.levelID == 0 && current.levelID == 1;
 }
 
 split {
-	if (old.levelID > vars.storedLevel && current.levelID == 0) {
-		vars.storedLevel = old.levelID;
+	if (old.levelID == 0 && vars.storedLevel < current.levelID) {
+		vars.storedLevel = current.levelID;
 		return true;
 	}
 }
 
 reset {
 	return old.levelID == 0 && current.levelID == 1;
+}
+
+shutdown {
+	timer.OnStart -= vars.timerStart;
 }
