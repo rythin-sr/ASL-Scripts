@@ -45,7 +45,7 @@ start {
 }
 
 split {
-	if (old.levelID == 0 && vars.storedLevel < current.levelID) {
+	if (old.levelID == 0 && vars.storedLevel == current.levelID - 1) {
 		vars.storedLevel = current.levelID;
 		return true;
 	}
