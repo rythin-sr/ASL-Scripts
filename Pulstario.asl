@@ -1,14 +1,7 @@
-//Pulstario Autosplitter + Game Time by rythin
-
-//Contact info in case issues arise:
-//Discord: rythin#0135
-//Twitter: rythin_sr
-//Twitch:  rythin_sr
-
 state("Pulstario") {
-	int roomID:				0x6C2DB8;
-	double frameCount:		0x004B2780, 0x2C, 0x10, 0x4E0, 0x1D0;
-	double deathCount:		0x004B2780, 0x2C, 0x10, 0x0, 0x120;
+	int roomID:        0x6C2DB8;
+	double frameCount: 0x4B2780, 0x2C, 0x10, 0x4E0, 0x1D0;
+	double deathCount: 0x4B2780, 0x2C, 0x10, 0x0, 0x120;
 }
 
 startup {
