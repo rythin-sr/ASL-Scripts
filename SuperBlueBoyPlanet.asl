@@ -23,7 +23,7 @@ state("Super Blue Boy Planet", "2.0") {
 }
 
 startup {
-	vars.timerStart = (EventHandler) ((s, e) => vars.storedLevel = 0);
+	vars.timerStart = (EventHandler) ((s, e) => vars.storedLevel = 1);
 	timer.OnStart += vars.timerStart;
 
 	vars.timerStart(null, null);
@@ -37,7 +37,7 @@ init {
 		default: version = "Undetected!"; break;
 	}
 
-	vars.storedLevel = 0;
+	vars.storedLevel = 1;
 }
 
 start {
