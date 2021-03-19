@@ -49,6 +49,10 @@ split {
 		vars.storedLevel = current.levelID;
 		return true;
 	}
+	
+	if (old.levelID == 21 && current.levelId == 24) {
+		return true;
+	}
 }
 
 reset {
