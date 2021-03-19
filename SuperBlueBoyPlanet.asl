@@ -1,11 +1,3 @@
-// Super Blue Boy Planet Autosplitter by rythin.
-// Original script by eddiesaurus87.
-
-// Contanct info in case issues arise:
-// Discord: rythin#0135
-// Twitter: rythin_sr
-// Twitch:  rythin_sr
-
 state("006", "1.2") {
 	int levelID: 0x5CB860;
 }
@@ -50,7 +42,7 @@ split {
 		return true;
 	}
 	
-	if (old.levelID == 21 && current.levelId == 24) {
+	if (old.levelID == 21 && current.levelID == 24) {
 		return true;
 	}
 }
