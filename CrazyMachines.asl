@@ -22,6 +22,10 @@ state("cmnftl") {
 	byte menu:  0x112764, 0x28C, 0x1F0, 0x9C, 0xF30;
 }
 
+startup {
+	refreshRate = 120;
+}
+
 init {
 	vars.startReady = false;
 }
