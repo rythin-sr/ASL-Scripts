@@ -13,7 +13,6 @@ state("DRAGON QUEST XI S") {
 	float yPos:      0x5E6EE10, 0x8, 0x8, 0x1A0, 0x548, 0x300, 0x1C0, 0xA4; //horizontal in 3D
 	float zPos:      0x5E6EE10, 0x8, 0x8, 0x1A0, 0x548, 0x300, 0x1C0, 0xA8; //vertical in 3D
 	int gold:        0x5C08210, 0x128, 0xC0;                                //money, only updates in 3D
-	int xp:          0x5C08210, 0x128, 0xF0, 0x0, 0xB0;                     //experience, only updates in 3D
 }
 
 startup {
@@ -52,11 +51,11 @@ startup {
 		settings.Add(vars.splits[i, 0], true, vars.splits[i, 1]);
 	}
 	
-	vars.valid_areas = new List<string>{"The Void", "The Cryptic Crypt", "Lonalulu", "The World Tree", "Heliodor Castle", "Arena - Waiting Room", "Fortress of Fear - Palace of Malice"};
+	vars.valid_areas = new List<string>{"Heliodor Dungeons", "The Void", "The Cryptic Crypt", "Lonalulu", "The World Tree", "Heliodor Castle", "Arena - Waiting Room", "Fortress of Fear - Palace of Malice"};
 	vars.doneSplits = new List<string>();
 	
 	vars.wait_for_cutscene = false;
-	vars.wait_for_jingle = false;
+	vars.wait_for_switch = false;
 	vars.start_ready = false;
 	vars.area_ready = "";
 	vars.last_area = "";
@@ -68,14 +67,10 @@ init {
 
 start {
 	
-	if (current.menu_index == 1 && old.menu_index != 1) {
-		vars.start_ready = true;
-	}
-	
-	if (vars.start_ready == true && current.start == 0 && old.start != 0) {
+	if (current.menu_index == 0 && old.menu_index == 1 || current.menu_index == 0 && current.start == 0 && old.start != 0) {
 		vars.last_area = "";
 		vars.area_ready = "";
-		vars.wait_for_jingle = false;
+		vars.wait_for_switch = false;
 		vars.start_ready = false;
 		vars.wait_for_cutscene = false;
 		vars.doneSplits.Clear();
@@ -91,10 +86,10 @@ split {
 	
 	if (vars.area_ready == "" || vars.area_ready == "mordegon") {
 		if (vars.last_area == "Heliodor Castle") {
-			if (current.xPos > -152 && current.xPos < 152 && current.yPos <= -5394 && current.zPos > 1795 && current.zPos < 1956 && !vars.doneSplits.Contains("Tyriant")) {
+			if (current.xPos > -152 && current.xPos < 152 && current.yPos <= -5394 && current.zPos > 1795 && current.zPos < 1956 && !vars.doneSplits.Contains("Tyriant") && vars.doneSplits.Contains("scenarios")) {
 				vars.area_ready = "tyr";
 			}
-			else if (!vars.doneSplits.Contains("MordegonSolo")) {
+			else if (!vars.doneSplits.Contains("MordegonSolo") && vars.doneSplits.Contains("WTJasper")) {
 				vars.area_ready = "mordegon";
 			}
 		}
@@ -117,13 +112,17 @@ split {
 			vars.area_ready = "squid";
 		}
 		
-		if (vars.last_area.Contains("The World Tree") && !vars.doneSplits.Contains("WTJasper")) {
+		if (vars.last_area.Contains("The World Tree") && !vars.doneSplits.Contains("WTJasper") && vars.doneSplits.Contains("MordegonTail")) {
 			vars.area_ready = "WTJasper";
 		}
 		
 		if (vars.last_area == "Fortress of Fear - Palace of Malice" && !vars.doneSplits.Contains("MordegonTail")) {
-			vars.area_ready = "mordy0";
+			vars.area_ready = "mord0";
 		}
+	}
+	
+	if (vars.last_area == "Heliodor Dungeons") {
+		vars.area_ready = "";
 	}
 	
 	//money based
@@ -215,13 +214,6 @@ split {
 					return true;
 				}
 			}
-		
-			if (current.xPos >= -1405 && current.xPos <= -1404 && current.yPos >= 3887 && current.yPos <= 3888 && current.zPos >= 1130 && current.zPos <= 1131) {
-				if (current.xp > 60000 && settings["2dgrind1"] && !vars.doneSplits.Contains("2dgrind1")) {
-					vars.doneSplits.Add("2dgrind1");
-					return true;
-				}
-			}
 			
 			if (current.xPos >= -5 && current.xPos <= -4 && current.yPos >= 13571 && current.yPos <= 13572 && current.zPos >= 208 && current.zPos <= 209) {
 				if (settings["act2"] && !vars.doneSplits.Contains("act2")) {
@@ -252,32 +244,35 @@ split {
 		return settings["Calasmos"];
 	}
 	
+	if (current.tb2d.Contains("level increases") && !vars.doneSplits.Contains("2dgrind1")) {
+		vars.doneSplits.Add("2dgrind1");
+		if (settings["2dgrind1"])
+			vars.wait_for_switch = true;
+	}
+	
 	//any% end split
 	//i hate this code but im so done with this game at this point that im not improving it
-	if (vars.area_ready == "mordy0" && current.xPos == 0 && current.yPos == 0 && current.zPos == 0 && old.xPos > 0) {
-		if (!vars.area_ready.Contains("mordy")) {
-			vars.area_ready = "mordy";
-		}
+	if (vars.last_area == "Fortress of Fear - Palace of Malice" && current.xPos > 840000 && current.xPos < 842000 && current.yPos > 23000 && current.yPos < 23500 && vars.area_ready.Contains("mord")) {
+		vars.area_ready = "mord0";
 	}
 	
-	if (vars.area_ready == "mordy" && current.cs == old.cs - 1) {
-		vars.area_ready = "mordy1";
+	if (vars.area_ready == "mord0" && current.xPos == 0 && current.yPos == 0 && current.zPos == 0 && old.xPos > 0) {
+		vars.area_ready = "mord";
 	}
 	
-	if (vars.area_ready == "mordy1" && current.cs == old.cs + 1) {
-		vars.area_ready = "mordy2";
+	if (vars.area_ready == "mord" && current.cs == old.cs - 1) {
+		vars.area_ready = "mord1";
 	}
 	
-	if (vars.area_ready == "mordy2" && current.cs == old.cs - 1) {
-		vars.area_ready = "mordy_fin";
+	if (vars.area_ready == "mord1" && current.cs == old.cs + 1) {
+		vars.area_ready = "mord2";
 	}
 	
-	if (vars.area_ready == "mordy_fin") {
-		vars.wait_for_jingle = true;
+	if (vars.area_ready == "mord2" && current.cs == old.cs - 1) {
+		vars.area_ready = "mord_fin";
 	}
 	
-	if (current.dialogue == 1 && current.jingle == 0 && old.jingle > 0 && vars.wait_for_jingle) {
-		vars.wait_for_jingle = false;
+	if (current.dialogue == 1 && current.jingle == 0 && old.jingle > 0 && vars.area_ready == "mord_fin") {
 		vars.area_ready = "";
 		vars.doneSplits.Add("MordegonTail");
 		return true;
@@ -287,6 +282,12 @@ split {
 		vars.wait_for_cutscene = false;
 		return true;
 	}
+	
+	if (current.mode == 4 && old.mode == 5 && vars.wait_for_switch) {
+		vars.wait_for_switch = false;
+		return true;
+	}
+		
 }
 
 isLoading {
