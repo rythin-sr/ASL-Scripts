@@ -3,6 +3,7 @@ state("game", "1.0") {
 	string9 map: 0x1C412D;
 	float end:   0x1C2EFC;        // goes from 1 to 0 at the end of the run
 	byte freeze: 0x1DEF54, 0x2B0; // 33 when game is frozen due to quicksave/checkpoint
+	int cs:      0x1BA648;        // 2 during gameplay, 0 in fmvs
 }
 
 state("game", "Steam") {
@@ -10,6 +11,7 @@ state("game", "Steam") {
 	string9 map: 0x1C212D;        
 	float end:   0x1C0EFC;        
 	byte freeze: 0x1DCEC8, 0x2B0; 
+	int cs:      0x1B8648;
 }
 
 startup {
@@ -58,5 +60,5 @@ reset {
 }
 
 isLoading {
-	return current.load > 0 && current.load < 3 || current.freeze == 33;
+	return current.load > 0 && current.load < 3 && current.cs == 2 || current.freeze == 33;
 }
