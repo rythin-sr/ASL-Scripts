@@ -1,9 +1,5 @@
-//Yo! Noid 2 Legacy Edition autosplitter by rythin
-//dice patch support in the future?
-
 state("noid") {
-	//different number on different levels, flickers a bunch during level transitions
-	int level:	0xFFC710;
+	string10 scene: 0x104FB78, 0x24, 0x30;
 	byte dialogue:	"mono.dll", 0x20C574, 0x10, 0xBC, 0x0, 0x8, 0xA8, 0xCC, 0x74, 0x40, 0xD8, 0x74;
 }
 
@@ -14,29 +10,22 @@ startup {
 	settings.Add("le", true, "Level Entry");
 	settings.Add("mikestart", false, "Split at the beginning of the Mike fight");
 	
-	settings.Add("5", true, "New York", "lc");
-	
-	vars.doneLevels = new List<string>();
-	vars.validLevels = new List<int>();
-	vars.validLevels.Add(5);
-	vars.lastLevel = 0;
-	vars.flickerPrevention = 0;
+	settings.Add("LevelIntro", true, "New York", "lc");
+	vars.doneSplits = new List<string>();
+	vars.lastLevel = "";
 	vars.stopwatch = new Stopwatch();
 	
-	vars.l = new Dictionary<int, string> {
-		{16, "Plizzanet"},
-		{28, "Swing Factory"},
-		{31, "Domino Dungeon"},
-		{10, "???"}
+	vars.l = new Dictionary<string, string> {
+		{"PZNTv5", "Plizzanet"},
+		{"LeviLevle", "Swing Factory"},
+		{"dungeon", "Domino Dungeon"},
+		{"MikeLayer", "???"}
 	};
 	
 	foreach (var Tag in vars.l) {
-		settings.Add(Tag.Key.ToString(), true, Tag.Value, "lc");
-		settings.Add(Tag.Key.ToString() + "e", false, Tag.Value, "le");
-		vars.validLevels.Add(Tag.Key); 
+		settings.Add(Tag.Key, true, Tag.Value, "lc");
+		settings.Add(Tag.Key + "-e", false, Tag.Value, "le");
 	};
-	
-	timer.Run.Offset = TimeSpan.FromSeconds(1.05);
 }
 
 init {
@@ -44,44 +33,43 @@ init {
 }
 
 start {
-	if (current.level == 1 && old.level != 1) {
-		vars.lastLevel = 5;
-		vars.flickerPrevention = 0;
+	timer.Run.Offset = TimeSpan.FromSeconds(0);
+	
+	if (current.scene != old.scene && old.scene == "title") {
 		current.miketalk = 0;
-		vars.doneLevels.Clear();
+		vars.doneSplits.Clear();
+		timer.Run.Offset = TimeSpan.FromSeconds(1.05);
 		return true;
 	}
 }
 
 split {
-	
-	//area entry splits
-	if (vars.validLevels.Contains(current.level) && old.level != current.level) {
-		vars.flickerPrevention = current.level;
-		vars.stopwatch.Restart();
+	if ((current.scene == null || current.scene == "title") && old.scene != current.scene && old.scene != "title") {
+		vars.lastLevel = old.scene;
 	}
 	
-	if (vars.stopwatch.ElapsedMilliseconds > 30) {
-		if (current.level == vars.flickerPrevention && !vars.doneLevels.Contains(current.level.ToString() + "e")) {
-			vars.doneLevels.Add(current.level.ToString() + "e");
-			vars.lastLevel = current.level;
-			return (settings[current.level.ToString() + "e"]);
+	//level splits
+	if (current.scene != vars.lastLevel && current.scene != null) {
+		if (current.scene == "void") {
+			if (settings[vars.lastLevel] && !vars.doneSplits.Contains(vars.lastLevel)) {
+				vars.doneSplits.Add(vars.lastLevel);
+				return true;
+			}
+		} else if (vars.lastLevel == "void") {
+			if (settings[current.scene + "-e"] && !vars.doneSplits.Contains(current.scene + "-e")) {
+				vars.doneSplits.Add(current.scene + "-e");
+				return true;
+			};
 		}
 	}
 	
-	//area completion splits
-	if (current.level == 19 && old.level != 19 && !vars.doneLevels.Contains(vars.lastLevel.ToString())) {
-		vars.doneLevels.Add(vars.lastLevel.ToString());
-		return (settings[vars.lastLevel.ToString()]);
-	}
-	
 	//mike splits
-	if (current.level == 10 && current.dialogue == old.dialogue - 1) {
+	if (current.scene == "MikeLayer" && current.dialogue == old.dialogue - 1) {
 		current.miketalk++;
 	}
 	
 	if (current.miketalk == old.miketalk + 1) {
 		if (current.miketalk == 1) return settings["mikestart"];
-		if (current.miketalk == 2) return settings["10"];
+		if (current.miketalk == 2) return settings["MikeLayer"];
 	}
 }
