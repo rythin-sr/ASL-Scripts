@@ -1,10 +1,3 @@
-//Trespasser: Jurassic Park Load Remover + Autosplitter by rythin
-
-//Contanct info in case issues arise:
-//Discord: rythin#0135
-//Twitter: rythin_sr
-//Twitch:  rythin_sr
-
 state("trespass", "1.0") {
 	int		gameLoading1:		0x340AD4;
 	int		gameLoading2:		0x26E654;
