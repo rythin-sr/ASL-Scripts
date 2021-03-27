@@ -9,63 +9,44 @@
 
 state("Risk of Rain 2", "1.0.0") {
 	
-	//1 from fade-out to the moment the next stage loads, 0 otherwise
-	byte load: 		"mono-2.0-bdwgc.dll", 0x04A1C90, 0x280, 0x0, 0x1E0, 0x40;
+	//goes from 0 to 2 and back depending on the intensity of the fade 
+	float fade:     "mono-2.0-bdwgc.dll", 0x48FA68, 0x18, 0x220, 0x0, 0x1C0, 0x5E0, 0x1CC, 0xC;
 	
-	//the above address didn't work for a singular person in the community, so adding this one just for them lol
-	byte load2:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
+	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
 	
-	int stageCount:	"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x6B0;
+	//0 in title and lobby, -1 in other stages
+	int inGame:     "AkSoundEngine.dll",  0x20DC04;
 	
-	//0 in title and lobby, some random number in other stages
-	//i just realised its a sound engine thing, yeah no clue either. it works for what i need it so good enough for me
-	int inGame:		"AkSoundEngine.dll", 0x20DC04;
+	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
 }
 
 state("Risk of Rain 2", "1.0.1") {
-	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
-	byte load2:		"mono-2.0-bdwgc.dll", 0x049C218, 0x108, 0x80, 0x20, 0x78, 0x8C, 0x38;
-	int stageCount:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
-	int inGame:		"AkSoundEngine.dll", 0x20DC04;
+	float fade:     "mono-2.0-bdwgc.dll", 0x48FA68, 0x18, 0x220, 0x0, 0x1C0, 0x5E0, 0x1CC, 0xC;
+	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x660;
+	int inGame:     "AkSoundEngine.dll",  0x20DC04;
+	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
 }
 
-state("Risk of Rain 2", "1.0.2") {
-	//same addresses as 1.0.1 but I want the version to display correctly on the splits and idk if theres a way to do that otherwise
-	byte load:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x58, 0x160, 0x160, 0x160, 0x160, 0x160, 0xBF0;
-	byte load2:		"mono-2.0-bdwgc.dll", 0x049C218, 0x108, 0x80, 0x20, 0x78, 0x8C, 0x38;
-	int stageCount:		"mono-2.0-bdwgc.dll", 0x0491DC8, 0x28, 0x50, 0x660;
-	int inGame:		"AkSoundEngine.dll", 0x20DC04;
+state("Risk of Rain 2", "1.1.0.1") {
+	float fade:     "mono-2.0-bdwgc.dll", 0x48FA68, 0x18, 0x220, 0x0, 0x1C0, 0x5E0, 0x1CC, 0xC;
+	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
+	int inGame:     "AkSoundEngine.dll", 0x20DC04;
+	string15 scene: "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
 }
 
 startup {
 
-	settings.Add("stages", true, "Stages");
-	settings.SetToolTip("stages", "The settings below indicate the END of which stage to split on. I.E. ticking \"Sky Meadow\" will split at the end of Sky Meadow etc.");
-
-	vars.l = new Dictionary<int, string> {
-		{1,"Titanic Plains/Distant Roost"},
-		{2,"Abandoned Aqueduct/Wetlands Aspect"},
-		{3,"Rallypoint Delta/Scorched Acres"},
-		{4,"Siren's Call/Abyssal Depths"},
-		{5,"Sky Meadow"},
-		{6,"Commencement"}
-	};
-
-	foreach (var Tag in vars.l) {							
-		settings.Add(Tag.Key.ToString(), true, Tag.Value, "stages");					
-    };
-	
-	settings.SetToolTip("1", "Splits when entering the Bazaar. Due to current limitations splitting after bazaar automatically is not possible");
-
-	settings.Add("alwaysSplit", false, "Ignore the above setting and split on every stage counter increase (and credits)");
-	
-	//variable used to set the offset of the timer start, to account for timing rules
-	vars.setOffset = false;
+	settings.Add("fin", false, "Split when entering the final cutscene");
+	settings.SetToolTip("fin", "Enabling this setting will disable splitting on stage transitions");
+	settings.Add("bazaar", false, "Split when leaving Bazaar Between Time");
+	settings.Add("arena", false, "Split when leaving Void Fields");
+	settings.Add("goldshores", false, "Split when leaving Gilded Coast");
+	settings.Add("artifactworld", false, "Split when leaving Bulwark's Ambry");
 	
 	//timing method reminder from Amnesia TDD autosplitter, all credits to those guys
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
-          		"This game uses time without loads as the main timing method.\n"+
+          		"This game uses Loadless (time without loads) as the main timing method.\n"+
           		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
           		"Would you like the timing method to be set to Loadless for you?",
          		"RoR2 Autosplitter | LiveSplit",
@@ -79,13 +60,16 @@ startup {
 }
 
 init {
+
+	string dll_path = modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll";
 	
-	long dll_size = new System.IO.FileInfo(modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll").Length;
+	long dll_size = new System.IO.FileInfo(dll_path).Length;
  
-	//print("ROR2ASL: Version: " + dll_size.ToString()); 
+	print("ROR2ASL: Version: " + dll_size.ToString()); 
 	
 	//[17256] ROR2ASL: Version: 2858496 - 1.0.0.6
 	//[17256] ROR2ASL: Version: 2865664 - 1.0.1.1
+	//[16320] ROR2ASL: Version: 3048960 - 1.1.0.1
 
 	switch (dll_size) {
 	
@@ -97,8 +81,8 @@ init {
 		version = "1.0.1";
 		break;
 		
-		case 2875392:
-		version = "1.0.2";
+		case 3048960:
+		version = "1.1.0.1";
 		break;
 		
 		default:
@@ -108,8 +92,10 @@ init {
 }
 
 start {
+	timer.Run.Offset = TimeSpan.FromSeconds(0);
+	
 	if (current.inGame != 0 && old.inGame == 0) {
-		vars.setOffset = true;
+		timer.Run.Offset = TimeSpan.FromSeconds(-0.56);
 		return true;
 	}
 }
@@ -121,27 +107,25 @@ reset {
 }
 
 split {
-	if (current.stageCount == old.stageCount + 1 && current.stageCount > 1) {
-		
-		if (settings["alwaysSplit"]) {
-			return true;
-		}
-		
-		else if (settings[old.stageCount.ToString()]) {
-			return true;
-		}
+	if (current.scene == null) 
+		current.scene = old.scene;
+
+	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby") {
+		return settings[old.scene];
+	}
+	
+	if (!settings["fin"]) {
+		return (current.stageCount == old.stageCount + 1 && current.stageCount > 1);
+	} else {
+		return current.scene != old.scene && current.scene == "outro";
 	}
 }
 
-gameTime {
-	//timer offset from the script's starting point to the rule-defined starting point
-	if (vars.setOffset == true) {
-		vars.setOffset = false;
-		return TimeSpan.FromSeconds(-0.56);
-	}
-}
-		
 isLoading {
-	//using 2 different load addresses, mostly because unity sucks and one only works for some people and the combination of these two seems to work for everyone
-	return (current.load == 1 || current.load2 == 1);
+	if (current.fade > old.fade) return true;
+	if (current.fade < old.fade && current.fade > 0) return false;
+}
+
+exit {
+	timer.Run.Offset = TimeSpan.FromSeconds(0);
 }
