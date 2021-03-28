@@ -61,10 +61,6 @@ startup {
 	vars.last_area = "";
 }
 
-init {
-	timer.IsGameTimePaused = false;
-}
-
 start {
 	
 	if (current.menu_index == 0 && old.menu_index == 1 || current.menu_index == 0 && current.start == 0 && old.start != 0) {
@@ -80,7 +76,7 @@ start {
 
 split {
 	
-	if (current.area != null && current.area != old.area && vars.valid_areas.Contains(current.area.Split(',')[0].Substring(1)) && current.load == 0 && current.dialogue == 0) {
+	if (current.area != null && current.area != old.area && vars.valid_areas.Contains(current.area.Split(',')[0].Substring(1)) && current.load != 1) {
 		vars.last_area = current.area.Split(',')[0].Substring(1);
 	}
 	
@@ -156,10 +152,11 @@ split {
 			break;
 			
 			case 180:
-			if (settings[reward.ToString()] && !vars.doneSplits.Contains(reward.ToString())) {
-				vars.wait_for_cutscene = true;
+			if (!vars.doneSplits.Contains(reward.ToString())) {
 				vars.area_ready = "arena3";
 				vars.doneSplits.Add(reward.ToString());
+				if (settings[reward.ToString()]) 
+					vars.wait_for_cutscene = true;
 			}
 			break;
 			
@@ -287,13 +284,8 @@ split {
 		vars.wait_for_switch = false;
 		return true;
 	}
-		
 }
 
 isLoading {
 	return current.load == 1 || (current.fade == 1 && current.mode == 5);
-}
-
-exit {
-	timer.IsGameTimePaused = true;
 }
