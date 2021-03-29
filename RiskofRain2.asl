@@ -110,14 +110,14 @@ split {
 	if (current.scene == null) 
 		current.scene = old.scene;
 
-	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby") {
-		return settings[old.scene];
-	}
-	
 	if (!settings["fin"]) {
 		return (current.stageCount == old.stageCount + 1 && current.stageCount > 1);
 	} else {
 		return current.scene != old.scene && current.scene == "outro";
+	}
+
+	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby") {
+		return settings[old.scene];
 	}
 }
 
