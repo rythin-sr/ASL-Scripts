@@ -111,9 +111,13 @@ split {
 		current.scene = old.scene;
 
 	if (!settings["fin"]) {
-		return (current.stageCount == old.stageCount + 1 && current.stageCount > 1);
+		if (current.stageCount == old.stageCount + 1 && current.stageCount > 1) {
+			return true;
+		}
 	} else {
-		return current.scene != old.scene && current.scene == "outro";
+		if (current.scene != old.scene && current.scene == "outro") {
+			return true;
+		}
 	}
 
 	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby") {
