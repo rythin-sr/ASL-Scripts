@@ -1,5 +1,3 @@
-//Risk of Rain 2 Autosplitter + Load Remover by rythin
-
 //INSTALL INSTRUCTIONS:
 //Go to Edit Splits in LiveSplit
 //Set the game name to "Risk of Rain 2"
@@ -8,30 +6,31 @@
 //Make sure to exit out of the Edit Splits menu by pressing OK, and not the red X. IF YOU DO NOT PRESS "OK", THE CHANGES WILL NOT BE SAVED
 
 state("Risk of Rain 2", "1.0.0") {
-	
-	//goes from 0 to 2 and back depending on the intensity of the fade 
-	float fade:     "UnityPlayer.dll", 0x15637F8, 0x128, 0xD0, 0x18, 0xD0, 0x38, 0x60, 0xC;
-	
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
-	
-	//0 in title and lobby, -1 in other stages
-	int inGame:     "AkSoundEngine.dll",  0x20DC04;
-	
-	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
+	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
+	int inGame:            "AkSoundEngine.dll",  0x20DC04;
+	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
+	string15 loadingScene: "UnityPlayer.dll", 0x15A95D8, 0x28, 0x0, 0x40;
 }
 
 state("Risk of Rain 2", "1.0.1") {
-	float fade:     "mono-2.0-bdwgc.dll", 0x48FA68, 0x18, 0x220, 0x0, 0x1C0, 0x5E0, 0x1CC, 0xC;
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x660;
-	int inGame:     "AkSoundEngine.dll",  0x20DC04;
-	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
+	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x660;
+	int inGame:            "AkSoundEngine.dll",  0x20DC04;
+	string15 scene:        "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
+	string15 loadingScene: "UnityPlayer.dll", 0x15A95D8, 0x28, 0x0, 0x40;
 }
 
 state("Risk of Rain 2", "1.1.0.1") {
-	float fade:     "UnityPlayer.dll", 0x150E3F0, 0x350, 0x288, 0x0, 0xD0, 0x60, 0x58C, 0xC;
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
-	int inGame:     "AkSoundEngine.dll", 0x20DC04;
-	string15 scene: "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
+	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
+	int inGame:            "AkSoundEngine.dll", 0x20DC04;
+	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
+	string15 loadingScene: "UnityPlayer.dll", 0x15A95D8, 0x28, 0x0, 0x40;
+}
+
+state("Risk of Rain 2", "1.1.1.2") {
+	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0xA0, 0x6B0;
+	int inGame:            "AkSoundEngine.dll", 0x20DC04;
+	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
+	string15 loadingScene: "UnityPlayer.dll", 0x15A95D8, 0x28, 0x0, 0x40;
 }
 
 startup {
@@ -85,6 +84,10 @@ init {
 		version = "1.1.0.1";
 		break;
 		
+		case 3082240:
+		version = "1.1.1.2";
+		break;
+		
 		default:
 		version = "Unrecognised";
 		break;
@@ -126,8 +129,7 @@ split {
 }
 
 isLoading {
-	if (current.fade > old.fade) return true;
-	if (current.fade < old.fade && current.fade > 0) return false;
+	return (current.scene != current.loadingScene);
 }
 
 exit {
