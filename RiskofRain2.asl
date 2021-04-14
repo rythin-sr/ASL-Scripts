@@ -26,7 +26,7 @@ state("Risk of Rain 2", "1.1.0.1") {
 }
 
 state("Risk of Rain 2", "1.1.1.2") {
-	float fade:            "mono-2.0-bdwgc.dll", 0x49C1D8, 0xE0, 0x730, 0x268, 0x80, 0x4A0, 0xC;
+	float fade:            "UnityPlayer.dll", 0x1538598, 0x220, 0x138, 0xD0, 0x8, 0x1A8, 0xC;
 	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0xA0, 0x6B0;
 	int inGame:            "AkSoundEngine.dll", 0x20DC04;
 	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
