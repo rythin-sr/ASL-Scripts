@@ -34,8 +34,8 @@ state("Risk of Rain 2", "1.1.1.2") {
 
 startup {
 
-	settings.Add("fin", false, "Split when entering the final cutscene");
-	settings.SetToolTip("fin", "Enabling this setting will disable splitting on stage transitions");
+	settings.Add("fin", false, "Don't split on stage transitions");
+	settings.SetToolTip("fin", "Will still split when entering the final cutscene, just not between stages.");
 	settings.Add("bazaar", false, "Split when leaving Bazaar Between Time");
 	settings.Add("arena", false, "Split when leaving Void Fields");
 	settings.Add("goldshores", false, "Split when leaving Gilded Coast");
@@ -44,7 +44,7 @@ startup {
 	//timing method reminder from Amnesia TDD autosplitter, all credits to those guys
 	if (timer.CurrentTimingMethod == TimingMethod.RealTime) {        
         	var timingMessage = MessageBox.Show (
-          		"This game uses Loadless (time without loads) as the main timing method.\n"+
+          		"This game uses time without loads as the main timing method.\n"+
           		"LiveSplit is currently set to show Real Time (time INCLUDING loads).\n"+
           		"Would you like the timing method to be set to Loadless for you?",
          		"RoR2 Autosplitter | LiveSplit",
