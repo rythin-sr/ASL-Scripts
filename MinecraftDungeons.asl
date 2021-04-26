@@ -111,8 +111,15 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.8.0.0") {
 state("Dungeons-Win64-Shipping", "Launcher, 1.8.6.0") {
 	byte counter:    0x3EC4208;
 	byte lc:         0x4328742;
-	int seed:        0x4362420, 0x160, 0x730, 0x20, 0x4F0;	//Probably sucks idk ask Imek
+	int seed:        0x4362420, 0x160, 0x730, 0x20, 0x4F0;
 	int cs:          0x435F9E8, 0x8;
+}
+
+state("Dungeons", "Windows Store, 1.8.6.0") {
+	byte counter:    0x3EC71F8;
+	byte lc:         0x3ED4ED8;
+	int seed:        0x040CFDA0, 0x20, 0x4F0;
+	int cs:          0x04362B28, 0x8;
 }
 
 startup {
@@ -232,6 +239,10 @@ init {
 		
 		case 98816000:
 		version = "Launcher, 1.8.6.0";
+		break;
+	
+		case 98971648:
+		version = "Windows Store, 1.8.6.0";
 		break;
 	
 		default:
