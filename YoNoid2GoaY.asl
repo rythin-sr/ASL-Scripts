@@ -35,8 +35,63 @@ startup {
 		
 	settings.Add("Misc.");
 		settings.Add("mikestart", false, "Split when starting the Mike fight", "Misc.");
+		settings.Add("emoji_6", false, "Split when talking to an NPC", "Misc.");
 	
 	vars.doneSplits = new List<string>();
+	
+	var tB = (Func<float, float, float, float, float, float, Tuple<float, float, float, float, float, float>>) ((elmt1, elmt2, elmt3, elmt4, elmt5, elmt6) => { return Tuple.Create(elmt1, elmt2, elmt3, elmt4, elmt5, elmt6); });
+
+	vars.splitzone = new List<Tuple<float, float, float, float, float, float>>{
+		tB(-90, -77, 290, 320, 240, 250),   //intro        
+		tB(715, 725, 135, 145, 110, 120),   //sf
+		tB(-15, -3, 60, 70, 8, 20),         //dd
+		tB(32, 42, -60, -40, -1345, -1330), //pznt
+		tB(-1, 1, 0, 0, 0, 0)               //impossible condition because im too lazy to figure out a proper fix
+	};
+	
+	Func<string, int> GetStageNum = (stage) => {
+		switch (stage) {
+			case "LevelIntro":
+			return 0;
+			case "LeviLevle":
+			return 1;
+			case "dungeon":
+			return 2;
+			case "PZNTv5":
+			return 3;
+			default:
+			return 4;
+		}
+	};
+	
+	Func<float, float, float, Tuple<float, float, float, float, float, float>, bool> CheckPos = (x, y, z, split) => {
+		if (x > split.Item1 && x < split.Item2 &&
+		 y > split.Item3 && y < split.Item4 &&
+		 z > split.Item5 && z < split.Item6) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+	
+	vars.GetStageNum = GetStageNum;
+	vars.CheckPos = CheckPos;
+}
+
+init {
+	//thanks to Ero for figuring out modded game offsets and this code
+	var offsets =
+		new FileInfo(modules.First().FileName + @"\..\noid_Data\Managed\Assembly-CSharp.dll").Length > 1000000
+		? new int[] { 0x8, 0x10, 0x30, 0x150, 0x90, 0xA88, 0x10C }
+		: new int[] { 0x8, 0x0, 0x30, 0x150, 0x90, 0xA88, 0x104 };
+
+	vars.DialogueActive = new MemoryWatcher<bool>(new DeepPointer("UnityPlayer.dll", 0x14660A8, offsets));		
+}
+
+update
+{
+	vars.DialogueActive.Update(game);
+	current.dialogue = vars.DialogueActive.Current;
 }
 
 start {
@@ -55,6 +110,7 @@ split {
 	if (String.IsNullOrEmpty(current.loadedScene))
 		current.loadedScene = old.loadedScene;
 	
+	//splits on loads into a level
 	if (!settings["ILS"]) {
 		if (current.loadedScene != old.loadedScene) {
 			if (current.loadedScene == "void" && !vars.doneSplits.Contains(old.loadedScene) && settings[old.loadedScene]) {
@@ -68,58 +124,31 @@ split {
 			}
 		}
 	} 
+	
+	//AllNPC splits
+	if (current.loadedScene != "MikeLayer" && current.dialogue && !old.dialogue) {
+		return settings["emoji_6"];
+	}
+	
+	//IL timing splits
 	if (settings["ILS"] || settings["IL"]) {
-		//this is awful
-		if (current.state == 9 && old.state < 9) {
-			if (current.loadedScene == "LevelIntro" &&
-			current.xPos >= -90 && current.xPos <= -77 &&
-			current.yPos >= 290 && current.yPos <= 320 &&
-			current.zPos >= 240 && current.zPos <= 250 &&
-			!vars.doneSplits.Contains(current.loadedScene) && settings[current.loadedScene]) {
-				vars.doneSplits.Add(current.loadedScene);
-				return true;
-			}
-				
-			if (current.loadedScene == "LeviLevle" &&
-			current.xPos >= 715 && current.xPos <= 725 &&
-			current.yPos >= 135 && current.yPos <= 145 &&
-			current.zPos >= 110 && current.zPos <= 120 &&
-			!vars.doneSplits.Contains(current.loadedScene) && settings[current.loadedScene]) {
-				vars.doneSplits.Add(current.loadedScene);
-				return true;
-			}
-				
-			if (current.loadedScene == "dungeon" &&
-			current.xPos >= -15 && current.xPos <= -3 &&
-			current.yPos >= 60 && current.yPos <= 70 &&
-			current.zPos >= 8 && current.zPos <= 20 &&
-			!vars.doneSplits.Contains(current.loadedScene) && settings[current.loadedScene]) {
-				vars.doneSplits.Add(current.loadedScene);
-				return true;
-			}
-				
-			if (current.loadedScene == "PZNTv5" &&
-			current.xPos >= 32 && current.xPos <= 42 &&
-			current.yPos >= -60 && current.yPos <= -40 &&
-			current.zPos >= -1345 && current.zPos <= -1330 &&
-			!vars.doneSplits.Contains(current.loadedScene) && settings[current.loadedScene]) {
-				vars.doneSplits.Add(current.loadedScene);
-				return true;
-			}
+		if (current.state != old.state && current.state == 9) {
+			return vars.CheckPos(current.xPos, current.yPos, current.zPos, vars.splitzone[vars.GetStageNum(current.loadedScene)]);
 		}
 		
-		if (!settings["IL"] && current.state == old.state - 1 && !vars.doneSplits.Contains("e" + current.loadedScene) && settings["e" + current.loadedScene]) {
+		if (current.loadedScene != "LevelIntro" && current.loadedScene != "void" && !settings["IL"] && current.state == old.state - 1 && !vars.doneSplits.Contains("e" + current.loadedScene) && settings["e" + current.loadedScene]) {
 			vars.doneSplits.Add("e" + current.loadedScene);
 			return true;
 		}
 	}
 	
-	if (current.loadedScene == "MikeLayer" && current.state < 2 && old.state == 9) {
-			if (current.bosshp > 0)
-				return settings["mikestart"];
+	//mike level splits
+	if (current.loadedScene == "MikeLayer" && !current.dialogue && old.dialogue) {
+		if (current.bosshp > 0)
+			return settings["mikestart"];
 			
-			if (current.bosshp == 0)
-				return settings["MikeLayer"] || settings["IL"];
+		if (current.bosshp == 0)
+			return settings["MikeLayer"] || settings["IL"];
 	}
 }
 
