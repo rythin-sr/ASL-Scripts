@@ -4,6 +4,7 @@ state("noid") {
 	float xPos:            "UnityPlayer.dll", 0x1446C88, 0x58, 0x98, 0x30, 0x1F0;
 	float yPos:            "UnityPlayer.dll", 0x1446C88, 0x58, 0x98, 0x30, 0x1F4;
 	float zPos:            "UnityPlayer.dll", 0x1446C88, 0x58, 0x98, 0x30, 0x1F8;
+	bool dab:              "UnityPlayer.dll", 0x1446C88, 0x58, 0x98, 0x30, 0x338;
 	
 	//unity globals
 	string20 loadedScene:  "UnityPlayer.dll", 0x1467538, 0x48, 0x40;
@@ -37,6 +38,8 @@ startup {
 		settings.Add("mikestart", false, "Split when starting the Mike fight", "Misc.");
 		settings.Add("emoji_6", false, "Split when talking to an NPC", "Misc.");
 	
+	settings.Add("Dab", false, "Display dab counter");
+		settings.Add("nodabreset", false, "Don't reset the counter between runs", "Dab");
 	vars.doneSplits = new List<string>();
 	
 	var tB = (Func<float, float, float, float, float, float, Tuple<float, float, float, float, float, float>>) ((elmt1, elmt2, elmt3, elmt4, elmt5, elmt6) => { return Tuple.Create(elmt1, elmt2, elmt3, elmt4, elmt5, elmt6); });
@@ -74,8 +77,27 @@ startup {
 		}
 	};
 	
+	vars.SetTextComponent = (Action<string, string>)((id, text) =>
+	{
+		var textSettings = timer.Layout.Components.Where(x => x.GetType().Name == "TextComponent").Select(x => x.GetType().GetProperty("Settings").GetValue(x, null));
+		var textSetting = textSettings.FirstOrDefault(x => (x.GetType().GetProperty("Text1").GetValue(x, null) as string) == id);
+		if (textSetting == null)
+		{
+		var textComponentAssembly = Assembly.LoadFrom("Components\\LiveSplit.Text.dll");
+		var textComponent = Activator.CreateInstance(textComponentAssembly.GetType("LiveSplit.UI.Components.TextComponent"), timer);
+		timer.Layout.LayoutComponents.Add(new LiveSplit.UI.Components.LayoutComponent("LiveSplit.Text.dll", textComponent as LiveSplit.UI.Components.IComponent));
+
+		textSetting = textComponent.GetType().GetProperty("Settings", BindingFlags.Instance | BindingFlags.Public).GetValue(textComponent, null);
+		textSetting.GetType().GetProperty("Text1").SetValue(textSetting, id);
+		}
+
+		if (textSetting != null)
+		textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
+	});
+	
 	vars.GetStageNum = GetStageNum;
 	vars.CheckPos = CheckPos;
+	vars.dabs = 0;
 }
 
 init {
@@ -92,6 +114,8 @@ update
 {
 	vars.DialogueActive.Update(game);
 	current.dialogue = vars.DialogueActive.Current;
+	if (settings["Dab"]) vars.SetTextComponent("Dab count:", vars.dabs.ToString());
+	if (current.dab && !old.dab) vars.dabs++;
 }
 
 start {
@@ -102,6 +126,7 @@ start {
 	
 	if (current.loadedScene == "title" && current.ConfirmTime > old.ConfirmTime) {
 		vars.doneSplits.Clear();
+		if (!settings["nodabreset"]) vars.dabs = 0;
 		return true;
 	}
 }
