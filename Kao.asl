@@ -1,11 +1,4 @@
-//Kao the Kangaroo Autosplitter + Load Remover by rythin
-//Base script by Mr. Mary, expanded upon by me 
-
-state("kao") {
-	int level:		0xDB1F0;
-	int load:		0xD3D24;
-	byte hunterAnim:	0x1149D0;
-}
+state("kao") {}
 
 startup {
 	vars.dic = new Dictionary<int, string> {
@@ -49,8 +42,51 @@ startup {
 	vars.lastLevel = 0;
 }
 
+init {
+	vars.threadScan = new Thread(() => {
+		var scanner = new SignatureScanner(game, game.MainModule.BaseAddress, game.MainModule.ModuleMemorySize);
+		var levelSig = new SigScanTarget(2, "8B 0D ???????? 51 E8 ???????? 83 C4 04 8D 4C 24");
+		var hunterSig = new SigScanTarget(9, "C6 85 ?????????? 89 85 ???????? 89 85 ???????? 89 9D");
+		var loadSig = new SigScanTarget(2, "89 3D ???????? E8 ???????? 3B DF");
+		levelSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+		hunterSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+		loadSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+	
+		vars.sigsFound = false;
+		int sigAttempt = 0;
+		while (sigAttempt++ <= 20) {
+			if (((vars.levelPtr = scanner.Scan(levelSig)) != IntPtr.Zero) && 
+			((vars.hunterPtr = scanner.Scan(hunterSig)) != IntPtr.Zero) && 
+			((vars.loadPtr = scanner.Scan(loadSig)) != IntPtr.Zero)) {
+				vars.sigsFound = true;
+				break;
+			}
+			print("Couldn't find sigs. Retrying.");
+		}
+
+		if (vars.sigsFound) {
+			vars.level = new MemoryWatcher<int>(vars.levelPtr);
+			vars.hunter = new MemoryWatcher<byte>(vars.hunterPtr);
+			vars.load = new MemoryWatcher<byte>(vars.loadPtr);
+		}
+	});
+	vars.threadScan.Start();
+}
+
+update {
+	if (!vars.sigsFound) return false;
+	
+	vars.level.Update(game);
+	vars.hunter.Update(game);
+	vars.load.Update(game);
+	
+	current.level = vars.level.Current;
+	current.load = vars.load.Current;
+	current.hunterAnim = vars.hunter.Current;
+}
+
 start {
-	if (current.level == 1 && old.level == 100 || current.level == 1 && old.level == 101) {
+	if (current.level == 1 && (old.level == 100 || old.level == 101)) {
 		vars.doneLevels.Clear();
 		vars.lastLevel = 1;
 		return true;
@@ -59,23 +95,18 @@ start {
 
 split {
 	//splits for levels 1-29, with the map menu inbetween
-	if (current.level != 101 && old.level == 101 && current.level != vars.lastLevel && !vars.doneLevels.Contains(current.level)) {
-		if (settings[vars.lastLevel.ToString()]) {
-			vars.lastLevel = current.level;
-			return true;
-		}
-		
-		else {
-			vars.lastLevel = current.level;
-		}
+	if (current.level != 101 && old.level == 101 && current.level != vars.lastLevel && current.level != 100 && !vars.doneLevels.Contains(current.level)) {
+		vars.lastLevel = current.level;
+		return settings[vars.lastLevel.ToString()];
 	}
 	
 	//final split
-	if (old.level == 30 && current.hunterAnim == 5 && old.hunterAnim != 5) {
-		if (settings["30"]) {
-			return true;
-		}
-	}
+	if (old.level == 30 && current.hunterAnim == 5 && old.hunterAnim != 5)
+		return settings["30"];
+}
+
+reset {
+	return current.level == 100;
 }
 	
 isLoading {
