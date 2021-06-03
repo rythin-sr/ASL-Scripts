@@ -1,273 +1,190 @@
-//Kao the Kangaroo: Round 2 Autosplitter + Load Remover by RibShark
-//base script by rythin, Mr. Mary
-
-/*state("Kao2", "Polish Retail") {
-}
-
-state("Kao2", "European Retail") {
-}
-
-state("Kao2", "Russian Retail") {
-}
-
-state("Kao2", "Australian Retail") {
-}
-
-state("Kao2", "United States Retail") {}*/
-
-state("Kao2") {}
-
+state("kao2") {} 
 
 startup {
-	settings.Add("lc", true, "Level Completion");
-	settings.Add("le", true, "Level Entry");
-	settings.Add("newb", true, "Newbie-friendly auto-resets");
-	settings.SetToolTip("newb", "Only auto-reset if going to the menu before The Race, but after The Ship");
-	
-	vars.level = new Dictionary<int, string> {
-		{0, "The Ship"},
-		{2, "Beavers' Forest"},
-		{3, "The Great Escape"},
-		{4, "Great Trees"},
-		{5, "River Raid"},
-		{6, "Shaman's Cave"},
-		{7, "Igloo Village"},
-		{8, "Ice Cave"},
-		{9, "Down the Mountain"},
-		{10, "Crystal Mines"},
-		{11, "The Station"},
-		{12, "The Race"},
-		{13, "Hostile Reef"},
-		{14, "Deep Ocean"},
-		{15, "Lair of Poison"},
-		{16, "Trip to Island"},
-		{17, "Treasure Island"},
-		{18, "The Volcano"},
-		{19, "Pirate's Bay"},
-		{20, "Abandoned Town"},
-		{21, "Hunter's Galleon"},
-		{23, "Bonus: Jumprope"},
-		{24, "Bonus: Trees"},
-		{25, "Bonus: Shooting"},
-		{26, "Bonus: The Race"},
-		{27, "Bonus: Mini Baseball"},
-	};
-	
-	vars.levelEntry = new Dictionary<string, string> {
-		{"2e", "Beavers' Forest"},
-		{"7e", "Igloo Village"},
-		{"12e", "The Race"},
-		{"16e", "Trip to Island"},
-		{"20e", "Abandoned Town"}
-	};
-	
-	foreach (var Tag in vars.level) {
-		settings.Add(Tag.Key.ToString(), true, Tag.Value, "lc");
-	};
-	
-	foreach (var Tag in vars.levelEntry) {
-		settings.Add(Tag.Key, false, Tag.Value, "le");
-	};
-
-	vars.doneSplits = new List<string>();
+	settings.Add("Level Completion");
+	settings.CurrentDefaultParent = "Level Completion";
+		settings.Add("0", true, "The Ship");
+		settings.Add("2", true, "Beavers' Forest");
+		settings.Add("3", true, "The Great Escape");
+		settings.Add("4", true, "Great Trees");
+		settings.Add("5", true, "River Raid");
+		settings.Add("6", true, "Shaman's Cave");
+		settings.Add("7", true, "Igloo Village");
+		settings.Add("8", true, "Ice Cave");
+		settings.Add("9", true, "Down the Mountain");
+		settings.Add("10", true, "Crystal Mines");
+		settings.Add("11", true, "The Station");
+		settings.Add("12", true, "The Race");
+		settings.Add("13", true, "Hostile Reef");
+		settings.Add("14", true, "Deep Ocean");
+		settings.Add("15", true, "Lair of Poison");
+		settings.Add("16", true, "Trip to Island");
+		settings.Add("17", true, "Treasure Island");
+		settings.Add("18", true, "The Volcano");
+		settings.Add("19", true, "Pirate's Bay");
+		settings.Add("20", true, "Abandoned Town");
+		settings.Add("21", true, "Hunter's Galleon");
+		settings.Add("22", true, "Final Duel");
+		settings.Add("23", true, "Bonus: Jumprope");
+		settings.Add("24", true, "Bonus: Trees");
+		settings.Add("25", true, "Bonus: Shooting");
+		settings.Add("26", true, "Bonus: The Race");
+		settings.Add("27", true, "Bonus: Mini Baseball");
+	settings.CurrentDefaultParent = null;
+	settings.Add("Level Entry", false);
+	settings.CurrentDefaultParent = "Level Entry";
+		settings.Add("102", true, "Beavers' Forest");
+		settings.Add("107", true, "Igloo Village");
+		settings.Add("112", true, "The Race");
+		settings.Add("116", true, "Trip to Island");
+		settings.Add("120", true, "Abandoned Town");
+		
+	settings.CurrentDefaultParent = null;
+	vars.doneSplits = new List<int>();
 }
 
 init {
-	var module = modules.First();
-	IntPtr baseaddr = module.BaseAddress;
-	string name = module.ModuleName.ToLower();
-	int memsize = module.ModuleMemorySize;
-	if(!name.Contains("kao2")) return; // fix for when first module isn't Kao2
-
-	if (memsize == 2523136) {
-		version = "Polish Retail";
-		vars.level		= new MemoryWatcher<int>(baseaddr+0x22B7D4);
-		vars.menu		= new MemoryWatcher<int>(baseaddr+0x23D9AC);
-		vars.loading		= new MemoryWatcher<int>(baseaddr+0x22451C);
-		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x21E6EC);
-		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x22C648);
-		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x22C64C);
-		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x22C650);
-	}
-	
-	else if (memsize == 2912256) {
-		version = "European Retail";
-		vars.level		= new MemoryWatcher<int>(baseaddr+0x28765C);
-		vars.menu		= new MemoryWatcher<int>(baseaddr+0x27C4B0);
-		vars.loading		= new MemoryWatcher<int>(baseaddr+0x279D44);
-		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x273CFC);
-		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x29E278);
-		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29E27C);
-		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x29E280);
-	}
-	else if (memsize == 2920448) {
-		version = "Russian Retail";
-		vars.level		= new MemoryWatcher<int>(baseaddr+0x28765C);
-		vars.menu		= new MemoryWatcher<int>(baseaddr+0x27C4B0);
-		vars.loading		= new MemoryWatcher<int>(baseaddr+0x279D44);
-		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x273CFC);
-		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x29E278);
-		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29E27C);
-		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x29E280);
-	}
-	else if (memsize == 2940928) {
-		version = "Australian Retail";
-		vars.level		= new MemoryWatcher<int>(baseaddr+0x28DFC4);
-		vars.menu		= new MemoryWatcher<int>(baseaddr+0x282E18);
-		vars.loading		= new MemoryWatcher<int>(baseaddr+0x2806A4);
-		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x27A65C);
-		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x28EE98);
-		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x28EE9C);
-		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x28EEA0);
-	}
-	else if (memsize == 15024128) {
-		version = "United States Retail";
-		vars.level		= new MemoryWatcher<int>(baseaddr+0x290584);
-		vars.menu		= new MemoryWatcher<int>(baseaddr+0x2A4914);
-		vars.loading		= new MemoryWatcher<int>(baseaddr+0x282C64);
-		vars.cutscene		= new MemoryWatcher<int>(baseaddr+0x27CC18);
-		vars.Xpos		= new MemoryWatcher<float>(baseaddr+0x291478);
-		vars.Ypos		= new MemoryWatcher<float>(baseaddr+0x29147C);
-		vars.Zpos		= new MemoryWatcher<float>(baseaddr+0x291480);
-	}
-	else if (memsize == 8679424 // itch.io
-		  || memsize == 8826880 // steam
-	) {
-		version = "Digital";
+	vars.threadScan = new Thread(() => {
+		var scanner = new SignatureScanner(game, game.MainModule.BaseAddress, game.MainModule.ModuleMemorySize);
 		
-		// init memory watches
-		vars.watcher = new MemoryWatcherList();
-		print("Running signature scans...");
-		IntPtr ptr;
-		foreach (var page in game.MemoryPages(true)){
-			var scanner = new SignatureScanner(game, baseaddr, (int)page.RegionSize);
+		SigScanTarget levelSig;
+		SigScanTarget menuSig;
+		SigScanTarget loadSig;
+		SigScanTarget cutsceneSig;
+		SigScanTarget posSig;
+		
+		if (modules.First().ModuleMemorySize > 8000000 && modules.First().ModuleMemorySize < 10000000) {
+			levelSig = new SigScanTarget(12, "83 E8 01 50 8B 8D E8 FB FF FF 51 B9 ?? ?? ?? ??");
+			menuSig = new SigScanTarget(13, "0F B6 8D CF FE FF FF 85 C9 74 73 C6 05 ?? ?? ?? ??");
+			loadSig = new SigScanTarget(2, "C6 05 ?? ?? ?? ?? 01 8B 85 94");
+			cutsceneSig = new SigScanTarget(2, "89 0D ?? ?? ?? ?? 8B 55 08 C6 42 40 01");
+			posSig = new SigScanTarget(1, "BF ?? ?? ?? ?? F3 A5 5F 5E 8B E5");
+		
+			levelSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+			menuSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+			loadSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+			cutsceneSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
+			posSig.OnFound = (proc, s, ptr) => proc.ReadPointer(ptr);
 			
-			// level
-			{
-				ptr = IntPtr.Zero;
-				ptr = scanner.Scan(
-					new SigScanTarget(12,
-					"83 E8 01 50 8B 8D E8 FB FF FF 51 B9 ?? ?? ?? ??"
-					));
-				if (ptr != IntPtr.Zero) {
-					vars.level = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr) + 0xC);
+			vars.sigsFound = false;
+			Thread.Sleep(1000);
+			int sigAttempt = 0;
+			while (sigAttempt++ <= 20) {
+				if ((vars.levelPtr = scanner.Scan(levelSig)) != IntPtr.Zero && 
+				(vars.menuPtr = scanner.Scan(menuSig)) != IntPtr.Zero && 
+				(vars.loadPtr = scanner.Scan(loadSig)) != IntPtr.Zero && 
+				(vars.cutscenePtr = scanner.Scan(cutsceneSig)) != IntPtr.Zero && 
+				(vars.posPtr = scanner.Scan(posSig)) != IntPtr.Zero) 
+				{
+					vars.sigsFound = true;
+					break;
 				}
+				print("Couldn't find sigs. Retrying.");
 			}
-			
-			// menu
-			{
-				ptr = IntPtr.Zero;
-				ptr = scanner.Scan(
-					new SigScanTarget(13,
-					"0F B6 8D CF FE FF FF 85 C9 74 73 C6 05 ?? ?? ?? ??"
-					));
-				if (ptr != IntPtr.Zero) {
-					vars.menu = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
-				}
+	
+			if (vars.sigsFound) {
+				vars.level = new MemoryWatcher<int>(vars.levelPtr + 0xC);
+				vars.menu = new MemoryWatcher<bool>(vars.menuPtr);
+				vars.load = new MemoryWatcher<bool>(vars.loadPtr);
+				vars.cutscene = new MemoryWatcher<bool>(vars.cutscenePtr);
+				vars.yPos = new MemoryWatcher<float>(vars.posPtr + 0x14);
+				
 			}
-			
-			// loading
-			{
-				ptr = IntPtr.Zero;
-				ptr = scanner.Scan(
-					new SigScanTarget(2,
-					"C6 05 ?? ?? ?? ?? 01 8B 85 94"
-					));
-				if (ptr != IntPtr.Zero) {
-					vars.loading = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
-				}
+		} else {
+			switch (modules.First().ModuleMemorySize) {
+				case 2523136: //PL
+				vars.level = new MemoryWatcher<int>(modules.First().BaseAddress + 0x22B7D4);
+				vars.menu = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x23D9AC);
+				vars.load = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x22451C);
+				vars.cutscene = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x21E6EC);
+				vars.yPos = new MemoryWatcher<float>(modules.First().BaseAddress + 0x22C64C);
+				break;
+				
+				case 2912256: //EU
+				vars.level = new MemoryWatcher<int>(modules.First().BaseAddress + 0x28765C);
+				vars.menu = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x27C4B0);
+				vars.load = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x279D44);
+				vars.cutscene = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x273CFC);
+				vars.yPos = new MemoryWatcher<float>(modules.First().BaseAddress + 0x29E27C);
+				break;
+				
+				case 2920448: //RU
+				vars.level = new MemoryWatcher<int>(modules.First().BaseAddress + 0x28765C);
+				vars.menu = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x27C4B0);
+				vars.load = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x279D44);
+				vars.cutscene = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x273CFC);
+				vars.yPos = new MemoryWatcher<float>(modules.First().BaseAddress + 0x29E27C);
+				break;
+				
+				case 2940928: //AU
+				vars.level = new MemoryWatcher<int>(modules.First().BaseAddress + 0x28DFC4);
+				vars.menu = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x282E18);
+				vars.load = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x2806A4);
+				vars.cutscene = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x27A65C);
+				vars.yPos = new MemoryWatcher<float>(modules.First().BaseAddress + 0x28EE9C);
+				break;
+				
+				case 15024128: //US
+				vars.level = new MemoryWatcher<int>(modules.First().BaseAddress + 0x290584);
+				vars.menu = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x2A4914);
+				vars.load = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x282C64);
+				vars.cutscene = new MemoryWatcher<bool>(modules.First().BaseAddress + 0x27CC18);
+				vars.yPos = new MemoryWatcher<float>(modules.First().BaseAddress + 0x29147C);
+				break;
 			}
-			
-			// cutscene
-			{
-				ptr = IntPtr.Zero;
-				ptr = scanner.Scan(
-					new SigScanTarget(2,
-					"89 0D ?? ?? ?? ?? 8B 55 08 C6 42 40 01"
-					));
-				if (ptr != IntPtr.Zero) {
-					vars.cutscene = new MemoryWatcher<int>((IntPtr)memory.ReadValue<int>(ptr));
-				}
-			}
-			
-			// pos
-			{
-				ptr = IntPtr.Zero;
-				ptr = scanner.Scan(
-					new SigScanTarget(1,
-					"BF ?? ?? ?? ?? F3 A5 5F 5E 8B E5"
-					));
-				if (ptr != IntPtr.Zero) {
-					vars.Xpos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x10);
-					vars.Ypos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x14);
-					vars.Zpos = new MemoryWatcher<float>((IntPtr)memory.ReadValue<int>(ptr) + 0x18);
-				}
-			}
-			
+			vars.sigsFound = true;
 		}
-	}
-	else {
-		version = "Unsupported";
-	}
+	});
+	vars.threadScan.Start();
 }
 
 update {
-	vars.level.Update(game);
+	if (!vars.sigsFound) return false;
+	
+    vars.level.Update(game);
 	vars.menu.Update(game);
-	vars.loading.Update(game);
+	vars.load.Update(game);
 	vars.cutscene.Update(game);
-	vars.Xpos.Update(game);
-	vars.Ypos.Update(game);
-	vars.Zpos.Update(game);
-}
-
-start {
-    if (vars.level.Current == 0 && vars.menu.Old == 1 
-		&& vars.menu.Current == 0 && vars.cutscene.Current == 1)
-	{
-		vars.doneSplits.Clear();
-		vars.counter = 0;
-		return true;
-	}
+	vars.yPos.Update(game);
+	
+	current.level = vars.level.Current;
+	current.menu = vars.menu.Current;
+	current.load = vars.load.Current;
+	current.cutscene = vars.cutscene.Current;
+	current.yPos = vars.yPos.Current;
 } 
 
+start {
+	if (current.level == 0 && current.cutscene && !old.cutscene) {
+		vars.doneSplits.Clear();
+		return true;
+	}
+}
+
 split {
-	if (vars.level.Current != vars.level.Old && vars.level.Current != 0) 
-	{
-		//level completion splits
-		if (settings[vars.level.Old.ToString()] 
-			&& !vars.doneSplits.Contains( vars.level.Old.ToString() )) {
-			vars.doneSplits.Add(vars.level.Old.ToString());
-			return true;
+	if (current.level != old.level && current.level > 0) {
+		//level completion
+		if (!vars.doneSplits.Contains(old.level)) {
+			vars.doneSplits.Add(old.level);
+			return settings[old.level.ToString()];
 		}
-		//level entry splits
-		if (settings[vars.level.Current.ToString() + "e"]
-			&& !vars.doneSplits.Contains( vars.level.Current.ToString() + "e" )) {
-			vars.doneSplits.Add(vars.level.Current.ToString() + "e");
-			return true;
+		
+		//level entry
+		if (!vars.doneSplits.Contains(current.level + 100)) {
+			vars.doneSplits.Add(current.level + 100);
+			return settings[(current.level + 100).ToString()];
 		}
 	}
-
-	//final split
-	if (vars.level.Current == 22 && vars.cutscene.Current == 1
-		&& vars.cutscene.Old == 0 && vars.Ypos.Current > 9000)
-	{
-		return true;
+	
+	if (current.level == 22 && current.cutscene && !old.cutscene && current.yPos > 9000) {
+		return settings["22"];
 	}
 }
 
 reset {
-	if (vars.level.Current == 0)
-	{
-		if (settings["newb"] && vars.level.Old < 13 && vars.level.Old > 0) {
-			return true;
-		}
-		if (!settings["newb"] && vars.loading.Current == 0 && vars.loading.Old == 1) {
-			return true;
-		}
-	}
+	return current.level == 0 && current.cutscene && !old.cutscene;
 }
 
 isLoading {
-    return (vars.loading.Current == 1);
+	return current.load;
 }
