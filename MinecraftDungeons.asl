@@ -136,6 +136,20 @@ state("Dungeons", "Windows Store, 1.8.8.0") {
 	int cs:          0x0438B688, 0x8;
 }
 
+state("Dungeons-Win64-Shipping", "Launcher, 1.9.1.0") {
+	byte counter:    0x3FE7F78;
+	byte lc:         0x4454D7D;
+	int seed:        0x0448C0F0, 0x58, 0x528;
+	int cs:          0x0448C048, 0x8;
+}
+
+state("Dungeons", "Windows Store, 1.9.1.0") {
+	byte counter:    0x4407064;
+	byte lc:         0x4458F3D;
+	int seed:        0x041C7048, 0x20, 0x528;
+	int cs:          0x04490208, 0x8;
+}
+
 startup {
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
@@ -265,6 +279,14 @@ init {
 	
 		case 99508224:
 		version = "Windows Store, 1.8.8.0";
+		break;
+		
+		case 100655104:
+		version = "Launcher, 1.9.1.0";
+		break;
+	
+		case 101015552:
+		version = "Windows Store, 1.9.1.0";
 		break;
 	
 		default:
