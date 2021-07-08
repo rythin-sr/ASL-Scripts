@@ -1,7 +1,7 @@
 state("Risk of Rain 2", "1.0.0") {
 	
 	//goes from 0 to 2 and back depending on the intensity of the fade 
-	float fade:     "UnityPlayer.dll", 0x15637F8, 0x128, 0xD0, 0x18, 0xD0, 0x38, 0x60, 0xC;
+	float fade:     "mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E10, 0xD0, 0x8, 0x60, 0xC;
 	
 	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
 	
@@ -25,8 +25,8 @@ state("Risk of Rain 2", "1.1.0.1") {
 	string15 scene: "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
 }
 
-state("Risk of Rain 2", "1.1.1.2") {
-	float fade:            "UnityPlayer.dll", 0x1538598, 0x220, 0x138, 0xD0, 0x8, 0x1A8, 0xC;
+state("Risk of Rain 2", "1.1.1.2+") {
+	float fade:            "mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E88, 0x108, 0xD0, 0x8, 0x60, 0xC;
 	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0xA0, 0x6B0;
 	int inGame:            "AkSoundEngine.dll", 0x20DC04;
 	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
@@ -84,11 +84,11 @@ init {
 		break;
 		
 		case 3082240:
-		version = "1.1.1.2";
+		version = "1.1.1.2+";
 		break;
 		
 		default:
-		version = "Unrecognised";
+		version = "1.1.1.2+";
 		break;
 	}
 }
