@@ -1,9 +1,4 @@
-state("Risk of Rain 2", "1.0.0") {
-	
-	//goes from 0 to 2 and back depending on the intensity of the fade 
-	float fade:     "mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E10, 0xD0, 0x8, 0x60, 0xC;
-	
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
+state("Risk of Rain 2", "1.0") {	
 	
 	//0 in title and lobby, -1 in other stages
 	int inGame:     "AkSoundEngine.dll",  0x20DC04;
@@ -11,23 +6,7 @@ state("Risk of Rain 2", "1.0.0") {
 	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
 }
 
-state("Risk of Rain 2", "1.0.1") {
-	float fade:     "mono-2.0-bdwgc.dll", 0x48FA68, 0x18, 0x220, 0x0, 0x1C0, 0x5E0, 0x1CC, 0xC;
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x660;
-	int inGame:     "AkSoundEngine.dll",  0x20DC04;
-	string15 scene: "UnityPlayer.dll",    0x15A95D8, 0x48, 0x40;
-}
-
-state("Risk of Rain 2", "1.1.0.1") {
-	float fade:     "UnityPlayer.dll", 0x150E3F0, 0x350, 0x288, 0x0, 0xD0, 0x60, 0x58C, 0xC;
-	int stageCount: "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0x50, 0x6B0;
-	int inGame:     "AkSoundEngine.dll", 0x20DC04;
-	string15 scene: "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
-}
-
-state("Risk of Rain 2", "1.1.1.2+") {
-	float fade:            "mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E88, 0x108, 0xD0, 0x8, 0x60, 0xC;
-	int stageCount:        "mono-2.0-bdwgc.dll", 0x491DC8, 0x28, 0xA0, 0x6B0;
+state("Risk of Rain 2", "1.1+") {
 	int inGame:            "AkSoundEngine.dll", 0x20DC04;
 	string15 scene:        "UnityPlayer.dll", 0x15A95D8, 0x48, 0x40;
 }
@@ -58,39 +37,26 @@ startup {
 }
 
 init {
-
-	string dll_path = modules.First().FileName + "\\..\\Risk of Rain 2_Data\\Managed\\Assembly-CSharp.dll";
-	
-	long dll_size = new System.IO.FileInfo(dll_path).Length;
- 
-	print("ROR2ASL: Version: " + dll_size.ToString()); 
-	
-	//[17256] ROR2ASL: Version: 2858496 - 1.0.0.6
-	//[17256] ROR2ASL: Version: 2865664 - 1.0.1.1
-	//[16320] ROR2ASL: Version: 3048960 - 1.1.0.1
-
-	switch (dll_size) {
-	
-		case 2858496:
-		version = "1.0.0";
-		break;
+	var dll_size = new System.IO.FileInfo(modules.First().FileName + @"\..\Risk of Rain 2_Data\Managed\Assembly-CSharp.dll").Length;
+	vars.watchers = new MemoryWatcherList();
 		
-		case 2865664:
-		version = "1.0.1";
-		break;
-		
-		case 3048960:
-		version = "1.1.0.1";
-		break;
-		
-		case 3082240:
-		version = "1.1.1.2+";
-		break;
-		
-		default:
-		version = "1.1.1.2+";
-		break;
+	if (dll_size < 3000000 ) {
+		version = "1.0";
+		vars.watchers.Add(new MemoryWatcher<float>(new DeepPointer("mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E10, 0xD0, 0x8, 0x60, 0xC)) { Name = "fade" });
+		vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer("mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x2688, 0x108, 0xD0, 0x8, 0x1A0, 0x0, 0x140)) { Name = "stage" });
+	} else {
+		version = "1.1+";
+		vars.watchers.Add(new MemoryWatcher<float>(new DeepPointer("mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x1E88, 0x108, 0xD0, 0x8, 0x60, 0xC)) { Name = "fade" });
+		vars.watchers.Add(new MemoryWatcher<int>(new DeepPointer("mono-2.0-bdwgc.dll", 0x4940B8, 0x10, 0x1D0, 0x8, 0x4E0, 0x27A0, 0x108, 0xD0, 0x8, 0x1A0, 0x0, 0x150)) { Name = "stage" });
 	}
+}
+
+update {
+	vars.watchers.UpdateAll(game);
+	current.stageCount = vars.watchers["stage"].Current;
+	current.fade = vars.watchers["fade"].Current;
+	if (vars.watchers["stage"].Changed)
+		print(old.stageCount + " -> " + current.stageCount);
 }
 
 start {
@@ -113,7 +79,7 @@ split {
 		current.scene = old.scene;
 
 	if (!settings["fin"]) {
-		if (current.stageCount == old.stageCount + 1 && current.stageCount > 1) {
+		if (current.stageCount == old.stageCount + 1 && current.stageCount >= 1) {
 			return true;
 		}
 	} else {
@@ -122,8 +88,8 @@ split {
 		}
 	}
 
-	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby") {
-		return settings[old.scene];
+	if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby" && settings[old.scene]) {
+		return true;
 	}
 }
 
