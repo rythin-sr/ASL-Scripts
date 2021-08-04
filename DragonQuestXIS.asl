@@ -1,291 +1,200 @@
 state("DRAGON QUEST XI S") {
-	byte load:       0x5C797A0;                                             //1 when loading and mode == 4
-	byte fade:       0x5EFB2CA;                                             //1 when fading and mode == 5, gets stuck on 1 when switching to 3D
-	byte cs:         0x5F55CE4;                                             //1 during skippable cutscenes
+	bool load:       0x5C797A0;                                             //1 when loading and mode == 4
+	bool fade:       0x5EFB2CA;                                             //1 when fading and mode == 5, gets stuck on 1 when switching to 3D
+	bool cs:         0x5F55CE4;                                             //1 during skippable cutscenes
 	byte mode:       0x58057F0;                                             //4 in 3D, 5 in 2D
 	byte start:      0x5C4B713; 	                                        //some variable that consistently goes to 0 from non-0 on run start
-	byte jingle:     0x5BEF771;                                             //non-0 when jingle 
-	byte menu_index: 0x3110F34, 0x1C4, 0xC0, 0x4F8, 0x3E8;                  //the number of the option selected in the main menu, flickers randomly during gameplay
-	byte dialogue:   0x26814E4, 0x218;                                      //1 when in dialogue, can flicker from 1 to 0 occasionally but seems to never flicker from 0 to 1
+	byte menu_index: 0x5C08210, 0xE8, 0xD0, 0x3A0, 0x300, 0x3E8;            //the number of the option selected in the main menu, flickers randomly during gameplay
+	byte max_index:  0x5C08210, 0xE8, 0xD0, 0x3A0, 0x300, 0x3E4;            //total number of options to choose from in the menu (i think)
+	bool dialogue:   0x5D840B8, 0xA50, 0x4B0, 0x30, 0x20, 0x3E0;            //1 when in dialogue, can flicker from 1 to 0 occasionally but seems to never flicker from 0 to 1
 	string100 tb2d:  0x5EF1614;                                             //text in the bottom textbox (dialogue, combat) when mode == 5
-	string200 area:  0x5C08210, 0x220, 0xE0, 0x20, 0x14;                    //area label, updates when the golden text appears on screen, gets wiped on any dialogue/menu
-	float xPos:      0x5E6EE10, 0x8, 0x8, 0x1A0, 0x548, 0x300, 0x1C0, 0xA0; //horizontal in 3D
-	float yPos:      0x5E6EE10, 0x8, 0x8, 0x1A0, 0x548, 0x300, 0x1C0, 0xA4; //horizontal in 3D
-	float zPos:      0x5E6EE10, 0x8, 0x8, 0x1A0, 0x548, 0x300, 0x1C0, 0xA8; //vertical in 3D
-	int gold:        0x5C08210, 0x128, 0xC0;                                //money, only updates in 3D
+	float x:         0x5E51B30, 0x40, 0x3A0, 0x3F8, 0x138, 0x1D0;           //horizontal pos
+	float y:         0x5E51B30, 0x40, 0x3A0, 0x3F8, 0x138, 0x1D4;           //horizontal pos
+	float z:         0x5E51B30, 0x40, 0x3A0, 0x3F8, 0x138, 0x1D8;           //vertical pos
+	float x_fr:      0x5E70C98, 0x818, 0x8, 0x120, 0xF8, 0x1D0;             //horizontal pos, only updates in freeroam
+	int gold:        0x5C08210, 0x128, 0xC0;
 }
 
-startup {
-	vars.splits = new string[,] {
-		{"22", "Smogs"},
-		{"74", "Tricky Devil"},
-		{"162", "Gryphons"},
-		{"Jarvis1", "Jarvis"},
-		{"1000", "Slayer of Sands"},
-		{"126", "Corallosuses"},
-		{"2000", "Jasper 1"},
-		{"120", "Arena 1"},
-		{"150", "Arena 2-1"},
-		{"180", "Arena 2-2"},
-		{"arena3", "Arena 2-3"}, 
-		{"2700", "Arachtagon"},
-		{"2dgrind1", "2D Grind"},
-		{"squid", "Tentacular"},
-		{"act2", "Act 2 Start"},
-		{"scenarios", "Scenarios"},
-		{"Tyriant", "Tyriant"},
-		{"Rab", "Rab"},
-		{"10000", "Avarith"},
-		{"30000", "Gyldygga"},
-		{"9600", "Tatsunanga 2"},
-		{"15000", "Indingus"},
-		{"20000", "Jasper Unbound"},
-		{"MordegonTail", "Mordegon and Tail"},  //battle end split
-		{"WTJasper", "World Tree Jasper"},
-		{"MordegonSolo", "Mordegon 2"},
-		{"quest", "Perfectly Pepped Paladins Quest (2D only)"},
-		{"Calasmos", "Calasmos"}
+startup {	
+	
+	vars.splits = new Dictionary<string, Tuple<int, float, float, float, float, float>> {
+		//split name, split type, x-min, x-max, y-min, y-max, z-avg
+		//split types: 0 - nothing, just for setting creation; 1 - wait for cutscene ; 
+		//2 - any% end split ; 3 - on cutscene ; 4 - arrive at area
+		//>4 - gold gain split, the number representing the amount of gold gained
+		{"Smogs", Tuple.Create(1, -851f, 451f, 29200f, 30511f, 4220f)}, 
+		{"Tricky Devil", Tuple.Create(1, 18016f, 19114f, -37136f, -36044f, 3140f)},
+		{"Gryphons", Tuple.Create(1, -106989f, -105494f, -3101f, -1598f, -4905f)},
+		{"Jarvis", Tuple.Create(1, -4651f, -1749f, -36651f, -33749f, 2780f)}, //check area
+		{"Slayer of Sands", Tuple.Create(1, 28749f, 31652f, -36125f, -33231f, -100f)},
+		{"Corallosuses", Tuple.Create(2, 18886f, 20577f, -25209f, -23519f, -960f)},
+		{"Jasper 1", Tuple.Create(1, -608f, 589f, -6588f, -5385f, 690f)},
+		{"Arena 1", Tuple.Create(120, 27094f, 29348f, -1132f, 1121f, 3394f)}, 
+		{"Arena 2-1", Tuple.Create(150, 27094f, 29348f, -1132f, 1121f, 3394f)},
+		{"Arena 2-2", Tuple.Create(180, 27094f, 29348f, -1132f, 1121f, 3394f)},
+		{"Arena 2-3", Tuple.Create(4, -21f, -19f, -2222f, -2220f, 1200f)}, 
+		{"Arachtagon", Tuple.Create(2700, 2459f, 4861f, -18491f, -16093f, 60f)},
+		{"2D Grind", Tuple.Create(4, -1406f, -1404f, 3887f, 3889f, 1130f)}, 
+		{"Tentacular", Tuple.Create(4, 4622f, 4623f, 6149f, 6150f, 1416f)},
+		{"Act 2 Start", Tuple.Create(4, -5f, -4f, 13570f, 13572f, 208f)},
+		{"Scenarios", Tuple.Create(4, 24224f, 24225f, 14524f, 14525f, 7532f)},
+		{"Tyriant", Tuple.Create(1, -893f, 893f, -7751f, -5949f, 1795f)},
+		{"Rab", Tuple.Create(1, 29051f, 30950f, -3951f, -2052f, -59843f)},
+		{"Avarith", Tuple.Create(1, -8603f, -6707f, 29930f, 31825f, 3107f)},
+		{"Gyldygga", Tuple.Create(1, -12673f, -10279f, -4750f, -2337f, 274f)},
+		{"Tatsunanga 2", Tuple.Create(1, 15257f, 17841f, -10507f, -7904f, 10662f)},
+		{"Indignus", Tuple.Create(1, -1596f, 1311f, 14141f, 17043f, 3099f)},
+		{"Jasper Unbound", Tuple.Create(1, 379468f, 381216f, 18886f, 22781f, 4250f)},
+		{"Mordegon and Tail", Tuple.Create(2, 840066f, 841966f, 18353f, 20254f, 16869f)},
+		{"World Tree Jasper", Tuple.Create(1, -1957f, -247f, -409f, 1292f, 36720f)},
+		{"Mordegon 2", Tuple.Create(1, -893f, 893f, -7751f, -5949f, 1795f)}, 
+		{"Perfectly Pepped Paladins Quest (2D only)", Tuple.Create(0, 0f, 0f, 0f, 0f, 0f)},
+		{"Calasmos", Tuple.Create(0, 0f, 0f, 0f, 0f, 0f)}
 	};
 	
-	for (int i = 0; i < vars.splits.GetLength(0); i++) {
-		settings.Add(vars.splits[i, 0], true, vars.splits[i, 1]);
+	foreach (var h in vars.splits) {
+		settings.Add(h.Key);
 	}
 	
-	vars.valid_areas = new List<string>{"Heliodor Dungeons", "The Void", "The Cryptic Crypt", "Lonalulu", "The World Tree", "Heliodor Castle", "Arena - Waiting Room", "Fortress of Fear - Palace of Malice"};
-	vars.doneSplits = new List<string>();
+	Func<float, float, float, Tuple<int, float, float, float, float, float>, bool> CheckPos = (x, y, z, range) => {
+		if (x > range.Item2 && x < range.Item3 &&
+		y > range.Item4 && y < range.Item5 &&
+		z > range.Item6 - 100 && z < range.Item6 + 100) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 	
-	vars.wait_for_cutscene = false;
-	vars.wait_for_switch = false;
-	vars.start_ready = false;
-	vars.area_ready = "";
-	vars.last_area = "";
+	vars.CheckPos = CheckPos;
+	vars.doneSplits = new List<string>();
+	vars.waitForCS = false;
+	vars.waitForPos = false;
+	vars.isCombat = false;
+	vars.delay = new Stopwatch();
+	
+	vars.queuedSplit = "";
+}
+
+update {
+	if (!current.load && !current.cs) {
+		if (current.x == current.x_fr && current.x_fr != 0) {
+			vars.isCombat = false;
+		} else {
+			vars.isCombat = true;
+		}
+	}
 }
 
 start {
-	
-	if (current.menu_index == 0 && old.menu_index == 1 || current.menu_index == 0 && current.start == 0 && old.start != 0) {
-		vars.last_area = "";
-		vars.area_ready = "";
-		vars.wait_for_switch = false;
-		vars.start_ready = false;
-		vars.wait_for_cutscene = false;
-		vars.doneSplits.Clear();
-		return true;
+	if (current.max_index == 2 && current.menu_index == 0 || current.max_index >= 4 && current.menu_index == 1) {
+		if (current.dialogue && !old.dialogue) {
+			vars.doneSplits.Clear();
+			vars.queuedSplit = "null";
+			vars.waitForCS = false;
+			return true;
+		}
 	}
 }
 
 split {
-	
-	if (current.area != null && current.area != old.area && vars.valid_areas.Contains(current.area.Split(',')[0].Substring(1)) && current.load != 1) {
-		vars.last_area = current.area.Split(',')[0].Substring(1);
-	}
-	
-	if (vars.area_ready == "" || vars.area_ready == "mordegon") {
-		if (vars.last_area == "Heliodor Castle") {
-			if (current.xPos > -152 && current.xPos < 152 && current.yPos <= -5394 && current.zPos > 1795 && current.zPos < 1956 && !vars.doneSplits.Contains("Tyriant") && vars.doneSplits.Contains("scenarios")) {
-				vars.area_ready = "tyr";
+	//regular fight splits
+	if (current.dialogue && !old.dialogue && vars.isCombat) {
+		foreach (var h in vars.splits) {
+			if (!vars.doneSplits.Contains(h.Key) && (h.Value.Item1 == 1 || h.Value.Item1 == 2) && vars.CheckPos(current.x, current.y, current.z, h.Value)) {
+				if (h.Value.Item1 == 1) {
+					vars.queuedSplit = h.Key;
+					if (settings[h.Key]) vars.waitForCS = true;
+				} else {
+					vars.doneSplits.Add(h.Key);
+					vars.queuedSplit = h.Key;
+					vars.delay.Restart();
+				}
 			}
-			else if (!vars.doneSplits.Contains("MordegonSolo") && vars.doneSplits.Contains("WTJasper")) {
-				vars.area_ready = "mordegon";
-			}
 		}
 	}
 	
-	if (vars.area_ready == "") {
-		if (vars.last_area == "Arena - Waiting Room" && !vars.doneSplits.Contains("arena3")) {
-			vars.area_ready = "arena1";
-		}
-		
-		if (vars.last_area.Contains("The Cryptic Crypt") && !vars.doneSplits.Contains("Jarvis1")) {
-			vars.area_ready = "Jarvis1";
-		}
-		
-		if (vars.last_area.Contains("The Void") && !vars.doneSplits.Contains("Rab")) {
-			vars.area_ready = "Rab";
-		}
-		
-		if (vars.last_area.Contains("Lonalulu") && !vars.doneSplits.Contains("squid")) {
-			vars.area_ready = "squid";
-		}
-		
-		if (vars.last_area.Contains("The World Tree") && !vars.doneSplits.Contains("WTJasper") && vars.doneSplits.Contains("MordegonTail")) {
-			vars.area_ready = "WTJasper";
-		}
-		
-		if (vars.last_area == "Fortress of Fear - Palace of Malice" && !vars.doneSplits.Contains("MordegonTail")) {
-			vars.area_ready = "mord0";
-		}
+	//any% delayed split
+	if (vars.delay.ElapsedMilliseconds >= 1550) {
+		vars.delay.Reset();
+		return settings[vars.queuedSplit];
 	}
 	
-	if (vars.last_area == "Heliodor Dungeons") {
-		vars.area_ready = "";
-	}
-	
-	//money based
-	if (current.gold > old.gold && old.gold != 0) {
-		
-		int reward = 0;
-		
-		if ((current.gold - old.gold) >= 30000 && (current.gold - old.gold) < 40000) {
-			reward = 30000;
-		} else if ((current.gold - old.gold) >= 20000 && (current.gold - old.gold) < 30000) {
-			reward = 20000;
+	//cutscene split logic
+	if (current.cs && !old.cs) {
+		if (vars.waitForCS) {
+			vars.doneSplits.Add(vars.queuedSplit);
+			vars.waitForCS = false;
+			return true;
 		} else {
-			reward = current.gold - old.gold;
+			foreach (var h in vars.splits) {
+				if (h.Value.Item1 == 3 && !vars.doneSplits.Contains(h.Key) && vars.CheckPos(current.x, current.y, current.z, h.Value)) {
+					vars.queuedSplit = h.Key;
+					vars.doneSplits.Add(h.Key);
+					return settings[h.Key];
+				}
+			}
 		}
+	}
+	
+	//gold splits
+	int diff = 0;
+	if (current.gold > old.gold) {
+		diff = current.gold - old.gold;
+		foreach (var h in vars.splits) {
+			if (h.Value.Item1 > 4 && vars.CheckPos(current.x, current.y, current.z, h.Value) && diff == h.Value.Item1) {
+				vars.queuedSplit = h.Key;
+				vars.doneSplits.Add(h.Key);
+				return settings[h.Key];
+			}
+		}
+	}
+	
+	//2d text splits
+	if (current.tb2d.Contains("You've completed the") && current.tb2d.Contains("Perfectly Pepped Paladins") && !vars.doneSplits.Contains("Perfectly Pepped Paladins Quest (2D only)")) {
+		vars.doneSplits.Add("Perfectly Pepped Paladins Quest (2D only)");
+		vars.queuedSplit = "2D Quest"; 
+		return settings["Perfectly Pepped Paladins Quest (2D only)"];
+	}
 
-		switch (reward) {
-			case 22: case 74: case 162: case 1000: case 126: case 2000: case 2700: case 10000: case 20000: case 9600: case 15000: case 30000:
-			if (settings[reward.ToString()] && !vars.doneSplits.Contains(reward.ToString())) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add(reward.ToString());
-			}
-			break;
-			
-			case 120: case 150:
-			if (vars.area_ready == "arena1") {
-				if (settings[reward.ToString()] && !vars.doneSplits.Contains(reward.ToString())) {
-					vars.wait_for_cutscene = true;
-					vars.doneSplits.Add(reward.ToString());
-				}
-			}
-			break;
-			
-			case 180:
-			if (!vars.doneSplits.Contains(reward.ToString())) {
-				vars.area_ready = "arena3";
-				vars.doneSplits.Add(reward.ToString());
-				if (settings[reward.ToString()]) 
-					vars.wait_for_cutscene = true;
-			}
-			break;
-			
-			case 500: case 4000:
-			if (vars.area_ready == "Jarvis1" && settings["Jarvis1"] && !vars.doneSplits.Contains("Jarvis1")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("Jarvis1");
-				vars.area_ready = "";
-			} 
-			else if (vars.area_ready == "Rab" && settings["Rab"] && !vars.doneSplits.Contains("Rab")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("Rab");
-				vars.area_ready = "";
-			}
-			else if (vars.area_ready == "squid" && settings["squid"] && !vars.doneSplits.Contains("squid")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("squid");
-				vars.area_ready = "";
-			}
-			else if (vars.area_ready == "WTJasper" && settings["WTJasper"] && !vars.doneSplits.Contains("WTJasper")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("WTJasper");
-				vars.area_ready = "";
-			}
-			break;
-			
-			case 8000:
-			if (vars.area_ready == "mordegon" && settings["MordegonSolo"] && !vars.doneSplits.Contains("MordegonSolo")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("MordegonSolo");
-				vars.area_ready = "";
-			}
-			
-			else if (vars.area_ready == "tyr" && settings["Tyriant"] && !vars.doneSplits.Contains("Tyriant")) {
-				vars.wait_for_cutscene = true;
-				vars.doneSplits.Add("Tyriant");
-				vars.area_ready = "";
-			}
-			break;
-			
-			default:
-			break;
-		}
-	}
-	
-	//position based
-	if (current.xPos != old.xPos) {
-		if (old.xPos == 0 && old.yPos == 0 && old.zPos == 0) {
-			if (current.xPos >= 24224 && current.xPos <= 24225 && current.yPos >= 14524 && current.yPos <= 14525 && current.zPos >= 7532 && current.zPos <= 7533) {
-				if (settings["scenarios"] && !vars.doneSplits.Contains("scenarios")) {
-					vars.doneSplits.Add("scenarios");
-					return true;
-				}
-			}
-			
-			if (current.xPos >= -5 && current.xPos <= -4 && current.yPos >= 13571 && current.yPos <= 13572 && current.zPos >= 208 && current.zPos <= 209) {
-				if (settings["act2"] && !vars.doneSplits.Contains("act2")) {
-					vars.doneSplits.Add("act2");
-					return true;
-				}
-			}
-		}
-		
-		if (current.xPos >= -20 && current.xPos <= -19 && current.yPos >= -2221 && current.yPos <= -2220 && current.zPos >= 1201 && current.zPos <= 1202) {
-			if (vars.area_ready == "arena3" && settings["arena3"] && !vars.doneSplits.Contains("arena3")) {
-				vars.doneSplits.Add("arena3");
-				vars.area_ready = "";
-				return true;
-			}
-		}		
-	}
-	
-	//2d text based
-	
-	if (current.tb2d.Contains("Perfectly Pepped Paladins") && !vars.doneSplits.Contains("quest")) {
-		vars.doneSplits.Add("quest");
-		return settings["quest"];
-	}
-		
 	if (current.tb2d == "Calasmos is defeated." && !vars.doneSplits.Contains("Calasmos")) {
 		vars.doneSplits.Add("Calasmos");
+		vars.queuedSplit = "Calasmos";
 		return settings["Calasmos"];
 	}
 	
-	if (current.tb2d.Contains("level increases") && !vars.doneSplits.Contains("2dgrind1")) {
-		vars.doneSplits.Add("2dgrind1");
-		if (settings["2dgrind1"])
-			vars.wait_for_switch = true;
+	/*if (current.load && !old.load) {
+		if (vars.CheckPos(old.x, old.y, old.z, vars.splits["World Tree Jasper"]) && !vars.doneSplits.Contains("Act 2 Start")) {
+			print("Waiting for Act 2 Split!");
+			vars.waitForPos = true;
+		}
+	}*/
+	
+	//since im only checking for position after a load
+	//waitForPos might be unnecessary, leaving it here until a runner tests this
+	if (/*vars.waitForPos && */!current.load && old.load) {
+		foreach (var h in vars.splits) {
+			if (!vars.doneSplits.Contains(h.Key) && h.Value.Item1 == 4 && vars.CheckPos(current.x, current.y, current.z, h.Value)) {
+				vars.doneSplits.Add(h.Key);
+				vars.waitForPos = false;
+				vars.queuedSplit = h.Key;
+				return settings[h.Key];
+			}
+		}
 	}
 	
-	//any% end split
-	//i hate this code but im so done with this game at this point that im not improving it
-	if (vars.last_area == "Fortress of Fear - Palace of Malice" && current.xPos > 840000 && current.xPos < 842000 && current.yPos > 23000 && current.yPos < 23500 && vars.area_ready.Contains("mord")) {
-		vars.area_ready = "mord0";
-	}
-	
-	if (vars.area_ready == "mord0" && current.xPos == 0 && current.yPos == 0 && current.zPos == 0 && old.xPos > 0) {
-		vars.area_ready = "mord";
-	}
-	
-	if (vars.area_ready == "mord" && current.cs == old.cs - 1) {
-		vars.area_ready = "mord1";
-	}
-	
-	if (vars.area_ready == "mord1" && current.cs == old.cs + 1) {
-		vars.area_ready = "mord2";
-	}
-	
-	if (vars.area_ready == "mord2" && current.cs == old.cs - 1) {
-		vars.area_ready = "mord_fin";
-	}
-	
-	if (current.dialogue == 1 && current.jingle == 0 && old.jingle > 0 && vars.area_ready == "mord_fin") {
-		vars.area_ready = "";
-		vars.doneSplits.Add("MordegonTail");
-		return true;
-	}
-	
-	if (current.cs == old.cs + 1 && vars.wait_for_cutscene == true) {
-		vars.wait_for_cutscene = false;
-		return true;
-	}
-	
-	if (current.mode == 4 && old.mode == 5 && vars.wait_for_switch) {
-		vars.wait_for_switch = false;
-		return true;
+	/*if (current.mode == old.mode - 1 && !vars.doneSplits.Contains("2D Grind")){
+		print("Switched to 3D Mode!");
+		vars.waitForPos = true;
+	} */
+	//setting waitForCS to false when not in combat in case it gets incorrectly set to true 
+	//from a random fight
+	if (!vars.isCombat && vars.waitForCS) {
+		print("Leaving combat, setting waitForCS to false");
+		vars.waitForCS = false;
 	}
 }
 
 isLoading {
-	return current.load == 1 || (current.fade == 1 && current.mode == 5);
+	return current.load || (current.fade && current.mode == 5);
 }
