@@ -7,7 +7,7 @@ state("ModernStoryteller01-Win64-Shipping") {
 }
 
 start {
-	return current.x < -29685.7 && current.y < -11915.5 && old.x == 0f;
+	return current.text.Contains("Well, it’s nice to meet you! And I’m sorry to pry,");
 }
 
 split {
