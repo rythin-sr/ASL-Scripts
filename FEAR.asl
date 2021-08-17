@@ -1,9 +1,14 @@
 state("FEAR")
 {
-	int gameLoading:  0x173DB0;				//0, 4 or 5 when gameplay, 1 or 2 when loading
-	int cp:           0x8519A, 0x25;
-	string16 mapName: 0x16C045;
-	int gamePaused:   0x16CCE8;				//1 when paused
+	int gameLoading:		0x173DB0;				//0, 4 or 5 when gameplay, 1 or 2 when loading
+	byte cp2:			0x00015DCC, 0x288;			//0 or 96 when gameplay is happening
+	byte cp1:			0x170D28;				//0 when gameplay is happening
+	string16 mapName:		0x16C045;
+	int gamePaused:			0x16CCE8;				//1 when paused
+}
+
+startup {
+	settings.Add("cp2", false, "Enable experimental checkpoint removal (should provide more accurate loadless time but may not work on some versions)");
 }
 
 init {
@@ -42,5 +47,24 @@ reset {
 }
 
 isLoading {
-	return current.loading > 0 && current.loading < 3 || current.cp != 256;
+	//cp2 acts fluctuates between loading and not in the main menu
+	//this is to prevent timer slowing down in case of "Disconnected from Sever" bug
+	if (current.gamePaused == 0 && settings["cp2"]) {
+		if (current.cp2 == 232) {
+			return true;
+		}
+	}
+	
+	//standard load removal
+	if (current.gameLoading == 1 || current.gameLoading == 2 || current.cp1 != 0) {
+		return true;
+	}
+	
+	else {
+		return false;
+	}
+}
+
+exit {
+	timer.IsGameTimePaused = true;
 }
