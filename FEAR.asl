@@ -1,5 +1,3 @@
-//FEAR Autosplitter + Load Remover made by rythin, with contributions from SuicideMachine, FireCulex, KunoDemetries and KZ_Frew
-
 state("FEAR")
 {
 	int gameLoading:  0x173DB0;				//0, 4 or 5 when gameplay, 1 or 2 when loading
