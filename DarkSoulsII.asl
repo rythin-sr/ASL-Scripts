@@ -97,7 +97,7 @@ startup {
 		tB(-554, -550, 89, 92, 589, 591, 0),          //56, Mytha elevator
 		tB(-736, -734, 184, 185, 648, 650.4f, 0),     //57, door after Smelter Demon
 		tB(-185, -181.5f, 7, 8, 547, 551, 0),         //58, bonfire room after Ruin Sentinels
-		tB(74, 77, -2, 0, -54.5f, -52, 0),            //59, big door after Aava
+		tB(73.5f, 77.5f, -2.5f, 0.5f, -55, -51.5f, 0),//59, big door after Aava
 		tB(-84, -78, -13, -12, -18, -12, 0),          //60, DLC1 bonfire room
 		tB(-198, -190, 34, 36, 311, 321, 0),          //61, DLC2 scorching iron sceptre
 		tB(39, 49, -39, -37, -154, -144, 0),          //62, DLC2 Key
