@@ -48,7 +48,7 @@ init
 }
 
 start {
-	return current.text != null && current.text.Contains("Well, it’s nice to meet you! And I’m sorry to pry,");
+	return current.text != null && current.text.Contains("Thanks again, and please hurry!");
 }
 
 split {
