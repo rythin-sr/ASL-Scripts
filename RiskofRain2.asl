@@ -62,9 +62,8 @@ update {
 start {
 	timer.Run.Offset = TimeSpan.FromSeconds(0);
 	
-	if (current.inGame != 0 && old.inGame == 0) {
-		timer.Run.Offset = TimeSpan.FromSeconds(-0.56);
-		return true;
+	if (current.scene.Contains("beach") || current.scene.Contains("golem")) {
+		return current.fade < 1.0f && old.fade >= 1.0f;
 	}
 }
 
