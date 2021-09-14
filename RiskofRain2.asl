@@ -68,9 +68,7 @@ start {
 }
 
 reset {
-	if (current.inGame != 0 && old.inGame == 0 && current.stageCount < 4) {
-		return true;
-	}
+	return current.scene == "lobby";
 }
 
 split {
