@@ -1,8 +1,8 @@
 state("Warhammer2") {
-	bool loading_start:   0x3841EF4;
-	bool loading_stop:    0x3E9D701;
-	bool turn:            0x3BAFF6C;
-	byte world_event:     0x392443C;
+	bool loading_start:   0x3842EF4;
+	bool loading_stop:    0x3E9E711;
+	bool turn:            0x3BB0F6C;
+	byte world_event:     0x392543C;
 }
 
 isLoading {
