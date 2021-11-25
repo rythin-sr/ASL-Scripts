@@ -1,9 +1,3 @@
-//YH10S2 Autosplitter + Game Time by rythin
-//Contact info in case issues arise:
-//Discord: rythin#0135
-//Twitter: @rythin_sr
-//Twitch: rythin_sr
-
 state("You Have 10 Seconds 2 Steam Release") {
 	int roomID: 		0x59C310;
 	double y2IGT:		0x0059C34C, 0x80, 0x13C, 0x13C, 0x4, 0x20;	//built in IGT per area
