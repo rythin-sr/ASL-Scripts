@@ -1,6 +1,3 @@
-//Kao the Kangaroo 3 Autosplitter + Load Remover by rythin
-//base script and most important addresses by Flower35
-
 state("kao_tw", "Polish Cracked")
 {
 	int l: 		0x36BE80;	//level ID
@@ -11,7 +8,7 @@ state("kao_tw", "Polish Cracked")
 	int d:		0x36C26C;	//dynamine counter
 	int cs:		0x36B1E8;	//1 when text on screen or cutscene
 	//1 when boss is dead, might be weird on other levels, untested
-	float b:	0x360498, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10;
+	float b:	0x360498, 0x48, 0x4, 0x48, 0x110, 0x48, 0x0, 0x48, 0x0, 0x48, 0x0, 0x4D8, 0x48, 0x10;
 }
 
 state("kao_tw", "Hungarian") {
@@ -22,7 +19,7 @@ state("kao_tw", "Hungarian") {
 	int a:		0x36BF28;
 	int d:		0x36C16C;
 	int cs:		0x36B0E8;
-	float b:	0x003603C0, 0x48, 0x04, 0x48, 0x0110, 0x48, 0x00, 0x48, 0x00, 0x48, 0x00, 0x04D8, 0x48, 0x10; 
+	float b:	0x3603C0, 0x48, 0x4, 0x48, 0x110, 0x48, 0x0, 0x48, 0x0, 0x48, 0x0, 0x4D8, 0x48, 0x10; 
 }
 
 //0 - Flight
@@ -112,7 +109,7 @@ init {
 }
 
 start {
-	if (current.m == 0 && old.m == 1 && current.l == 0 && current.cs == 1) {
+	if (current.m == 0 && old.m == 1 && current.l == 0 && current.cs == 1 || current.l == 1 && old.l == 0) {
 		vars.ds.Clear();
 		return true;
 	}
