@@ -34,6 +34,22 @@ state("ModernStoryteller01-Win64-Shipping", "v1.2.1") {
 	float z:          0x48371a8, 0x0, 0x20, 0x5A8, 0x1D8;
 }
 
+state("ModernStoryteller01-Win64-Shipping", "v1.2.1GOG") {
+	string100 text:   0x4650760, 0xE8, 0x0;
+	float load_angle: 0x4683210, 0x118, 0x3B8, 0x260, 0x7C;
+	float x:          0x4676228, 0x0, 0x20, 0x5A8, 0x1D0;
+	float y:          0x4676228, 0x0, 0x20, 0x5A8, 0x1D4;
+	float z:          0x4676228, 0x0, 0x20, 0x5A8, 0x1D8;
+}
+
+state("ModernStoryteller01-Win64-Shipping", "v1.0GOG") {
+	string100 text:   0x4809be0, 0xE8, 0x0;
+	float load_angle: 0x483c690, 0x118, 0x3B8, 0x260, 0x7C;
+	float x:          0x482f6a8, 0x0, 0x20, 0x5A8, 0x1D0;
+	float y:          0x482f6a8, 0x0, 0x20, 0x5A8, 0x1D4;
+	float z:          0x482f6a8, 0x0, 0x20, 0x5A8, 0x1D8;
+}
+
 init
 {
     print("[The Forgotten City NoLoads] Module size: " + modules.First().ModuleMemorySize);
@@ -44,6 +60,14 @@ init
     else if (modules.First().ModuleMemorySize == 80551936)
     {
         version = "v1.2.1";
+    }
+	else if (modules.First().ModuleMemorySize == 78512128)
+    {
+        version = "v1.2.1GOG";
+    }
+	else if (modules.First().ModuleMemorySize == 80510976)
+    {
+        version = "v1.0GOG";
     }
 }
 
