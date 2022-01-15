@@ -102,8 +102,8 @@ startup {
 		tB(-198, -190, 34, 36, 311, 321, 0),          //61, DLC2 scorching iron sceptre
 		tB(39, 49, -39, -37, -154, -144, 0),          //62, DLC2 Key
 		tB(-247, -190, -233, -230, -139, -93, 4000),  //63, Black Gulch giant 
-		tB(10, 11, 5, 6, -17, -16, 0),                   //64, Majula bonfire (from warp)
-		tB(-174, -171, 24, 25, 54, 58, 0)                //65, Felkin bonfire
+		tB(10, 11, 5, 6, -17, -16, 0),                //64, Majula bonfire (from warp)
+		tB(-174, -171, 24, 25, 54, 58, 0)             //65, Felkin bonfire
 	};
 	
 	//array of possible routes for each category
