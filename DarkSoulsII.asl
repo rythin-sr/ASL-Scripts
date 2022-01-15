@@ -101,7 +101,9 @@ startup {
 		tB(-84, -78, -13, -12, -18, -12, 0),          //60, DLC1 bonfire room
 		tB(-198, -190, 34, 36, 311, 321, 0),          //61, DLC2 scorching iron sceptre
 		tB(39, 49, -39, -37, -154, -144, 0),          //62, DLC2 Key
-		tB(-247, -190, -233, -230, -139, -93, 4000)   //63, Black Gulch giant 
+		tB(-247, -190, -233, -230, -139, -93, 4000),  //63, Black Gulch giant 
+		tB(10, 11, 5, 6, -17, -16, 0),                   //64, Majula bonfire (from warp)
+		tB(-174, -171, 24, 25, 54, 58, 0)                //65, Felkin bonfire
 	};
 	
 	//array of possible routes for each category
@@ -120,8 +122,10 @@ startup {
 		new string[] {"00l", "01l", "03l", "04l", "09l", "10l", "11n", "55i", "12i", "13n", "56i", "14n", "57i", "15l", "16n", "58i", "17l", "18l", "19i", "20i", "21i", "22l", "23l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "31l", "32l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"},	//ab
 		new string[] {"03l", "11l", "23i", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "41l", "12i", "13n", "56i", "14n", "57i", "15l", "00l", "30l", "16l", "17l", "18l", "34l", "19i", "20i", "21i", "22l", "04l", "09l", "10l", "42l", "54n"},	//ab no dlc
 		new string[] {"45l", "46l", "43l", "44l", "29l", "28l", "34l", "27l", "26l", "25l", "24l", "42l", "04l", "23l", "22l", "21l", "20l", "19l", "15l", "14l", "13l", "12l", "11l", "41l", "18l", "17l", "16l", "10l", "09l", "03l", "00l", "54n"},	//rbo
-		new string[] {"00l", "04l", "19i", "21l", "16l", "05l", "06l", "07l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Any%
-		new string[] {"00l", "01l", "03l", "04l", "11n", "55i", "12i", "63l", "23l", "60l", "09l", "10l", "19i", "20i", "21i", "22l", "16n", "58i", "17l", "18l", "62l", "13n", "56i", "14n", "57i", "15l", "61l", "31l", "32l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"}
+		new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k
+		new string[] {"00l", "04l", "19i", "21l", "16l", "05l", "06l", "07l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Any% 4 rotten
+		new string[] {"00l", "01l", "03l", "04l", "65l", "19i", "21i", "22l", "16i", "18l", "11n", "55i", "12i", "13n", "56i", "15l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Old Souls - Bandit
+		new string[] {"00l", "01l", "03l", "04l", "11n", "55i", "12i", "63l", "23l", "60l", "09l", "10l", "19i", "20i", "21i", "22l", "16n", "58i", "17l", "18l", "62l", "13n", "56i", "14n", "57i", "15l", "61l", "31l", "32l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"} //sotfs ab
 	};
 	
 	//todo: add scholar categories/routes
@@ -137,7 +141,9 @@ startup {
 		{"ab", "All Bosses", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Dragonslayer\n -Flexile\n -Skeleton Lords (lever)\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Sentinels (bonfire room)\n -Gargoyles\n -Sinner\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Royal Rat Vanguard\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Giant Lord\n -Fume Knight\n -Smelter Demon (Blue)\n -Sir Alonne\n -Vendrick\n -Elana (boss death)\n -Sinh\n -Gank Squad\n -Aava (door)\n -Burnt Ivory King\n -Twin Pets\n -Chariot\n -Darklurker"},
 		{"abnodlc", "All Bosses No DLC", " -Dragonrider\n -Skeleton Lords\n -Royal Rat Vanguard (boss death)\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Chariot\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Last Giant\n -Giant Lord\n -Sentinels\n -Gargoyles\n -Sinner\n -Vendrick\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Rotten\n -Dragonslayer\n- Flexile\n -Darklurker"},
 		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup\n -Dragonrider Skip\n -Throne Duo\n -Nashandra\n -Ancient Dragon\n -Guardian Dragon\n -Vendrick\n -Velstadt\n -Demon of Song\n -Mirror Knight\n -Dragonriders\n -Darklurker\n -Rotten\n -Royal Rat Vanguard\n -Freja\n -Congregation\n -Rat Authority\n -Najka\n -Old Iron King\n -Smelter Demon\n -Mytha\n -Covetous\n -Skeleton Lords\n -Chariot\n -Sinner\n -Gargoyles\n -Sentinels\n -Flexile\n -Dragonslayer\n -Dragonrider\n -Last Giant"},
-		{"sotfs_any", "Any%", " -Last Giant\n -Rotten\n -Najka (boss death)\n -Congregation\n -Sentinels\n -Rotten 2\n -Rotten 3\n -Rotten 4\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Heart pickup\n -Giant Lord"},
+		{"sotfs_17k", "Any% (17000 Souls)", " -Pursuer\n -Gulth Giants\n -Majula + RTSR\n -Rotten 1\n -DLC 1\n -Melentia + Level Up\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
+		{"sotfs_4r", "Any% (4 Rotten)", " -Last Giant\n -Rotten\n -Najka (boss death)\n -Congregation\n -Sentinels\n -Rotten 2\n -Rotten 3\n -Rotten 4\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Heart pickup\n -Giant Lord"},
+		{"sotfs_oldsouls", "Any% Old Souls (Bandit Route)", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Falkin\n -Najka\n -Congregation\n -Freja\n -Sentinels\n -Sinner\n -Skeleton Lords\n -Covetous Demon\n -Mytha\n -Old Iron King\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ashen Mist Pickup\n -Giant Lord"},
 		{"sotfs_ab", "All Bosses", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Skeleton Lords\n -Covetous Demon\n -Gulch Giants\n -Rat Vanguard\n -DLC1 Runthrough\n -Dragonslayer\n -Flexile\n -Najka\n -Rat Authority\n -Congregation\n -Freja\n -Sentinels\n -Gargoyles\n -Sinner\n -DLC2 Key Pickup\n -Mytha\n -Smelter\n -Old Iron Kink\n -DLC2 Runthrough\n -Fume Knight\n -Blue Smelter\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ancient Dragon\n -Giant Lord\n -Sir Alonne\n -Vendrick\n -Elana\n -Sihn\n -Gank Squad\n -Aava\n -Ivory King\n -Twin Pets\n -Chariot\n -Darklurker"}
 	};
 	
