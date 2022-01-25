@@ -116,6 +116,11 @@ startup {
 		// 72 DLC2 Chunks/Butterly pickup
 		// 73 Dungeon: Woods portal
 		// 74 Dungeon: Gulch portal
+		// 75 Dungeon: Drangleic portal
+		// 76 Shaded Ruins Bonfire
+		// 77 Bridge Approach bonfire
+		// 78 Vammar 20k
+		// 79 Aldia / 0 souls finish
 	};
 	
 	// Routes are described by a list of splits, with split conditions represented by:
@@ -128,9 +133,6 @@ startup {
 	
 	/*
 	vars.route = new string[][] {
-		new string[] {"00l", "01l", "03l", "04l", "09l", "10l", "11n", "55i", "12i", "13n", "56i", "14n", "57i", "15l", "16n", "58i", "17l", "18l", "19i", "20i", "21i", "22l", "23l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "31l", "32l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"},	//ab
-		new string[] {"03l", "11l", "23i", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "41l", "12i", "13n", "56i", "14n", "57i", "15l", "00l", "30l", "16l", "17l", "18l", "34l", "19i", "20i", "21i", "22l", "04l", "09l", "10l", "42l", "54n"},	//ab no dlc
-		new string[] {"45l", "46l", "43l", "44l", "29l", "28l", "34l", "27l", "26l", "25l", "24l", "42l", "04l", "23l", "22l", "21l", "20l", "19l", "15l", "14l", "13l", "12l", "11l", "41l", "18l", "17l", "16l", "10l", "09l", "03l", "00l", "54n"},	//rbo
 		new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k
 		new string[] {"00l", "04l", "19i", "21l", "16l", "05l", "06l", "07l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Any% 4 rotten
 		new string[] {"00l", "01l", "03l", "04l", "65l", "19i", "21i", "22l", "16i", "18l", "11n", "55i", "12i", "13n", "56i", "15l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Old Souls - Bandit
@@ -140,9 +142,6 @@ startup {
 	
 	//array of supported categories (Scholar routes must have "sotfs" somewhere in unique id)
 	vars.cat = new[,]{
-		{"ab", "All Bosses", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Dragonslayer\n -Flexile\n -Skeleton Lords (lever)\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Sentinels (bonfire room)\n -Gargoyles\n -Sinner\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Royal Rat Vanguard\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Giant Lord\n -Fume Knight\n -Smelter Demon (Blue)\n -Sir Alonne\n -Vendrick\n -Elana (boss death)\n -Sinh\n -Gank Squad\n -Aava (door)\n -Burnt Ivory King\n -Twin Pets\n -Chariot\n -Darklurker"},
-		{"abnodlc", "All Bosses No DLC", " -Dragonrider\n -Skeleton Lords\n -Royal Rat Vanguard (boss death)\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ancient Dragon\n -Chariot\n -Covetous (boss death)\n -Mytha (elevator)\n -Smelter Demon (door)\n -Old Iron King\n -Last Giant\n -Giant Lord\n -Sentinels\n -Gargoyles\n -Sinner\n -Vendrick\n -Najka (boss death)\n -Rat Authority (boss death)\n -Congregation (boss death)\n -Freja\n -Rotten\n -Dragonslayer\n- Flexile\n -Darklurker"},
-		{"rbo", "Reverse Boss Order", " -Ashen Mist pickup\n -Dragonrider Skip\n -Throne Duo\n -Nashandra\n -Ancient Dragon\n -Guardian Dragon\n -Vendrick\n -Velstadt\n -Demon of Song\n -Mirror Knight\n -Dragonriders\n -Darklurker\n -Rotten\n -Royal Rat Vanguard\n -Freja\n -Congregation\n -Rat Authority\n -Najka\n -Old Iron King\n -Smelter Demon\n -Mytha\n -Covetous\n -Skeleton Lords\n -Chariot\n -Sinner\n -Gargoyles\n -Sentinels\n -Flexile\n -Dragonslayer\n -Dragonrider\n -Last Giant"},
 		{"sotfs_17k", "Any% (17000 Souls)", " -Pursuer\n -Gulch Giants\n -Majula + RTSR\n -Rotten 1\n -DLC 1\n -Melentia + Level Up\n -Rotten 2 & 3\n -Rotten 4\n -Rotten 5\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Pickup\n -Giant Lord"},
 		{"sotfs_4r", "Any% (4 Rotten)", " -Last Giant\n -Rotten\n -Najka (boss death)\n -Congregation\n -Sentinels\n -Rotten 2\n -Rotten 3\n -Rotten 4\n -Dragonriders (boss death)\n -Mirror Knight (elevator)\n -Demon of Song (door)\n -Velstadt\n -Guardian Dragon (elevator)\n -Ashen Mist Heart pickup\n -Giant Lord"},
 		{"sotfs_oldsouls", "Any% Old Souls (Bandit Route)", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Falkin\n -Najka\n -Congregation\n -Freja\n -Sentinels\n -Sinner\n -Skeleton Lords\n -Covetous Demon\n -Mytha\n -Old Iron King\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ashen Mist Pickup\n -Giant Lord"},
@@ -188,7 +187,7 @@ startup {
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"),
 				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"44C"), 	// (black screen after Nash)
+				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
 			}
 		)
 	);
@@ -207,13 +206,13 @@ startup {
 				Tsplit("Rotten 2 & 3", 		"05N 06L"), 
 				Tsplit("Rotten 4", 			"07L"),
 				Tsplit("Dragonriders", 		"24S"), 	// (boss death)
-				Tsplit("Mirror Knight", 	"25N 48S"), // (mirror elevator)
+				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door to crypt elevator)
 				Tsplit("Velstadt", 			"27L"),
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"),
 				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"44C"), 	// (black screen after Nash)
+				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
 			}
 		)
 	);
@@ -237,7 +236,7 @@ startup {
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"),
 				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"44C"), 	// (black screen after Nash)
+				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
 			}
 		)
 	);
@@ -247,7 +246,7 @@ startup {
 		Tuple.Create("5r_CRS", "Any% CP (5 Rotten, Cat Ring Skip)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Pursuer Quick Kill","50N 64S"), // (Majula warp)
+				Tsplit("Pursuer QK",		"50N 64S"), // (Majula warp)
 				Tsplit("Rotten 1", 			"04L"), 	// (ASSUMED DLC1 entrance - not explicit)
 				Tsplit("DLC1 Runthrough", 	"51S"), 	// (ascetic boneout)
 				Tsplit("RTSR", 				"52L"), 	// (RTSR boneout)
@@ -261,14 +260,14 @@ startup {
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"),
 				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"44C"), 	// (black screen after Nash)
+				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
 			}
 		)
 	);
 	
 	// Old Souls, Dark rapier
 	vars.routes.Add(
-		Tuple.Create("OS_darkrap", "Old Souls (Dark rapier)", 
+		Tuple.Create("OS", "Old Souls (Dark rapier)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant",		"00L"),
@@ -291,67 +290,164 @@ startup {
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"),
 				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"44C"), 	// (black screen after Nash)
+				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
 			}
 		)
 	);
 	
 	// All Bosses, Dark rapier/Lightning RITB: No parrywalk
-//	new string[] {"00l", "01l", "03l", "04l", "09l", "10l", "11n", "55i", "12i", "13n", "56i", "14n", "57i", "15l", "16n", "58i", "17l", "18l", "19i", "20i", "21i", "22l", "23l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", //"30l", "31l", "32l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"},	//ab
 	vars.routes.Add(
-		Tuple.Create("AB_rap_RITB_NoPW", "All Bosses (No parrywalk, Dark Rapier/Lightning RITB)", 
+		Tuple.Create("AB", "All Bosses (No parrywalk, Dark Rapier/Lightning RITB)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Last Giant",		"00L"),
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
+				Tsplit("Last Giant",		"00L"), 	// (boneout)
+				Tsplit("Pursuer ", 			"01L"), 	// (ASSUMED NEST - not explicit)
 				Tsplit("Dragonrider", 		"03L"),  	// (ASSUMED WARP AFTER LICIA - not explicit)	
 				Tsplit("Rotten", 			"04L"), 	// (ASSUMED DLC1 ENTRANCE - not explicit)
 				Tsplit("DLC1 Runthrough", 	""), 		// TODO (Dragon Stone bonfire)
-				Tsplit("Dragonslayer", 		"09L"),
-				Tsplit("Flexile", 			"10L"),
+				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
+				Tsplit("Flexile", 			"10L"), 	// (boneout)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
-				Tsplit("Covetous", 			"12S"),
+				Tsplit("Covetous", 			"12S"),		// (kill)
 				Tsplit("Mytha", 			"13N 56S"), // (elevator)
-				Tsplit("Smelter", 			"14N 57S"), // (door)
+				Tsplit("Smelter Demon",		"14N 57S"), // (door)
 				Tsplit("Old Iron King", 	"15L"), 	// (ASSUMED DLC2 ENTRANCE - not explicit)
 				Tsplit("DLC2 Runthrough", 	""), 		// (chunks) TODO
-				Tsplit("Sentinels", 		"16L"), 	// (after fight)
-				Tsplit("Gargoyles", 		"17L"),
+				Tsplit("Sentinels", 		"16S"), 	// (kill)
+				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
 				Tsplit("Sinner", 			"18L"), 	// (ASSUMED PRIMAL - not explicit)
-				Tsplit("Najka", 			"19S"),
-				Tsplit("Authority", 		"20S"),
-				Tsplit("Congregation", 		"21S"),
+				Tsplit("Najka", 			"19S"), 	// (kill)
+				Tsplit("Authority", 		"20S"), 	// (kill)
+				Tsplit("Congregation", 		"21S"), 	// (kill)
 				Tsplit("Freja", 			"22L"), 	// (ASSUMED PRIMAL - not explicit)
-				Tsplit("Vanguard", 			"23L"),
-				Tsplit("Dragonriders", 		"24S"),
+				Tsplit("Vanguard", 			"23L"), 	// (boneout)
+				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
 				Tsplit("Velstadt", 			"27L"), 	// (ASSUMED KING'S RING - not explicit)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
-				Tsplit("Ancient", 			"29L"), 
-				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Fume Knight", 		"31L"),
-				Tsplit("Blue Smelter", 		"32L"),
-				Tsplit("Sir Alonne", 		"33L"),
-				Tsplit("Gulch Giants", 		""), // (TODO Dungeon Gulch / Grandahl boneout)
-				Tsplit("Vendrick", 			"34L"),
-				Tsplit("Elana", 			"35S"),
-				Tsplit("Sinh", 				"36L"),
-				Tsplit("Gank Squad", 		"37L"),
-				Tsplit("Aava", 				"38N 59S"), // (door)
-				Tsplit("Burnt Ivory King", 	"39L"),
-				Tsplit("Lud and Zallen", 	"40L"),
-				Tsplit("Chariot", 			"41L"),
-				Tsplit("Dungeon: Woods", 	""), // TODO Dungeon Woods boneout
-				Tsplit("Dungeon: Gulch", 	""), // TODO Dungeon Gulch boneout
-				Tsplit("Darklurker", 		"42L"),
-				Tsplit("Aldia", 			"44C"), 	// (cutscene screen after Aldia)	
+				Tsplit("Ancient", 			"29L"),  	// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 	// (ASSUMED Soul of a Giant - not explicit)
+				Tsplit("Fume Knight", 		"31L"),		// (boneout)
+				Tsplit("Blue Smelter", 		"32L"), 	// (boneout)
+				Tsplit("Sir Alonne", 		"33L"), 	// (boneout)
+				Tsplit("Gulch Giants", 		""), 		// (TODO Dungeon Gulch / Grandahl boneout)
+				Tsplit("Vendrick", 			"34L"), 	// (boneout)
+				Tsplit("Elana", 			"35S"), 	// (kill)
+				Tsplit("Sinh", 				"36L"), 	// (boneout)
+				Tsplit("Gank Squad", 		"37L"), 	// (boneout)
+				Tsplit("Aava", 				"38N 59S"), // (big door)
+				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
+				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
+				Tsplit("Chariot", 			"41L"), 	// (boneout)
+				Tsplit("Dungeon: Woods", 	""), 		// TODO Dungeon Woods boneout
+				Tsplit("Dungeon: Gulch", 	""), 		// TODO Dungeon Gulch boneout
+				Tsplit("Darklurker", 		"42L"), 	// (boneout)
+				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
+			}
+		)
+	);
+	
+	// All Bosses - No DLC, Hexes
+	vars.routes.Add(
+		Tuple.Create("old_bosses", "All Bosses No DLC (Hexes)", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Shaded Ruins",		""), 		// (warp) TODO Shaded Ruins bonfire
+				Tsplit("Licia",				"03N ??"), 	// (warp) TODO Heides: Tower of Prayer
+				Tsplit("Pursuer QK",		"50N 64S"), // (warp)
+				Tsplit("Bridge Approach",	"L"), 		// (warp) TODO Bridge Approach bonfire
+				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
+				Tsplit("Vanguard",			"23S"), 	// (kill)
+				Tsplit("Giants / Grandahl",	""), 		// (Grandahl boneout) (TODO Dungeon Gulch / Grandahl boneout)
+				Tsplit("Grandahl Drangleic","00L"), 	// (boneout) (TODO Dungeon Gulch / Grandahl boneout)
+				Tsplit("Dragonriders",		"24S"), 	// (kill)
+				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
+				Tsplit("Demon of Song", 	"26N 49S"), // (door)
+				Tsplit("Velstadt", 			"27L"), 	// (ASSUMED KING'S RING - not explicit)
+				Tsplit("Guardian", 			"28N 47S"), // (elevator)
+				Tsplit("Ancient",			"29L"), 	// (boneout)
+				Tsplit("Chariot", 			"41L"), 	// (boneout)
+				Tsplit("Covetous",			"12S"), 	// (kill)
+				Tsplit("Mytha", 			"13N 56S"), // (elevator)
+				Tsplit("Smelter Demon",		"14S"), 	// (kill)
+				Tsplit("Old Iron King",		"15L"), 	// (boneout)
+				Tsplit("Last Giant",		"00L"), 	// (boneout)
+				Tsplit("GL & Memories", 	"30N ??"), 	// (memory exit??) TODO Memory of Orro
+				Tsplit("Gargoyles",			"17L"), 	// (boneout)
+				Tsplit("Sentinels", 		"16L"), 	// (boneout)
+				Tsplit("Sinner", 			"18L"), 	// (boneout)
+				Tsplit("Vendrick", 			"34L"), 	// (boneout)
+				Tsplit("Najka", 			"19S"), 	// (kill)
+				Tsplit("Authority", 		"20S"), 	// (kill)
+				Tsplit("Congregation", 		"21S"), 	// (kill)
+				Tsplit("Freja", 			"22L"), 	// (boneout)
+				Tsplit("Rotten", 			"04L"), 	// (boneout)
+				Tsplit("Flexile", 			"10L"), 	// (boneout)
+				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
+				Tsplit("Darklurker", 		"42L"), 	// (boneout)
+				Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
 			}
 		)
 	);
 	
 	
-	
+	// Reverse Boss Order - Hexes
+	vars.routes.Add(
+		Tuple.Create("rbo", "Reverse Boss Order (Hexes)", 
+			new List<Tuple<string,string>>
+			{
+				
+				Tsplit("Shaded Ruins",		""), 		// (warp) TODO Shaded Ruins bonfire
+				Tsplit("Guardian Elevator", "47S"), 	// (elevator)
+				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
+				Tsplit("Vammar Memory 20k", "??"), 		// (near 20k pickup boneout) (TODO 20k boneout place)
+				Tsplit("Dragonrider skip", 	"??L"),		// (bonfire boneback) (TODO Tower of prayer bonfire)		
+				Tsplit("Bridge Approach", 	"??S"), 	// (bonfire action??)
+				Tsplit("Poison Pool", 		"??"), 		// (warp) TODO - POISON POOL BONFIRE
+				Tsplit("Najka Skip", 		"??L"), 	// (bonfire boneback) TODO - DOORS OF PHARROS BONFIRE
+				Tsplit("Tseldora campsite", "??L"), 	// (warp) TODO Tseldora bonfire
+				Tsplit("Caitha's Chime", 	"??L"), 	// (boneout) TODO Caitha's Chime Location
+				Tsplit("Mirror Knight skip","48S"), 	// (elevator)
+				Tsplit("Frog Skip", 		"49S"), 	// (door)
+				Tsplit("King's ring", 		"??L"), 	// (boneout) TODO King's Ring
+				Tsplit("Giants / Grandahl",	""), 		// (Grandahl boneout) (TODO Dungeon Gulch / Grandahl boneout) 	
+				Tsplit("Throne Duo", 		"43L"), 	// (boneout)
+				Tsplit("Pursuer skip v2", 	"30N ??"), 	// (nest) TODO Nest
+				Tsplit("Nashandra escape", 	"44L"), 	// (boneout)
+				Tsplit("Ancient",			"29L"), 	// (boneout)
+				Tsplit("Guardian", 			"28L"), 	// (boneout)
+				Tsplit("Vendrick", 			"34L"), 	// (boneout) TODO Extend Arena for OOB
+				Tsplit("Velstadt", 			"27L"), 	// (boneout)
+				Tsplit("Demon of Song", 	"26L"), 	// (boneout)
+				Tsplit("Mirror Knight", 	"25L"), 	// (boneout)
+				Tsplit("Dragonriders",		"24L"), 	// (boneout)
+				Tsplit("Darklurker", 		"42L"), 	// (boneout)
+				Tsplit("Rotten", 			"04L"), 	// (boneout)
+				Tsplit("Vanguard",			"23L"), 	// (boneout)
+				Tsplit("Freja", 			"22L"), 	// (boneout)
+				Tsplit("Congregation", 		"21S"), 	// (boneout)				
+				Tsplit("Authority", 		"20L"), 	// (boneout)
+				Tsplit("Najka", 			"19L"), 	// (boneout)
+				Tsplit("Mytha skip", 		"??S"), 	// (bonfire light) TODO Iron Keep Bonfire
+				Tsplit("Old Iron King",		"15L"), 	// (boneout)
+				Tsplit("Smelter Demon",		"14L"), 	// (boneout)
+				Tsplit("Mytha", 			"13L"), 	// (boneout)
+				Tsplit("Covetous", 			"12L"), 	// (boneout)
+				Tsplit("Skeleton Lords", 	"11L"), 	// (boneout)
+				Tsplit("Chariot", 			"41L"), 	// (boneout)
+				Tsplit("Sinner", 			"18L"), 	// (boneout)
+				Tsplit("Gargoyles",			"17L"), 	// (boneout)
+				Tsplit("Sentinels", 		"16L"), 	// (boneout)
+				Tsplit("Flexile", 			"10L"), 	// (boneout)
+				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
+				Tsplit("Dragonrider", 		"03L"),  	// (boneout)
+				Tsplit("Pursuer QK", 		"??"), 		// (rest) TODO PQK properly!
+				Tsplit("Last Giant",		"00L"), 	// (boneout)
+				Tsplit("Finish", 			"??C"), 	// (cutscene) TODO Aldia cutscene
+			}
+		)
+	);
 	
 	// SOTFS:
 	vars.routes.Add(
