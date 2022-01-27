@@ -100,7 +100,7 @@ startup {
 		tB(-736, -734, 184, 185, 648, 650.4f, 0),     //57, door after Smelter Demon
 		tB(-185, -181.5f, 7, 8, 547, 551, 0),         //58, bonfire room after Ruin Sentinels
 		tB(73.5f, 77.5f, -2.5f, 0.5f, -55, -51.5f, 0),//59, big door after Aava
-		tB(-84, -78, -13, -12, -18, -12, 0),          //60, DLC1 bonfire room
+		tB(-84, -78, -13, -12, -18, -12, 0),          //60, DLC1 Dragon Stone Bonfire
 		tB(-198, -190, 34, 36, 311, 321, 0),          //61, DLC2 scorching iron sceptre
 		tB(39, 49, -39, -37, -154, -144, 0),          //62, DLC2 Key
 		tB(-247, -190, -233, -230, -139, -93, 4000),  //63, Black Gulch giant 
@@ -133,28 +133,13 @@ startup {
 	//  	'N' - "NO split"
 	// 		'C' - "Next cutscene"
 	
-	/*
-	vars.route = new string[][] {
-		new string[] {"00l", "01l", "03l", "04l", "65l", "19i", "21i", "22l", "16i", "18l", "11n", "55i", "12i", "13n", "56i", "15l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Old Souls - Bandit
-		{"sotfs_oldsouls", "Any% Old Souls (Bandit Route)", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Falkin\n -Najka\n -Congregation\n -Freja\n -Sentinels\n -Sinner\n -Skeleton Lords\n -Covetous Demon\n -Mytha\n -Old Iron King\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ashen Mist Pickup\n -Giant Lord"},
-		
-		new string[] {"00l", "01l", "03l", "04l", "11n", "55i", "12i", "63l", "23l", "60l", "09l", "10l", "19i", "20i", "21i", "22l", "16n", "58i", "17l", "18l", "62l", "13n", "56i", "14n", "57i", "15l", "61l", "31l", "32l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "29l", "30l", "33l", "34l", "35i", "36l", "37l", "38n", "59i", "39l", "40l", "41l", "42l", "54n"} //sotfs ab
-		new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k Partywalk
-	};
 	
-	//array of supported categories (Scholar routes must have "sotfs" somewhere in unique id)
-	vars.cat = new[,]{
-		{"sotfs_oldsouls", "Any% Old Souls (Bandit Route)", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Falkin\n -Najka\n -Congregation\n -Freja\n -Sentinels\n -Sinner\n -Skeleton Lords\n -Covetous Demon\n -Mytha\n -Old Iron King\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ashen Mist Pickup\n -Giant Lord"},
-		{"sotfs_ab", "All Bosses", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Skeleton Lords\n -Covetous Demon\n -Gulch Giants\n -Rat Vanguard\n -DLC1 Runthrough\n -Dragonslayer\n -Flexile\n -Najka\n -Rat Authority\n -Congregation\n -Freja\n -Sentinels\n -Gargoyles\n -Sinner\n -DLC2 Key Pickup\n -Mytha\n -Smelter\n -Old Iron Kink\n -DLC2 Runthrough\n -Fume Knight\n -Blue Smelter\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ancient Dragon\n -Giant Lord\n -Sir Alonne\n -Vendrick\n -Elana\n -Sihn\n -Gank Squad\n -Aava\n -Ivory King\n -Twin Pets\n -Chariot\n -Darklurker"}
-		{"sotfs_17kPW", "Any% (17k Partywalk)", " -Pursuer\n -Fragrant branch\n -Aslatiel door\n Guardian elevator\n -Ashen Mist\n -Giant Lord\n"},
-	};
-	*/
 	
 	// Define anon type (shorthand)
 	//var Troute = (Func<string, string, Tuple<string, string>>) ((UID, routename) => { return Tuple.Create(UID, routename); });
 	var Tsplit = (Func<string, string, Tuple<string, string>>) ((name, cond) => { return Tuple.Create(name, cond); });
 	
-	// Route definitions:
+	// Route definitions (Scholar routes must have "sotfs" somewhere in unique id)
 	vars.routes = new List<Tuple<string, string, List<Tuple<string,string>>>>();
 	////////////////////////////////////////
 	////		 VANILLA ROUTES 		////
@@ -507,23 +492,24 @@ startup {
 	);
 	
 	// sotfs_Old Souls (No Parrywalk, Bandit start)
-//	new string[] {"00l", "01l", "03l", "04l", "65l", "19i", "21i", "22l", "16i", "18l", "11n", "55i", "12i", "13n", "56i", "15l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"}, //SOFTS Old Souls - Bandit
-//		{"sotfs_oldsouls", "Any% Old Souls (Bandit Route)", " -Last Giant\n -Pursuer\n -Dragonrider\n -Rotten\n -Falkin\n -Najka\n -Congregation\n -Freja\n -Sentinels\n -Sinner\n -Skeleton Lords\n -Covetous Demon\n -Mytha\n -Old Iron King\n -Dragonriders\n -Mirror Knight\n -Demon of Song\n -Velstadt\n -Guardian Dragon\n -Ashen Mist Pickup\n -Giant Lord"},
 	vars.routes.Add(
 		Tuple.Create("sotfs_OS", "Old Souls (No Parrywalk, Bandit start)", 
-		
-		// TODO
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
 				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
+				Tsplit("Dragonrider", 		"03L"), 	// ASSUMED LICIA 
 				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
+				Tsplit("Felkin", 			"65L"),		// (warp)
 				Tsplit("Najka", 			"19S"), 	// (kill)
 				Tsplit("Congregation", 		"21L"), 	// (ascetic boneout) TODO NOT EXPLICIT
-				Tsplit("Sentinels", 		"16L"), 	// (ascetic boneout) TODO NOT EXPLICIT
-				Tsplit("Rotten 2", 			"05L"), 	// (boneout)
-				Tsplit("Rotten 3", 			"06L"), 	// (boneout)
-				Tsplit("Rotten 4", 			"07L"), 	// (boneout)
+				Tsplit("Freja", 			"22L"), 	// (boneout)
+				Tsplit("Sentinels", 		"16S"), 	// (kill)
+				Tsplit("Sinner", 			"18L"), 	// (boneout)
+				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
+				Tsplit("Covetous", 			"12S"), 	// (kill)
+				Tsplit("Mytha", 			"13N 56S"), // (elevator)
+				Tsplit("Old Iron King", 	"15L"), 	// (boneout)
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
@@ -535,6 +521,65 @@ startup {
 			}
 		)
 	);
+	
+	// sotfs_All Bosses (No Parrywalk, Rapier/Twinblade)
+	vars.routes.Add(
+		Tuple.Create("sotfs_OS", "Old Souls (No Parrywalk, Bandit start)", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Last Giant", 		"00L"), 	// (boneout)
+				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
+				Tsplit("Dragonrider", 		"03L"), 	// ASSUMED LICIA 
+				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
+				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
+				Tsplit("Covetous", 			"12S"), 	// (kill)
+				Tsplit("Gulch Giants", 		"63L"), 	// (boneout)
+				Tsplit("Vanguard", 			"23L"), 	// (boneout)
+				Tsplit("DLC1 runthrough", 	"60L"), 	// (warp)
+				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
+				Tsplit("Flexile", 			"10L"), 	// (boneout)
+				Tsplit("Najka", 			"19S"), 	// (kill)
+				Tsplit("Authority", 		"20S"), 	// (kill)
+				Tsplit("Congregation", 		"21S"), 	// (kill)
+				Tsplit("Freja", 			"22L"), 	// (boneout) ASSUMED PRIMAL LOCATION
+				Tsplit("Sentinels", 		"16S"), 	// (kill)
+				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
+				Tsplit("Sinner", 			"18L"), 	// (primal warp) ASSUMED NOT EXPLICIT
+				Tsplit("DLC2 Key", 			"62L"), 	// (boneout)
+				Tsplit("Mytha", 			"13N 56S"), // (elevator)
+				Tsplit("Smelter Demon", 	"14N 57S"), // (door)
+				Tsplit("Old Iron King", 	"15L"), 	// ASSUMED DLC2 ENTRANCE
+				Tsplit("DLC2 runthrough", 	"61L"), 	// (sceptre boneout)
+				Tsplit("Fume Knight", 		"31L"), 	// (boneout)
+				Tsplit("Blue Smelter", 		"32L"), 	// (boneout)
+				Tsplit("Dragonriders", 		"24S"), 	// (kill)
+				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
+				Tsplit("Demon of Song", 	"26N 49S"), // (door)
+				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Guardian", 			"28N 47S"), // (elevator)
+				Tsplit("Ancient", 			"29L"), 	// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 	// (boneout) ASSUMED GIANT SOUL
+				Tsplit("Sir Alonne", 		"33L"), 	// (boneout)
+				Tsplit("Vendrick", 			"34L"), 	// (boneout)
+				Tsplit("Elana", 			"35S"), 	// (kill)
+				Tsplit("Sinh", 				"36L"), 	// (boneout)
+				Tsplit("Gank Squad", 		"37L"), 	// (boneout)
+				Tsplit("Aava", 				"38N 59S"), // (big door)
+				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
+				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
+				Tsplit("Chariot", 			"41L"), 	// (boneout)
+				Tsplit("Dungeon: Woods", 	""), 		// TODO Dungeon Woods boneout
+				Tsplit("Dungeon: Gulch", 	""), 		// TODO Dungeon Gulch boneout
+				Tsplit("Darklurker", 		"42L"), 	// (boneout)
+				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
+			}
+		)
+	);
+	
+	
+	//new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k Partywalk
+	//{"sotfs_17kPW", "Any% (17k Partywalk)", " -Pursuer\n -Fragrant branch\n -Aslatiel door\n Guardian elevator\n -Ashen Mist\n -Giant Lord\n"},
+	
 	
 	
 	// build separate objects from above user definition
