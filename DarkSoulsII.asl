@@ -576,9 +576,6 @@ startup {
 		)
 	);
 	
-	
-	//new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k Partywalk
-	//{"sotfs_17kPW", "Any% (17k Partywalk)", " -Pursuer\n -Fragrant branch\n -Aslatiel door\n Guardian elevator\n -Ashen Mist\n -Giant Lord\n"},
 	// sotfs_Any% (Parrywalk, 17k Rapier)
 	vars.routes.Add(
 		Tuple.Create("sotfs_17k_PW", "Any% (Parrywalk, 17k Rapier)", 
@@ -677,26 +674,13 @@ start {
 			}
 		}
 		
-		/*
-		vars.route_index = 0;
-		while (vars.route_index < vars.cat.GetLength(0) && !settings[vars.cat[vars.category, 0]]) {
-			vars.category++;
-		}
-		//print("CATEGORY: " + vars.category.ToString());
-		*/
 		vars.doneSubsplits = 0;
 		vars.doneSplits = 0;
 		vars.bSubsplitComplete = false;
 		vars.wait_for_cutscene = false;
 		vars.wait_for_load = false;
 		vars.first_update = true;
-		
-		//print(vars.route_index);
-		
-		
-		vars.split_type = "S"; // random type initialiser
-		
-		print("test");
+		vars.split_type = "S"; // type initialiser
 		return true;
 	}
 }
