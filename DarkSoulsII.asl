@@ -579,7 +579,21 @@ startup {
 	
 	//new string[] {"50n", "64i", "63l", "52n", "53l", "04l", "51n", "50i", "05n", "06l", "07l", "08l", "24i", "25n", "48i", "26n", "49i", "27l", "28n", "47i", "45l", "30l", "54n"},	//SOTFS 17k Partywalk
 	//{"sotfs_17kPW", "Any% (17k Partywalk)", " -Pursuer\n -Fragrant branch\n -Aslatiel door\n Guardian elevator\n -Ashen Mist\n -Giant Lord\n"},
-	
+	// sotfs_Any% (Parrywalk, 17k Rapier)
+	vars.routes.Add(
+		Tuple.Create("sotfs_17k_PW", "Any% (Parrywalk, 17k Rapier)", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Pursuer 17k", 		"50N 64S"), // (warp)
+				Tsplit("Branch", 			""), 		// (boneout) TODO Giant Lord Branch
+				Tsplit("Aldia's skip", 		""), 		// (door) TODO door position
+				Tsplit("Guardian Elevator", "47S"), 	// (elevator)
+				Tsplit("Ashen Mist Heart", 	"45L"), 	// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
+				Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
+			}
+		)
+	);
 	
 	
 	// build separate objects from above user definition
