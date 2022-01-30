@@ -94,7 +94,7 @@ startup {
 		tB(-39, -33, 20, 23, 101, 107, 0),            //51, last Ascetic pickup in DLC1
 		tB(-354, -348, 42, 44, -216, -210, 0),        //52, RTSR
 		tB(-334, -325, 32, 33, -163, -157, 0),        //53, Ruined Fork Road bonfire
-		tB(21, -37, 0, 0, 0, 0, 0),                   //54, impossible condition to put at the end of the route to prevent errors
+		tB(21, -37, 0, 0, 0, 0, 0),                   //54, (impossible condition for autosplitter error prevention)
 		tB(-457, -447, 38, 39, 234, 238, 0),          //55, before bridge after Skeleton Lords
 		tB(-554, -550, 89, 92, 589, 591, 0),          //56, Mytha elevator
 		tB(-736, -734, 184, 185, 648, 650.4f, 0),     //57, door after Smelter Demon
@@ -107,22 +107,20 @@ startup {
 		tB(10, 11, 5, 6, -17, -16, 0),                //64, Majula bonfire (from warp)
 		tB(-174, -171, 24, 25, 54, 58, 0),            //65, Felkin bonfire
 		tB(-225,-244,38,64,1.6f,-9,16998),			  //66, Pursuer, Lucida 17k
-		// TODO
-		// 67 DLC1 Entrance
-		// 68 DLC2 Entrance
-		// 69 DLC3 Entrance
-		// 73 Dungeon: Woods portal
-		// 74 Dungeon: Gulch portal
-		// 75 Dungeon: Drangleic portal
-		// 76 Shaded Ruins Bonfire
-		// 77 Bridge Approach bonfire
-		// 69 Dragon Stone bonfire
-		// 67 Flynns
-		// 72 DLC2 Chunks/Butterly pickup
-		// 78 Vammar 20k
-		// 80 Tseldora ascetic
-		// 81 Bastille ascetic
-		// 79 Aldia / 0 souls finish
+		tB(-158.8f,-147.6f,-255,-247.8f,-229,-228,0)  //67, DLC1 Entrance Portal
+		tB(-660,-666,-677,-666,157,158,0)  			  //68, DLC2 Entrance Portal
+		tB(-214.3f,-204,-210.3f,-206,46,47,0)  	      //69, DLC3 Entrance Portal
+		tB(-114,-107,-197,-192,-221,-220,0)           //70, Dungeon: Gulch Portal
+		tB(-220,-210,-460,-448,57,59,0)           	  //71, Dungeon: Woods Portal
+		tB(-329,-320,-450,-442,65,66,0)           	  //72, Dungeon: Drangleic Portal
+		tB(-184,-177,-431,-426,61,62,0)           	  //73, Shaded Ruins bonfire
+		tB(38,45,-249,-242,28,29,0)           	  	  //74, Bridge Approach bonfire
+		tB(-35,-28,-146,-139,-7,-6,0)           	  //75, Flynns ring room
+		tB(384,389,-125,-123,100,101,0)           	  //76, DLC2 Chunks/Butterly pickup
+		tB(-213,-190,34,54,-34.5f,-24,0)           	  //77, Vammar 20k
+		tB(-43,-44,-650,-641,125,126,0)           	  //78, Tseldora ascetic
+		tB(591,593,-119,-113,14,15,0)           	  //79, Bastille ascetic
+		tB(-744, -700, -6, -4, -275, -224, 0),    	  //80, Aldia / 0 souls finish
 	};
 	
 	// Routes are described by a list of splits, with split conditions represented by:
