@@ -86,7 +86,7 @@ startup {
 		tB(-744, -700, -6, -4, -275, -224, 68000),    //43, Throne Duo
 		tB(-744, -700, -6, -4, -275, -224, 90000),    //44, Nashandra
 		tB(-909, -817, 336, 337, -794, -671, 0),      //45, Ancient Dragon Arena
-		tB(5, 8, -7, -4, 276, 280, 0),                //46, bonfire after dragonrider
+		tB(5, 8, -7, -4, 276, 280, 0),                //46, Heide's Tower of Flame bonfire
 		tB(-846, -843, 79, 86, -252, -248, 0),        //47, elevator after Guardian Dragon
 		tB(-684, -680, 102, 110, -344, -340, 0),      //48, Mirror Knight elevator
 		tB(-1038, -1035, -30, -25, -88, -86, 0),      //49, Door after Demon of Song
@@ -107,20 +107,33 @@ startup {
 		tB(10, 11, 5, 6, -17, -16, 0),                //64, Majula bonfire (from warp)
 		tB(-174, -171, 24, 25, 54, 58, 0),            //65, Felkin bonfire
 		tB(-225,-244,38,64,1.6f,-9,16998),			  //66, Pursuer, Lucida 17k
-		tB(-158.8f,-147.6f,-255,-247.8f,-229,-228,0)  //67, DLC1 Entrance Portal
-		tB(-660,-666,-677,-666,157,158,0)  			  //68, DLC2 Entrance Portal
-		tB(-214.3f,-204,-210.3f,-206,46,47,0)  	      //69, DLC3 Entrance Portal
-		tB(-114,-107,-197,-192,-221,-220,0)           //70, Dungeon: Gulch Portal
-		tB(-220,-210,-460,-448,57,59,0)           	  //71, Dungeon: Woods Portal
-		tB(-329,-320,-450,-442,65,66,0)           	  //72, Dungeon: Drangleic Portal
-		tB(-184,-177,-431,-426,61,62,0)           	  //73, Shaded Ruins bonfire
-		tB(38,45,-249,-242,28,29,0)           	  	  //74, Bridge Approach bonfire
-		tB(-35,-28,-146,-139,-7,-6,0)           	  //75, Flynns ring room
-		tB(384,389,-125,-123,100,101,0)           	  //76, DLC2 Chunks/Butterly pickup
-		tB(-213,-190,34,54,-34.5f,-24,0)           	  //77, Vammar 20k
-		tB(-43,-44,-650,-641,125,126,0)           	  //78, Tseldora ascetic
-		tB(591,593,-119,-113,14,15,0)           	  //79, Bastille ascetic
+		tB(-158.8f,-147.6f,-255,-247.8f,-229,-228,0), //67, DLC1 Entrance Portal
+		tB(-660,-666,-677,-666,157,158,0),  		  //68, DLC2 Entrance Portal
+		tB(-214.3f,-204,-210.3f,-206,46,47,0), 	      //69, DLC3 Entrance Portal
+		tB(-114,-107,-197,-192,-221,-220,0),          //70, Dungeon: Gulch Portal
+		tB(-220,-210,-460,-448,57,59,0),           	  //71, Dungeon: Woods Portal
+		tB(-329,-320,-450,-442,65,66,0),           	  //72, Dungeon: Drangleic Portal
+		tB(-184,-177,-431,-426,61,62,0),           	  //73, Shaded Ruins bonfire
+		tB(38,45,-249,-242,28,29,0),           	  	  //74, Bridge Approach bonfire
+		tB(-35,-28,-146,-139,-7,-6,0),           	  //75, Flynns ring room
+		tB(384,389,-125,-123,100,101,0),           	  //76, DLC2 Chunks/Butterly pickup
+		tB(-213,-190,34,54,-34.5f,-24,0),             //77, Vammar 20k
+		tB(-43,-44,-650,-641,125,126,0),           	  //78, Tseldora ascetic
+		tB(591,593,-119,-113,14,15,0),           	  //79, Bastille ascetic
 		tB(-744, -700, -6, -4, -275, -224, 0),    	  //80, Aldia / 0 souls finish
+		tB(-251,-247,-488,-486.5,58,59,0),            //81, Aldia's Keep Aslatiel door
+		tB(-180,-175,25,31,-22,-21,0),                //82, Giant Lord Fragrant branch
+		tB(-150,-146,156,160,12,13,0),                //83, Pursuer nest
+		tB(-10,-5,-970,-960,-138,-137,0),             //84, King's ring
+		tB(273,290,7,21,-6.5f,-5.8f,0),           	  //85, Licia / Tower of Flame bonfire
+		tB(480,488,-125,-118,-81,-80,0),           	  //86, Sinner primal bonfire
+		tB(-86,-57,-497,-467,70,71,0),				  //87, Freja primal bonfire
+		tB(592,595,-584,-580,165,166,0),			  //88, Threshold Bridge bonfire
+		tB(321,328,-481,-473,48,49,0),			  	  //89, Poison pool bonfire
+		tB(-205,-201,119,125,-25.5f,-24.9f,0),	  	  //90, Memory of Orro exit
+		tB(-220,-210,-563,-557,96,99,0),	  	  	  //91, Gyrm's respite bonfire
+		tB(-161,-119,-717,-669,135,139,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
+		tB(-333,-327,-538,-533,125,126,0),	  	  	  //93, Caitha's chime
 	};
 	
 	// Routes are described by a list of splits, with split conditions represented by:
@@ -147,8 +160,11 @@ startup {
 		Tuple.Create("any", "Any%", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Giant Lord", 	"30L"),
-				Tsplit("Nashandra", 	"44C"),
+				Tsplit("Branch Skiop",  "53S"), 		// (bonfire light)
+				Tsplit("Aldia's door", 	"81S"), 		// (door)
+				Tsplit("Ashen Mist", 	"45L"), 		// (boneout)
+				Tsplit("Giant Lord", 	"30L"), 		// (boneout)
+				Tsplit("Nashandra", 	"44C"), 		// (black screen after Nash)
 			}
 		)
 	);
@@ -159,7 +175,7 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer", 			"50N 64S"), // (majula warp)
-				Tsplit("Rotten 1", 			"04L"), 	// (dlc entrance) TODO ??
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
 				Tsplit("DLC1 Runthrough", 	"51S"), 	// (ascetic boneout)
 				Tsplit("RTSR", 				"52N 53L"), // (warp after RTSR)
 				Tsplit("Rotten 2 + 3", 		"05N 06L"), // (Rotten 3 boneout)
@@ -168,7 +184,7 @@ startup {
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -182,18 +198,18 @@ startup {
 		Tuple.Create("4r", "Any% CP (4 Rotten)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Last Giant", 		"00L"), 
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
-				Tsplit("Rotten 1", 			"04L"), 	// (ASSUMED DLC1 entrance - not explicit)
-				Tsplit("DLC1 Runthrough", 	""), 		// (TODO - FLynns)
+				Tsplit("Last Giant", 		"00L"),  	// (boneout)
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
+				Tsplit("DLC1 Runthrough", 	"75L"), 	// (FLynns boneout)
 				Tsplit("RTSR", 				"52L"), 	// (RTSR boneout)
-				Tsplit("Sentinels", 		"16L"), 	// (ASSUMED ASCETIC - not explicit) 
+				Tsplit("Sentinels", 		"16N 79L"), // (Bastille ascetic boneout)
 				Tsplit("Rotten 2 + 3", 		"05N 06L"), // (Rotten 3 boneout)
 				Tsplit("Rotten 4", 			"07L"), 	// (boneout)
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -207,8 +223,8 @@ startup {
 		Tuple.Create("5r_PQK", "Any% CP (5 Rotten, Pursuer Quick Kill)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Last Giant", 		"00L"), 
-				Tsplit("Rotten 1", 			"04L"), 	// (ASSUMED DLC1 entrance - not explicit)
+				Tsplit("Last Giant", 		"00L"),  	// (boneout)
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
 				Tsplit("DLC1 Runthrough", 	"51S"), 	// (ascetic boneout)
 				Tsplit("RTSR", 				"52L"), 	// (RTSR boneout)
 				Tsplit("Rotten 2 + 3", 		"05N 06L"), // (Rotten 3 boneout)
@@ -217,7 +233,7 @@ startup {
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -232,7 +248,7 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer QK",		"50N 64S"), // (Majula warp)
-				Tsplit("Rotten 1", 			"04L"), 	// (ASSUMED DLC1 entrance - not explicit)
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
 				Tsplit("DLC1 Runthrough", 	"51S"), 	// (ascetic boneout)
 				Tsplit("RTSR", 				"52L"), 	// (RTSR boneout)
 				Tsplit("Rotten 2 + 3", 		"05N 06L"), // (Rotten 3 boneout)
@@ -241,7 +257,7 @@ startup {
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -255,27 +271,27 @@ startup {
 		Tuple.Create("OS", "Old Souls (Dark rapier)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Last Giant",		"00L"),
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
-				Tsplit("Dragonrider", 		"03L"), 	
-				Tsplit("Rotten", 			"04L"),
+				Tsplit("Last Giant",		"00L"), 	// (boneout)
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), // (Licia boneout)	
+				Tsplit("Rotten", 			"04L"), 	// (boneout)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
-				Tsplit("Covetous", 			"12S"),
+				Tsplit("Covetous", 			"12S"), 	// (kill)
 				Tsplit("Mytha", 			"13N 56S"), // (elevator)
-				Tsplit("Old Iron King", 	"15L"),
-				Tsplit("Sentinels", 		"16S"),
-				Tsplit("Sinner", 			"18L"),
-				Tsplit("Najka", 			"19S"),
-				Tsplit("Congregation", 		"21S"),
-				Tsplit("Freja", 			"22L"),
-				Tsplit("Dragonriders", 		"24S"), 	// (boss death)
-				Tsplit("Mirror Knight", 	"25N 48S"), // (mirror elevator)
+				Tsplit("Old Iron King", 	"15L"), 	// (boneout)
+				Tsplit("Sentinels", 		"16S"), 	// (kill)
+				Tsplit("Sinner", 			"18L"), 	// (boneout)
+				Tsplit("Najka", 			"19S"), 	// (kill)
+				Tsplit("Congregation", 		"21S"), 	// (kill)
+				Tsplit("Freja", 			"22L"), 	// (boneout)
+				Tsplit("Dragonriders", 		"24S"), 	// (kill)
+				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door to crypt elevator)
-				Tsplit("Velstadt", 			"27L"),
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
-				Tsplit("Ashen Mist", 		"45L"),
-				Tsplit("Giant Lord", 		"30L"),
-				Tsplit("Nashandra", 		"43N 44C"), 	// (black screen after Nash)
+				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
+				Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
 			}
 		)
 	);
@@ -286,37 +302,37 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant",		"00L"), 	// (boneout)
-				Tsplit("Pursuer ", 			"01L"), 	// (ASSUMED NEST - not explicit)
-				Tsplit("Dragonrider", 		"03L"),  	// (ASSUMED WARP AFTER LICIA - not explicit)	
-				Tsplit("Rotten", 			"04L"), 	// (ASSUMED DLC1 ENTRANCE - not explicit)
-				Tsplit("DLC1 Runthrough", 	""), 		// TODO (Dragon Stone bonfire)
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), // (warp after Licia)	
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
+				Tsplit("DLC1 Runthrough", 	"60L"), 	// (Dragon Stone bonfire)
 				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
 				Tsplit("Flexile", 			"10L"), 	// (boneout)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
 				Tsplit("Covetous", 			"12S"),		// (kill)
 				Tsplit("Mytha", 			"13N 56S"), // (elevator)
 				Tsplit("Smelter Demon",		"14N 57S"), // (door)
-				Tsplit("Old Iron King", 	"15L"), 	// (ASSUMED DLC2 ENTRANCE - not explicit)
-				Tsplit("DLC2 Runthrough", 	""), 		// (chunks) TODO
+				Tsplit("Old Iron King", 	"15N 68L"), // (DLC2 portal)
+				Tsplit("DLC2 Runthrough", 	"76L"), 	// (chunks boneout)
 				Tsplit("Sentinels", 		"16S"), 	// (kill)
 				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
-				Tsplit("Sinner", 			"18L"), 	// (ASSUMED PRIMAL - not explicit)
+				Tsplit("Sinner", 			"18N 86L"), // (primal)
 				Tsplit("Najka", 			"19S"), 	// (kill)
 				Tsplit("Authority", 		"20S"), 	// (kill)
 				Tsplit("Congregation", 		"21S"), 	// (kill)
-				Tsplit("Freja", 			"22L"), 	// (ASSUMED PRIMAL - not explicit)
+				Tsplit("Freja", 			"22N 87L"),	// (boneout at primal)
 				Tsplit("Vanguard", 			"23L"), 	// (boneout)
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (ASSUMED KING'S RING - not explicit)
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ancient", 			"29L"),  	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (ASSUMED Soul of a Giant - not explicit)
 				Tsplit("Fume Knight", 		"31L"),		// (boneout)
 				Tsplit("Blue Smelter", 		"32L"), 	// (boneout)
 				Tsplit("Sir Alonne", 		"33L"), 	// (boneout)
-				Tsplit("Gulch Giants", 		""), 		// (TODO Dungeon Gulch / Grandahl boneout)
+				Tsplit("Gulch Giants", 		"63N 70L"), // (Grandahl boneout)
 				Tsplit("Vendrick", 			"34L"), 	// (boneout)
 				Tsplit("Elana", 			"35S"), 	// (kill)
 				Tsplit("Sinh", 				"36L"), 	// (boneout)
@@ -325,8 +341,8 @@ startup {
 				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
 				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
-				Tsplit("Dungeon: Woods", 	""), 		// TODO Dungeon Woods boneout
-				Tsplit("Dungeon: Gulch", 	""), 		// TODO Dungeon Gulch boneout
+				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
 			}
@@ -338,18 +354,18 @@ startup {
 		Tuple.Create("old_bosses", "All Bosses No DLC (Hexes)", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Shaded Ruins",		""), 		// (warp) TODO Shaded Ruins bonfire
-				Tsplit("Licia",				"03N ??"), 	// (warp) TODO Heides: Tower of Prayer
+				Tsplit("Shaded Ruins",		"73L"), 	// (warp)
+				Tsplit("Licia",				"03N 85L"), // (warp after Licia)
 				Tsplit("Pursuer QK",		"50N 64S"), // (warp)
-				Tsplit("Bridge Approach",	"L"), 		// (warp) TODO Bridge Approach bonfire
+				Tsplit("Bridge Approach",	"74L"), 	// (warp at Bridge Approach)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
 				Tsplit("Vanguard",			"23S"), 	// (kill)
-				Tsplit("Giants / Grandahl",	""), 		// (Grandahl boneout) (TODO Dungeon Gulch / Grandahl boneout)
-				Tsplit("Grandahl Drangleic","00L"), 	// (boneout) (TODO Dungeon Gulch / Grandahl boneout)
+				Tsplit("Gulch Giants", 		"63N 70L"), // (Grandahl boneout)
+				Tsplit("Grandahl Drangleic","72L"), 	// (Grandahl boneout)
 				Tsplit("Dragonriders",		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (ASSUMED KING'S RING - not explicit)
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ancient",			"29L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
@@ -358,7 +374,7 @@ startup {
 				Tsplit("Smelter Demon",		"14S"), 	// (kill)
 				Tsplit("Old Iron King",		"15L"), 	// (boneout)
 				Tsplit("Last Giant",		"00L"), 	// (boneout)
-				Tsplit("GL & Memories", 	"30N ??"), 	// (memory exit??) TODO Memory of Orro
+				Tsplit("GL & Memories", 	"30N 90L"), // (memory of Orro exit)
 				Tsplit("Gargoyles",			"17L"), 	// (boneout)
 				Tsplit("Sentinels", 		"16L"), 	// (boneout)
 				Tsplit("Sinner", 			"18L"), 	// (boneout)
@@ -382,23 +398,22 @@ startup {
 		Tuple.Create("rbo", "Reverse Boss Order (Hexes)", 
 			new List<Tuple<string,string>>
 			{
-				
-				Tsplit("Shaded Ruins",		""), 		// (warp) TODO Shaded Ruins bonfire
+				Tsplit("Shaded Ruins",		"73L"), 	// (warp)
 				Tsplit("Guardian Elevator", "47S"), 	// (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
-				Tsplit("Vammar Memory 20k", "??"), 		// (near 20k pickup boneout) (TODO 20k boneout place)
-				Tsplit("Dragonrider skip", 	"??L"),		// (bonfire boneback) (TODO Tower of prayer bonfire)		
-				Tsplit("Bridge Approach", 	"??S"), 	// (bonfire action??)
-				Tsplit("Poison Pool", 		"??"), 		// (warp) TODO - POISON POOL BONFIRE
-				Tsplit("Najka Skip", 		"??L"), 	// (bonfire boneback) TODO - DOORS OF PHARROS BONFIRE
-				Tsplit("Tseldora campsite", "??L"), 	// (warp) TODO Tseldora bonfire
-				Tsplit("Caitha's Chime", 	"??L"), 	// (boneout) TODO Caitha's Chime Location
+				Tsplit("Vammar Memory 20k", "77L"), 	// (near 20k pickup boneout)
+				Tsplit("Dragonrider skip", 	"85L"),		// (bonfire boneback)		
+				Tsplit("Bridge Approach", 	"74S"), 	// (bonfire light)
+				Tsplit("Poison Pool", 		"89L"), 	// (warp)
+				Tsplit("Najka Skip", 		"91L"), 	// (bonfire boneback)
+				Tsplit("Tseldora campsite", "92L"), 	// (warp) TODO Tseldora bonfire
+				Tsplit("Caitha's Chime", 	"93L"), 	// (Caitha's boneout) [might be too small]
 				Tsplit("Mirror Knight skip","48S"), 	// (elevator)
 				Tsplit("Frog Skip", 		"49S"), 	// (door)
-				Tsplit("King's ring", 		"??L"), 	// (boneout) TODO King's Ring
-				Tsplit("Giants / Grandahl",	""), 		// (Grandahl boneout) (TODO Dungeon Gulch / Grandahl boneout) 	
+				Tsplit("King's ring", 		"84L"), 	// (boneout) [check position is correct from OOB]
+				Tsplit("Gulch Giants", 		"63N 70L"), // (Grandahl boneout) 	
 				Tsplit("Throne Duo", 		"43L"), 	// (boneout)
-				Tsplit("Pursuer skip v2", 	"30N ??"), 	// (nest) TODO Nest
+				Tsplit("Pursuer skip v2", 	"30N 83L"), // (nest)
 				Tsplit("Nashandra escape", 	"44L"), 	// (boneout)
 				Tsplit("Ancient",			"29L"), 	// (boneout)
 				Tsplit("Guardian", 			"28L"), 	// (boneout)
@@ -414,7 +429,7 @@ startup {
 				Tsplit("Congregation", 		"21S"), 	// (boneout)				
 				Tsplit("Authority", 		"20L"), 	// (boneout)
 				Tsplit("Najka", 			"19L"), 	// (boneout)
-				Tsplit("Mytha skip", 		"??S"), 	// (bonfire light) TODO Iron Keep Bonfire
+				Tsplit("Mytha skip", 		"88S"), 	// (bonfire light)
 				Tsplit("Old Iron King",		"15L"), 	// (boneout)
 				Tsplit("Smelter Demon",		"14L"), 	// (boneout)
 				Tsplit("Mytha", 			"13L"), 	// (boneout)
@@ -427,9 +442,9 @@ startup {
 				Tsplit("Flexile", 			"10L"), 	// (boneout)
 				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
 				Tsplit("Dragonrider", 		"03L"),  	// (boneout)
-				Tsplit("Pursuer QK", 		"??"), 		// (rest) TODO PQK properly!
+				//Tsplit("Pursuer QK", 		"??"), 		// (rest) TODO PQK properly!
 				Tsplit("Last Giant",		"00L"), 	// (boneout)
-				Tsplit("Finish", 			"??C"), 	// (cutscene) TODO Aldia cutscene
+				Tsplit("Finish", 			"80C"), 	// (final cutscene)
 			}
 		)
 	);
@@ -445,7 +460,7 @@ startup {
 				Tsplit("Pursuer 17k", 		"50N 64S"), // (warp)
 				Tsplit("Gulch Giants", 		"63L"), 	// (Giants boneout)
 				Tsplit("Majula + RTSR", 	"52N 53L"), // (warp after RTSR)
-				Tsplit("Rotten 1", 			"04L"), 	// TODO ASSUMED DLC1 entrance
+				Tsplit("Rotten 1", 			"04N 67L"), // (DLC1 portal)
 				Tsplit("DLC 1 runthrough", 	"51N 50S"), // (warp after ascetics)
 				Tsplit("Melentia + Level", 	"50N 64L"), // (warp after level)
 				Tsplit("Rotten 2 + 3", 		"05N 06L"), // (Rotten 3 boneout)
@@ -454,7 +469,7 @@ startup {
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -469,18 +484,18 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
 				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
 				Tsplit("Najka", 			"19S"), 	// (kill)
-				Tsplit("Congregation", 		"21L"), 	// (ascetic boneout) TODO NOT EXPLICIT
-				Tsplit("Sentinels", 		"16L"), 	// (ascetic boneout) TODO NOT EXPLICIT
+				Tsplit("Congregation", 		"21N 78L"), // (Tseldora ascetic boneout)
+				Tsplit("Sentinels", 		"16N 79L"), // (Bastille ascetic boneout)
 				Tsplit("Rotten 2", 			"05L"), 	// (boneout)
 				Tsplit("Rotten 3", 			"06L"), 	// (boneout)
 				Tsplit("Rotten 4", 			"07L"), 	// (boneout)
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -495,12 +510,12 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
-				Tsplit("Dragonrider", 		"03L"), 	// ASSUMED LICIA 
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), // (Licia boneout)
 				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
 				Tsplit("Felkin", 			"65L"),		// (warp)
 				Tsplit("Najka", 			"19S"), 	// (kill)
-				Tsplit("Congregation", 		"21L"), 	// (ascetic boneout) TODO NOT EXPLICIT
+				Tsplit("Congregation", 		"21S"), 	// (kill)
 				Tsplit("Freja", 			"22L"), 	// (boneout)
 				Tsplit("Sentinels", 		"16S"), 	// (kill)
 				Tsplit("Sinner", 			"18L"), 	// (boneout)
@@ -511,7 +526,7 @@ startup {
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
@@ -522,12 +537,12 @@ startup {
 	
 	// sotfs_All Bosses (No Parrywalk, Rapier/Twinblade)
 	vars.routes.Add(
-		Tuple.Create("sotfs_OS", "Old Souls (No Parrywalk, Bandit start)", 
+		Tuple.Create("sotfs_AB", "All Bosses (No Parrywalk, Rapier/Twinblade)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
-				Tsplit("Pursuer", 			"01L"), 	// (ASSUMED NEST - not explicit)
-				Tsplit("Dragonrider", 		"03L"), 	// ASSUMED LICIA 
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), // (warp after Licia)
 				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
 				Tsplit("Covetous", 			"12S"), 	// (kill)
@@ -539,21 +554,21 @@ startup {
 				Tsplit("Najka", 			"19S"), 	// (kill)
 				Tsplit("Authority", 		"20S"), 	// (kill)
 				Tsplit("Congregation", 		"21S"), 	// (kill)
-				Tsplit("Freja", 			"22L"), 	// (boneout) ASSUMED PRIMAL LOCATION
+				Tsplit("Freja", 			"22N 87L"),	// (boneout at primal)
 				Tsplit("Sentinels", 		"16S"), 	// (kill)
 				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
-				Tsplit("Sinner", 			"18L"), 	// (primal warp) ASSUMED NOT EXPLICIT
+				Tsplit("Sinner", 			"18N 86L"), // (primal)
 				Tsplit("DLC2 Key", 			"62L"), 	// (boneout)
 				Tsplit("Mytha", 			"13N 56S"), // (elevator)
 				Tsplit("Smelter Demon", 	"14N 57S"), // (door)
-				Tsplit("Old Iron King", 	"15L"), 	// ASSUMED DLC2 ENTRANCE
+				Tsplit("Old Iron King", 	"15N 68L"), // (DLC2 portal)
 				Tsplit("DLC2 runthrough", 	"61L"), 	// (sceptre boneout)
 				Tsplit("Fume Knight", 		"31L"), 	// (boneout)
 				Tsplit("Blue Smelter", 		"32L"), 	// (boneout)
 				Tsplit("Dragonriders", 		"24S"), 	// (kill)
 				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
 				Tsplit("Demon of Song", 	"26N 49S"), // (door)
-				Tsplit("Velstadt", 			"27L"), 	// (boneout) TODO KINGS RING
+				Tsplit("Velstadt", 			"27N 84L"), // (King's ring boneout)
 				Tsplit("Guardian", 			"28N 47S"), // (elevator)
 				Tsplit("Ancient", 			"29L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout) ASSUMED GIANT SOUL
@@ -566,8 +581,8 @@ startup {
 				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
 				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
-				Tsplit("Dungeon: Woods", 	""), 		// TODO Dungeon Woods boneout
-				Tsplit("Dungeon: Gulch", 	""), 		// TODO Dungeon Gulch boneout
+				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
 			}
@@ -580,8 +595,8 @@ startup {
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer 17k", 		"50N 64S"), // (warp)
-				Tsplit("Branch", 			""), 		// (boneout) TODO Giant Lord Branch
-				Tsplit("Aldia's skip", 		""), 		// (door) TODO door position
+				Tsplit("Branch", 			"82L"), 	// (Branch boneout)
+				Tsplit("Aldia's skip", 		"81S"), 	// (Aslatiel door)
 				Tsplit("Guardian Elevator", "47S"), 	// (elevator)
 				Tsplit("Ashen Mist Heart", 	"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
