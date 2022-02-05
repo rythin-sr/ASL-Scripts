@@ -121,7 +121,7 @@ startup {
 		tB(-43,-44,-650,-641,125,126,0),           	  //78, Tseldora ascetic
 		tB(591,593,-119,-113,14,15,0),           	  //79, Bastille ascetic
 		tB(-744, -700, -6, -4, -275, -224, 0),    	  //80, Aldia / 0 souls finish
-		tB(-251,-247,-488,-486.5f,58,59,0),            //81, Aldia's Keep Aslatiel door
+		tB(-251,-247,-488,-486.5f,58,59,0),           //81, Aldia's Keep Aslatiel door
 		tB(-180,-175,25,31,-22,-21,0),                //82, Giant Lord Fragrant branch
 		tB(-150,-146,156,160,12,13,0),                //83, Pursuer nest
 		tB(-10,-5,-970,-960,-138,-137,0),             //84, King's ring
@@ -720,10 +720,10 @@ split {
 		
 	};
 	
-	print("testing");
-	
+		
 	if (vars.route_index < vars.Nroutes) {
 		
+		bool splitbool;
 		if (vars.first_update){
 			vars.first_update = false;
 			updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
@@ -784,17 +784,21 @@ split {
 		// Update tokens for next split/subsplit
 		if (vars.bSubsplitComplete){
 			vars.doneSubsplits++;
+			vars.bSubsplitComplete = false; // for next check
 			
 			// check for completed split
 			if (vars.doneSubsplits == vars.split_token_count){
 				vars.doneSplits++;
 				vars.doneSubsplits = 0;
+				splitbool = true;
+			} else 
+			{
+				splitbool = false;
 			}
 			
 			// Reset things for next split
 			updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
-			vars.bSubsplitComplete = false;
-			return true;
+			return splitbool;
 		}
 		
 	} else {
