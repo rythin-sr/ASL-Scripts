@@ -39,6 +39,8 @@ startup {
 	//list with info on all the boss areas and soul rewards
 	//set soul count to 0 for non-boss areas
 	//x_min, x_max, y_min, y_max, z_min, z_max, souls
+	// NB: This is really:
+	// y_min, y_max, z_min, z_max, x_min, x_max, souls if you are looking at the CE / META xyz position coordinates.
 	vars.split_conditions = new List<Tuple<float, float, float, float, float, float, int>>{
 		tB(86, 113, -41, -39, -143, -112, 10000),     //00, Last Giant
 		tB(130, 145, 9, 11, -220, -175, 17000),       //01, Pursuer, normal kill
@@ -106,34 +108,34 @@ startup {
 		tB(-247, -190, -233, -230, -139, -93, 4000),  //63, Black Gulch giant 
 		tB(10, 11, 5, 6, -17, -16, 0),                //64, Majula bonfire (from warp)
 		tB(-174, -171, 24, 25, 54, 58, 0),            //65, Felkin bonfire
-		tB(-225,-244,38,64,1.6f,-9,16998),			  //66, Pursuer, Lucida 17k
-		tB(-158.8f,-147.6f,-255,-247.8f,-229,-228,0), //67, DLC1 Entrance Portal
-		tB(-660,-666,-677,-666,157,158,0),  		  //68, DLC2 Entrance Portal
-		tB(-214.3f,-204,-210.3f,-206,46,47,0), 	      //69, DLC3 Entrance Portal
-		tB(-114,-107,-197,-192,-221,-220,0),          //70, Dungeon: Gulch Portal
-		tB(-220,-210,-460,-448,57,59,0),           	  //71, Dungeon: Woods Portal
-		tB(-329,-320,-450,-442,65,66,0),           	  //72, Dungeon: Drangleic Portal
-		tB(-184,-177,-431,-426,61,62,0),           	  //73, Shaded Ruins bonfire
-		tB(38,45,-249,-242,28,29,0),           	  	  //74, Bridge Approach bonfire
-		tB(-35,-28,-146,-139,-7,-6,0),           	  //75, Flynns ring room
-		tB(384,389,-125,-123,100,101,0),           	  //76, DLC2 Chunks/Butterly pickup
-		tB(-213,-190,34,54,-34.5f,-24,0),             //77, Vammar 20k
-		tB(-43,-44,-650,-641,125,126,0),           	  //78, Tseldora ascetic
-		tB(591,593,-119,-113,14,15,0),           	  //79, Bastille ascetic
-		tB(-744, -700, -6, -4, -275, -224, 0),    	  //80, Aldia / 0 souls finish
-		tB(-251,-247,-488,-486.5f,58,59,0),           //81, Aldia's Keep Aslatiel door
-		tB(-180,-175,25,31,-22,-21,0),                //82, Giant Lord Fragrant branch
-		tB(-150,-146,156,160,12,13,0),                //83, Pursuer nest
-		tB(-10,-5,-970,-960,-138,-137,0),             //84, King's ring
-		tB(273,290,7,21,-6.5f,-5.8f,0),           	  //85, Licia / Tower of Flame bonfire
-		tB(480,488,-125,-118,-81,-80,0),           	  //86, Sinner primal bonfire
-		tB(-86,-57,-497,-467,70,71,0),				  //87, Freja primal bonfire
-		tB(592,595,-584,-580,165,166,0),			  //88, Threshold Bridge bonfire
-		tB(321,328,-481,-473,48,49,0),			  	  //89, Poison pool bonfire
-		tB(-205,-201,119,125,-25.5f,-24.9f,0),	  	  //90, Memory of Orro exit
-		tB(-220,-210,-563,-557,96,99,0),	  	  	  //91, Gyrm's respite bonfire
-		tB(-161,-119,-717,-669,135,139,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
-		tB(-333,-327,-538,-533,125,126,0),	  	  	  //93, Caitha's chime
+		tB(38,64,1.6f,-9,-225,-244,16998),			  //66, Pursuer, Lucida 17k
+		tB(-255,-247.8f,-229,-228,-158.8f,-147.6f,0), //67, DLC1 Entrance Portal
+		tB(-677,-666,157,158,-660,-666,0),  		  //68, DLC2 Entrance Portal
+		tB(-210.3f,-206,46,47,-214.3f,-204,0), 	      //69, DLC3 Entrance Portal
+		tB(-197,-192,-221,-220,-114,-107,0),          //70, Dungeon: Gulch Portal
+		tB(-460,-448,57,59,-220,-210,0),           	  //71, Dungeon: Woods Portal
+		tB(-450,-442,65,66,-329,-320,0),           	  //72, Dungeon: Drangleic Portal
+		tB(-431,-426,61,62,-184,-177,0),           	  //73, Shaded Ruins bonfire
+		tB(-249,-242,28,29,38,45,0),           	  	  //74, Bridge Approach bonfire
+		tB(-146,-139,-7,-6,-35,-28,0),           	  //75, Flynns ring room
+		tB(-125,-123,100,101,384,389,0),           	  //76, DLC2 Chunks/Butterly pickup
+		tB(34,54,-34.5f,-24,-213,-190,0),             //77, Vammar 20k
+		tB(-650,-641,125,126,-43,-44,0),           	  //78, Tseldora ascetic
+		tB(-119,-113,14,15,591,593,0),           	  //79, Bastille ascetic
+		tB(-6, -4, -275, -224,-744, -700,0),    	  //80, Aldia / 0 souls finish
+		tB(-488,-486.5f,58,59,-251,-247,0),           //81, Aldia's Keep Aslatiel door
+		tB(25,31,-22,-21,-180,-175,0),                //82, Giant Lord Fragrant branch
+		tB(156,160,12,13,-150,-146,0),                //83, Pursuer nest
+		tB(-970,-960,-138,-137,-10,-5,0),             //84, King's ring
+		tB(7,21,-6.5f,-5.8f,273,290,0),           	  //85, Licia / Tower of Flame bonfire
+		tB(-125,-118,-81,-80,480,488,0),           	  //86, Sinner primal bonfire
+		tB(-497,-467,70,71,-86,-57,0),				  //87, Freja primal bonfire
+		tB(-584,-580,165,166,592,595,0),			  //88, Threshold Bridge bonfire
+		tB(-481,-473,48,49,321,328,0),			  	  //89, Poison pool bonfire
+		tB(119,125,-25.5f,-24.9f,-205,-201,0),	  	  //90, Memory of Orro exit
+		tB(-563,-557,96,99,-220,-210,0),	  	  	  //91, Gyrm's respite bonfire
+		tB(-717,-669,135,139,-161,-119,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
+		tB(-538,-533,125,126,-333,-327,0),	  	  	  //93, Caitha's chime
 	};
 	
 	// Routes are described by a list of splits, with split conditions represented by:
@@ -612,11 +614,9 @@ startup {
 	vars.route_names = new List<string>();
 	vars.all_route_splits = new List<List<Tuple<string, string>>>();
 	
-	//print(vars.Nroutes.ToString());
 	
 	for (int i = 0; i < vars.Nroutes; i++){
 		var route = vars.routes[i];
-		//print(route.Item1);
 		vars.route_uids.Add(route.Item1);
 		vars.route_names.Add(route.Item2);
 		vars.all_route_splits.Add(route.Item3);
@@ -681,7 +681,7 @@ start {
 		
 		// get selected route
 		for (int i = 0; i < vars.Nroutes; i++){
-			if (settings[vars.route_names[i]]){
+			if (settings[vars.route_uids[i]]){
 				vars.route_index = i; // selected route index in Livesplit settings list
 				break;
 			}
@@ -703,12 +703,9 @@ split {
 	Action<int, int> updateActiveSplit = (split_index, subsplit_index) => {
 		vars.route_splits = vars.all_route_splits[vars.route_index];
 		var thisTsplit = vars.route_splits[split_index];
-		string[] split_tokens = thisTsplit.Item2.Split(' ');
+		string[] split_tokens = thisTsplit.Item2.Split(' ');		
 		string token = split_tokens[subsplit_index];
-		
-		
-		//print(token);
-		
+				
 		// can't load Regex namespace it seems
 		int cond_id = int.Parse(String.Join("", token.Where(Char.IsDigit)));
 		string split_type = String.Join("", token.Where(Char.IsLetter));
@@ -717,6 +714,13 @@ split {
 		// Tuple<float, float, float, float, float, float, int> splitcond = null;
 		vars.splitcond = vars.split_conditions[cond_id];
 		vars.split_token_count = split_tokens.Length;
+		
+		if (vars.debug_output)
+		{
+			print("token use: " + token.ToString());
+			print("split_cond: " + vars.splitcond);
+			print("split_type: " + split_type);
+		}
 		
 	};
 	
@@ -782,7 +786,7 @@ split {
 		}
 		
 		// Update tokens for next split/subsplit
-		if (vars.bSubsplitComplete){
+		if (vars.bSubsplitComplete){			
 			vars.doneSubsplits++;
 			vars.bSubsplitComplete = false; // for next check
 			
