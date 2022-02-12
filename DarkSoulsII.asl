@@ -545,7 +545,7 @@ startup {
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
 				Tsplit("Pursuer", 			"01N 83L"), // (nest)
 				Tsplit("Dragonrider", 		"03N 85L"), // (warp after Licia)
-				Tsplit("Rotten 1", 			"04L"), 	// (boneout)
+				Tsplit("Rotten", 			"04L"), 	// (boneout)
 				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
 				Tsplit("Covetous", 			"12S"), 	// (kill)
 				Tsplit("Gulch Giants", 		"63L"), 	// (boneout)
