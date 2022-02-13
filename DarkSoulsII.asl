@@ -136,6 +136,9 @@ startup {
 		tB(-563,-557,96,99,-220,-210,0),	  	  	  //91, Gyrm's respite bonfire
 		tB(-717,-669,135,139,-161,-119,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
 		tB(-538,-533,125,126,-333,-327,0),	  	  	  //93, Caitha's chime
+		tB(-42,-37,-35,-34,-6,5,0), 			  	  //94, DLC1 key
+		tB(-469,-462,72,73,-374,-368,0), 			  //95, King's gate bonfire
+		tB(-91,-84,-2,1,597,606,0), 			  	  //96, Mcduff bonfire
 	};
 	
 	// Routes are described by a list of splits, with split conditions represented by:
@@ -587,6 +590,63 @@ startup {
 				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
+			}
+		)
+	);
+	
+	// sotfs_All Bosses (Parrywalk, Rapier/Twinblade)
+	vars.routes.Add(
+		Tuple.Create("sotfs_AB_PW", "All Bosses (Parrywalk, Rapier/Twinblade)", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Last Giant", 		"00L"), 	// (boneout)
+				Tsplit("Pursuer", 			"01N 83L"), // (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), // (warp)
+				Tsplit("Gulch Giants", 		"63L"), 	// (quitout hopefully)
+				Tsplit("DLC1 key/Gandalf", 	"94L 70L"), // (Grandahl boneout) 
+				Tsplit("Rotten", 			"04L 67L"),	// (DLC1 entrance)
+				Tsplit("Flynn's ring", 		"75L"), 	// (boneout)
+				Tsplit("Shaded ruins", 		"73L"), 	// (warp)
+				Tsplit("King's gate", 		"95L"), 	// (warp)
+				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
+				Tsplit("Flexile", 			"10L"), 	// (boneout)
+				Tsplit("Skeleton Lords", 	"11N 55S"), // (lever)
+				Tsplit("Covetous", 			"12S"), 	// (kill)
+				Tsplit("Najka", 			"19S"), 	// (kill)
+				Tsplit("Authority", 		"20S"), 	// (kill)
+				Tsplit("Congregation", 		"21S"), 	// (kill)
+				Tsplit("Freja", 			"22N 87L"),	// (boneout at primal)
+				Tsplit("Vanguard", 			"23L"), 	// (boneout)			
+				Tsplit("Sentinels", 		"16S"), 	// (kill)
+				Tsplit("Sinner", 			"18N 86L"), // (primal)
+				Tsplit("Aldia's skip", 		"81S"), 	// (Aslatiel door)
+				Tsplit("Guardian", 			"28N 47S"), // (elevator)
+				Tsplit("Ancient", 			"29L"), 	// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 	// (boneout) ASSUMED GIANT SOUL
+				Tsplit("Mytha", 			"13N 56S"), // (elevator)
+				Tsplit("Smelter Demon", 	"14S"), 	// (kill)
+				Tsplit("Old Iron King", 	"15N 68L"), // (DLC2 portal)
+				Tsplit("Fume Knight", 		"31S"), 	// (kill)
+				Tsplit("Blue Smelter", 		"32L"), 	// (boneout)
+				Tsplit("Sir Alonne", 		"33L"), 	// (boneout)
+				Tsplit("Dragonriders", 		"24S"), 	// (kill)
+				Tsplit("Mirror Knight", 	"25N 48S"), // (elevator)
+				Tsplit("Demon of Song", 	"26N 49S"), // (door)
+				Tsplit("Velstadt", 			"27S"), 	// (kill)
+				Tsplit("Vendrick", 			"34L"), 	// (boneout)
+				Tsplit("Levels/Upgrades",   "96L"), 	// (warp)
+				Tsplit("Gank Squad", 		"37L"), 	// (boneout)
+				Tsplit("Elana", 			"35S"), 	// (kill)
+				Tsplit("Sinh", 				"36L"), 	// (boneout)
+				Tsplit("Aava", 				"38N 59S"), // (big door)
+				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
+				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
+				Tsplit("Chariot", 			"41L"), 	// (boneout)
+				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
+				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
+				Tsplit("Darklurker", 		"42L"), 	// (boneout)
+				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)
 			}
 		)
 	);
