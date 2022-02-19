@@ -136,7 +136,7 @@ startup {
 		tB(-563,-557,96,99,-220,-210,0),	  	  	  //91, Gyrm's respite bonfire
 		tB(-717,-669,135,139,-161,-119,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
 		tB(-538,-533,125,126,-333,-327,0),	  	  	  //93, Caitha's chime
-		tB(-42,-37,-35,-34,-6,5,0), 			  	  //94, DLC1 key
+		tB(-43,-37,-35,-34,-6,5,0), 			  	  //94, DLC1 key
 		tB(-469,-462,72,73,-374,-368,0), 			  //95, King's gate bonfire
 		tB(-91,-84,-2,1,597,606,0), 			  	  //96, Mcduff bonfire
 	};
