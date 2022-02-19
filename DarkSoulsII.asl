@@ -606,7 +606,6 @@ startup {
 				Tsplit("DLC1 key/Gandalf", 	"94L 70L"), // (Grandahl boneout) 
 				Tsplit("Rotten", 			"04S 67L"),	// (DLC1 entrance)
 				Tsplit("Flynn's ring", 		"75L"), 	// (boneout)
-				Tsplit("Shaded ruins", 		"73L"), 	// (warp)
 				Tsplit("King's gate", 		"95L"), 	// (warp)
 				Tsplit("Dragonslayer", 		"09L"), 	// (boneout)
 				Tsplit("Flexile", 			"10L"), 	// (boneout)
