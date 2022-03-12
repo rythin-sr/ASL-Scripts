@@ -2,10 +2,11 @@ state("Risk of Rain 2") {}
 
 startup
 {
+
     //UnityASL setup thanks to Ero
     vars.Log = (Action<object>)(output => print("[] " + output));
     vars.Unity = Assembly.Load(File.ReadAllBytes(@"Components\UnityASL.bin")).CreateInstance("UnityASL.Unity");
-    vars.Unity.LoadSceneManager = true;
+    vars.Unity.LoadSceneManager = true; 
 
     settings.Add("fin", false, "Don't split on stage transitions");
     settings.SetToolTip("fin", "Will still split when entering the final cutscene, just not between stages.");
@@ -32,16 +33,24 @@ startup
 
 init
 {
-    vars.Unity.TryOnLoad = (Func<dynamic, bool>)(helper =>
+   var dll = File.Exists(modules.First().FileName + @"\..\Risk of Rain 2_Data\Managed\RoR2.dll"); 
+
+   vars.Unity.TryOnLoad = (Func<dynamic, bool>)(helper =>
     {
-        var ftbm = helper.GetClass("RoR2", "FadeToBlackManager");
-        var run = helper.GetClass("RoR2", "Run");
+
+        var assembly = dll ? "RoR2" : "Assembly-CSharp";
+        
+        var ftbm = helper.GetClass(assembly, "FadeToBlackManager");
+        var run = helper.GetClass(assembly, "Run");
+
         vars.Unity.Make<float>(ftbm.Static, ftbm["alpha"]).Name = "fade";
         vars.Unity.Make<int>(run.Static, run["stageClearCount"]).Name = "stage";
 
         return true;
     });
 
+
+    
     vars.Unity.Load(game);
 }
 
