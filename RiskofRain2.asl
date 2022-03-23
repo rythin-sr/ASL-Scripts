@@ -44,7 +44,7 @@ init
         var run = helper.GetClass(assembly, "Run");
 
         vars.Unity.Make<float>(ftbm.Static, ftbm["alpha"]).Name = "fade";
-        vars.Unity.Make<int>(run.Static, run["stageClearCount"]).Name = "stage";
+        vars.Unity.Make<int>(run.Static, run["instance"], run["stageClearCount"]).Name = "stage";
 
         return true;
     });
