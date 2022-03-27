@@ -162,7 +162,7 @@ startup {
 	////////////////////////////////////////
 	// Any%, Dragon Tooth
 	vars.routes.Add(
-		Tuple.Create("any", "Any%", 
+		Tuple.Create("any", "Any%"), 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Branch Skiop",  "53S"), 		// (bonfire light)
@@ -176,7 +176,7 @@ startup {
 	
 	// Any% CP (17k, 5 Rotten)
 	vars.routes.Add(
-		Tuple.Create("17k_5r", "Any% CP (17k, 5 Rotten)", 
+		Tuple.Create("17k_5r", "Any% CP (5 Rotten, 17k)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer", 			"50N 64S"), // (majula warp)
@@ -301,9 +301,9 @@ startup {
 		)
 	);
 	
-	// All Bosses, Dark rapier/Lightning RITB: No parrywalk
+	// All Bosses, Dark rapier/Lightning RITB: Restricted
 	vars.routes.Add(
-		Tuple.Create("AB", "All Bosses (No Parrywalk, Dark Rapier/Lightning RITB)", 
+		Tuple.Create("AB", "All Bosses (Restricted, Dark Rapier/Lightning RITB)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant",		"00L"), 	// (boneout)
@@ -457,9 +457,9 @@ startup {
 	////		   SOTFS ROUTES 		 ////
 	////////////////////////////////////////
 	
-	// sotfs_Any% (17k, No Parrywalk)
+	// sotfs_Any% (Restricted, 17k)
 	vars.routes.Add(
-		Tuple.Create("sotfs_17k", "Any% (17k, No Parrywalk)", 
+		Tuple.Create("sotfs_17k", "Any% (Restricted, 17k)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer 17k", 		"50N 64S"), // (warp)
@@ -483,9 +483,9 @@ startup {
 		)
 	);
 	
-	// sotfs_Any% (4 Rotten)
+	// sotfs_Any% (Restricted, 4 Rotten)
 	vars.routes.Add(
-		Tuple.Create("sotfs_4r", "Any% (4 Rotten)", 
+		Tuple.Create("sotfs_4r", "Any% (Restricted, 4 Rotten)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
@@ -509,9 +509,9 @@ startup {
 		)
 	);
 	
-	// sotfs_Old Souls (No Parrywalk, Bandit start)
+	// sotfs_Old Souls (Restricted, Bandit start)
 	vars.routes.Add(
-		Tuple.Create("sotfs_OS", "Old Souls (No Parrywalk, Bandit start)", 
+		Tuple.Create("sotfs_OS", "Old Souls (Restricted, Bandit start)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
@@ -540,9 +540,9 @@ startup {
 		)
 	);
 	
-	// sotfs_All Bosses (No Parrywalk, Rapier/Twinblade)
+	// sotfs_All Bosses (Restricted, Rapier/Twinblade)
 	vars.routes.Add(
-		Tuple.Create("sotfs_AB", "All Bosses (No Parrywalk, Rapier/Twinblade)", 
+		Tuple.Create("sotfs_AB", "All Bosses (Restricted, Rapier/Twinblade)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
@@ -594,9 +594,9 @@ startup {
 		)
 	);
 	
-	// sotfs_All Bosses (Parrywalk, Rapier/Twinblade)
+	// sotfs_All Bosses (Unrestricted, Rapier/Twinblade)
 	vars.routes.Add(
-		Tuple.Create("sotfs_AB_PW", "All Bosses (Parrywalk, Rapier/Twinblade)", 
+		Tuple.Create("sotfs_AB_PW", "All Bosses (Unrestricted, Rapier/Twinblade)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
@@ -650,9 +650,9 @@ startup {
 		)
 	);
 	
-	// sotfs_Any% (Parrywalk, 17k Rapier)
+	// sotfs_Any% (Unrestricted, Rapier 17k)
 	vars.routes.Add(
-		Tuple.Create("sotfs_17k_PW", "Any% (Parrywalk, 17k Rapier)", 
+		Tuple.Create("sotfs_17k_PW", "Any% (Unrestricted, Rapier 17k)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Pursuer 17k", 		"50N 64S"), // (warp)
