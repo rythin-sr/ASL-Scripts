@@ -120,7 +120,7 @@ startup {
 		tB(-146,-139,-7,-6,-35,-28,0),           	  //75, Flynns ring room
 		tB(-125,-123,100,101,384,389,0),           	  //76, DLC2 Chunks/Butterly pickup
 		tB(34,54,-34.5f,-24,-213,-190,0),             //77, Vammar 20k
-		tB(-650,-641,125,126,-43,-44,0),           	  //78, Tseldora ascetic
+		tB(-650,-641,125,126,-37,-44,0),           	  //78, Tseldora ascetic
 		tB(-119,-113,14,15,591,593,0),           	  //79, Bastille ascetic
 		tB(-6, -4, -275, -224,-744, -700,0),    	  //80, Aldia / 0 souls finish
 		tB(-488,-486.5f,58,59,-251,-247,0),           //81, Aldia's Keep Aslatiel door
