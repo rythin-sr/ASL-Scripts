@@ -696,9 +696,12 @@ startup {
 		}
 		
 		// build tooltip for route:
-		//List<Tuple<string, string>> route_splits = vars.all_route_splits[i];
-		//string route_tooltip = "Feel free to add manual splits at your own leisure.\nThis route has the following autosplits:\n" ;//+ vars.route_splits.Join("\n");
-		//settings.SetToolTip(route_uid, route_tooltip);
+        	//var route_splits = vars.all_route_splits[i];
+        	string route_tooltip = "Feel free to add manual splits at your own leisure.\nThis route has the following autosplits:\n";
+        	foreach (Tuple<string, string> entry in vars.all_route_splits[i]) {
+           		route_tooltip +=  entry.Item1 + "\n";
+        	}
+        	settings.SetToolTip(route_uid, route_tooltip);
 	}
 	
 	settings.Add("ffleret", false, "Split on every loading screen");
