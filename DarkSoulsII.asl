@@ -162,7 +162,7 @@ startup {
 	////////////////////////////////////////
 	// Any%, Dragon Tooth
 	vars.routes.Add(
-		Tuple.Create("any", "Any%"), 
+		Tuple.Create("any", "Any%", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Branch Skiop",  "53S"), 		// (bonfire light)
