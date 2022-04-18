@@ -3,28 +3,29 @@
 //as well as pseudostripy for help finding correct coordinates, Ero for helping with the code
 //Nyk for helping with SotFS routes
 
+// [pseudo]: Shuffled state xyz to match CE/META position coordinates
 state("DarkSoulsII", "1.11") {
-	float xPos:	0x114A5B4, 0x8, 0x88, 0xC;         //horizontal
-	float yPos:	0x114A5B4, 0x8, 0x88, 0x10;        //vertical
-	float zPos:	0x114A5B4, 0x8, 0x88, 0x14;        //horizontal
+	float xPos:	0x114A5B4, 0x8, 0x88, 0x14;
+	float yPos:	0x114A5B4, 0x8, 0x88, 0xC;
+	float zPos:	0x114A5B4, 0x8, 0x88, 0x10;
 	int state:	0x11493F4, 0x74, 0xB8, 0x2D4;      //1 in cutscenes and backstabs/ripostes (lol), 2 when falling, 0 otherwise
 	int souls:	0x11493F4, 0x74, 0x2EC, 0x238;		
 	int load: 	0x118E8E0, 0x1D4;                  //1 in loads
 }
 
 state("DarkSoulsII", "1.02") {
-	float xPos:	0xFB4F74, 0x8, 0xBC;				
-	float yPos:	0xFB4F74, 0x8, 0xC0;				
-	float zPos:	0xFB4F74, 0x8, 0xC4;				
+	float xPos:	0xFB4F74, 0x8, 0xC4;				
+	float yPos:	0xFB4F74, 0x8, 0xBC;				
+	float zPos:	0xFB4F74, 0x8, 0xC0;		
 	int state:	0xFB3E3C, 0x74, 0xB8, 0x2D4;		
 	int souls:	0xFB3E3C, 0x74, 0x2EC, 0x238;		
 	int load: 	0xFF9298, 0x1D4;
 }
 
 state("DarkSoulsII", "Scholar of the First Sin") {
-	float xPos:	0x160DCD8, 0x8, 0x5D0;				
-	float yPos:	0x160DCD8, 0x8, 0x5D4;				
-	float zPos:	0x160DCD8, 0x8, 0x5D8;				
+	float xPos:	0x160DCD8, 0x8, 0x5D8;				
+	float yPos:	0x160DCD8, 0x8, 0x5D0;				
+	float zPos:	0x160DCD8, 0x8, 0x5D4;	
 	int state:	0x160B8D0, 0xD0, 0x100, 0x304;		
 	int souls:	0x160B8D0, 0xD0, 0x380, 0x21C;		
 	int load: 	0x186CCB0, 0x11C;
@@ -32,114 +33,138 @@ state("DarkSoulsII", "Scholar of the First Sin") {
 
 startup {
 	vars.debug_output = false;
-	var tB = (Func<float, float, float, float, float, float, int, Tuple<float, float, float, float, float, float, int>>) ((elmt1, elmt2, elmt3, elmt4, elmt5, elmt6, elmt7) => { return Tuple.Create(elmt1, elmt2, elmt3, elmt4, elmt5, elmt6, elmt7); });
 	
-	//print("testing");
+		
+	// Utility functions:
+	Func<float, float, float, Vector3f> v3f = (x,y,z) => new Vector3f(x,y,z);
+	// Func<float, float, float, Vector3f> v3fYZX = (y,z,x) => new Vector3f(x,y,z); // Backwards compatibility (deprecated)
 	
-	//list with info on all the boss areas and soul rewards
-	//set soul count to 0 for non-boss areas
-	//x_min, x_max, y_min, y_max, z_min, z_max, souls
-	// NB: This is really:
-	// y_min, y_max, z_min, z_max, x_min, x_max, souls if you are looking at the CE / META xyz position coordinates.
-	vars.split_conditions = new List<Tuple<float, float, float, float, float, float, int>>{
-		tB(86, 113, -41, -39, -143, -112, 10000),     //00, Last Giant
-		tB(130, 145, 9, 11, -220, -175, 17000),       //01, Pursuer, normal kill
-		tB(78, 82, 1, 2, -185, -181, 16900),          //02, Pursuer, 17k
-		tB(-7, 22, -15, -14, 275, 290, 12000),        //03, Dragonrider
-		tB(-285, -240, -228, -225, -128, -93, 47000), //04, Rotten NG
-		tB(-285, -240, -228, -225, -128, -93, 94000), //05, Rotten NG+
-		tB(-285, -240, -228, -225, -128, -93, 117500),//06, Rotten NG+2
-		tB(-285, -240, -228, -225, -128, -93, 129250),//07, Rotten NG+3
-		tB(-285, -240, -228, -225, -128, -93, 141000),//08, Rotten NG+4
-		tB(-184, -144, 7, 9, 144, 185, 20000),        //09, Dragonslayer
-		tB(1, 23, -72, -71, 518, 532, 14000),         //10, Flexile
-		tB(-435, -393, 36, 40, 226, 267, 15000),      //11, Skeleton Lords
-		tB(-550, -520, 52, 54, 530, 558, 13000),      //12, Covetous Demon
-		tB(-576, -548, 85, 87, 534, 565, 20000),      //13, Mytha 
-		tB(-731, -706, 176, 177, 645, 667, 32000),    //14, Smelter Demon (Red)
-		tB(-658, -622, 166, 167, 714, 730, 48000),    //15, Old Iron King
-		tB(-170, -144, -1, 12, 531, 564, 33000),      //16, Sentinels
-		tB(-227, -187, 12, 15, 498, 524, 25000),      //17, Gargoyles
-		tB(-136, -110, -78, -76, 518, 553, 45000),    //18, Sinner
-		tB(-472, -432, 83, 88, -325, -287, 23000),    //19, Najka
-		tB(-553, -488, 107, 108, -216, -161, 14000),  //20, Rat Authority
-		tB(-652, -627, 116, 117, -59, -32, 7000),     //21, Congregation
-		tB(-593, -537, 72, 74, -129, -80, 42000),     //22, Freja
-		tB(-126, -110, -31, -29, 4, 34, 11000),       //23, Royal Rat Vanguard
-		tB(-496, -466, 108, 110, -373, -353, 26000),  //24, Dragonriders
-		tB(-675, -635, 103, 105, -360, -323, 34000),  //25, Mirror Knight
-		tB(-1113, -1069, -33, -31, -171, -115, 26000),//26, Demon of Song
-		tB(-1009, -981, -133, -131, -73, -38, 50000), //27, Velstadt
-		tB(-803, -749, 80, 81, -274, -225, 37000),    //28, Guardian Dragon
-		tB(-909, -817, 336, 337, -794, -671, 120000), //29, Ancient Dragon
-		tB(129, 158, -5, 1, -278, -172, 75000),       //30, Giant Lord
-		tB(-166, -131, -62, -59, 383, 420, 84000),    //31, Fume Knight
-		tB(-256, -234, -27, -25, 437, 460, 75000),    //32, Smelter Demon (Blue)
-		tB(-115, -85, 52, 53, 697, 730, 80000),       //33, Sir Alonne
-		tB(-983, -957, -138, -137, -29, -3, 90000),   //34, Vendrick
-		tB(-134, -96, -72, -71, -41, -7, 72000),      //35, Elana
-		tB(-256, -173, -80, -79, -28, 52, 96000),     //36, Sinh
-		tB(-31, 10, 14, 21, 52, 113, 60000),          //37, Gank Squad
-		tB(-90, 8, -24, -23, -35, 3, 78000),          //38, Aava
-		tB(209, 297, -285, -280, -78, -30, 92000),    //39, Ivory
-		tB(-414, -354, -70, -68, 358, 400, 56000),    //40, Twin Pets
-		tB(-283, -220, 47, 49, -132, -41, 19000),     //41, Chariot
-		tB(-1033, -1004, 11, 14, 264, 301, 35000),    //42, Darklurker
-		tB(-744, -700, -6, -4, -275, -224, 68000),    //43, Throne Duo
-		tB(-744, -700, -6, -4, -275, -224, 90000),    //44, Nashandra
-		tB(-909, -817, 336, 337, -794, -671, 0),      //45, Ancient Dragon Arena
-		tB(5, 8, -7, -4, 276, 280, 0),                //46, Heide's Tower of Flame bonfire
-		tB(-846, -843, 79, 86, -252, -248, 0),        //47, elevator after Guardian Dragon
-		tB(-684, -680, 102, 110, -344, -340, 0),      //48, Mirror Knight elevator
-		tB(-1038, -1035, -30, -25, -88, -86, 0),      //49, Door after Demon of Song
-		tB(78, 82, 1, 2, -185, -181, 0),              //50, Melentia bonfire
-		tB(-39, -33, 20, 23, 101, 107, 0),            //51, last Ascetic pickup in DLC1
-		tB(-354, -348, 42, 44, -216, -210, 0),        //52, RTSR
-		tB(-334, -325, 32, 33, -163, -157, 0),        //53, Ruined Fork Road bonfire
-		tB(21, -37, 0, 0, 0, 0, 0),                   //54, (impossible condition for autosplitter error prevention)
-		tB(-457, -447, 38, 39, 234, 238, 0),          //55, before bridge after Skeleton Lords
-		tB(-554, -550, 89, 92, 589, 591, 0),          //56, Mytha elevator
-		tB(-736, -734, 184, 185, 648, 650.4f, 0),     //57, door after Smelter Demon
-		tB(-185, -181.5f, 7, 8, 547, 551, 0),         //58, bonfire room after Ruin Sentinels
-		tB(73.5f, 77.5f, -2.5f, 0.5f, -55, -51.5f, 0),//59, big door after Aava
-		tB(-84, -78, -13, -12, -18, -12, 0),          //60, DLC1 Dragon Stone Bonfire
-		tB(-198, -190, 34, 36, 311, 321, 0),          //61, DLC2 scorching iron sceptre
-		tB(39, 49, -39, -37, -154, -144, 0),          //62, DLC2 Key
-		tB(-247, -190, -233, -230, -139, -93, 4000),  //63, Black Gulch giant 
-		tB(10, 11, 5, 6, -17, -16, 0),                //64, Majula bonfire (from warp)
-		tB(-174, -171, 24, 25, 54, 58, 0),            //65, Felkin bonfire
-		tB(38,64,1.6f,-9,-225,-244,16998),			  //66, Pursuer, Lucida 17k
-		tB(-255,-247.8f,-229,-228,-158.8f,-147.6f,0), //67, DLC1 Entrance Portal
-		tB(-677,-666,157,158, 660, 666,0),  		  //68, DLC2 Entrance Portal
-		tB(-210.3f,-206,46,47,-214.3f,-204,0), 	      //69, DLC3 Entrance Portal
-		tB(-197,-192,-221,-220,-114,-107,0),          //70, Dungeon: Gulch Portal
-		tB(-460,-448,57,59,-220,-210,0),           	  //71, Dungeon: Woods Portal
-		tB(-450,-442,65,66,-329,-320,0),           	  //72, Dungeon: Drangleic Portal
-		tB(-431,-426,61,62,-184,-177,0),           	  //73, Shaded Ruins bonfire
-		tB(-249,-242,28,29,38,45,0),           	  	  //74, Bridge Approach bonfire
-		tB(-146,-139,-7,-6,-35,-28,0),           	  //75, Flynns ring room
-		tB(-125,-123,100,101,384,389,0),           	  //76, DLC2 Chunks/Butterly pickup
-		tB(34,54,-34.5f,-24,-213,-190,0),             //77, Vammar 20k
-		tB(-650,-641,125,126,-44,-37,0),           	  //78, Tseldora ascetic
-		tB(-119,-113,14,15,591,593,0),           	  //79, Bastille ascetic
-		tB(-6, -4, -275, -224,-744, -700,0),    	  //80, Aldia / 0 souls finish
-		tB(-488,-486.5f,58,59,-251,-247,0),           //81, Aldia's Keep Aslatiel door
-		tB(25,31,-22,-21,-180,-175,0),                //82, Giant Lord Fragrant branch
-		tB(156,160,12,13,-150,-146,0),                //83, Pursuer nest
-		tB(-970,-960,-138,-137,-10,-5,0),             //84, King's ring
-		tB(7,21,-6.5f,-5.8f,273,290,0),           	  //85, Licia / Tower of Flame bonfire
-		tB(-125,-118,-81,-80,480,488,0),           	  //86, Sinner primal bonfire
-		tB(-497,-467,70,71,-86,-57,0),				  //87, Freja primal bonfire
-		tB(-584,-580,165,166,592,595,0),			  //88, Threshold Bridge bonfire
-		tB(-481,-473,48,49,321,328,0),			  	  //89, Poison pool bonfire
-		tB(119,125,-25.5f,-24.9f,-205,-201,0),	  	  //90, Memory of Orro exit
-		tB(-563,-557,96,99,-220,-210,0),	  	  	  //91, Gyrm's respite bonfire
-		tB(-717,-669,135,139,-161,-119,0),	  	  	  //92, Tseldora campsite bonfire [covers both vanilla/sotfs]
-		tB(-538,-533,125,126,-333,-327,0),	  	  	  //93, Caitha's chime
-		tB(-43,-37,-35,-34,-6,5,0), 			  	  //94, DLC1 key
-		tB(-469,-462,72,73,-374,-368,0), 			  //95, King's gate bonfire
-		tB(-91,-84,-2,1,597,606,0), 			  	  //96, Mcduff bonfire
+	Func<float, float, float, bool> isBetween = (val, min, max) => (val >= min) && (val <= max);
+	Func<Vector3f, Vector3f, Vector3f, bool> isVecBetween = (vpos, vmin, vmax) => ( isBetween(vpos.X, vmin.X, vmax.X) && isBetween(vpos.Y, vmin.Y, vmax.Y) && isBetween(vpos.Z, vmin.Z, vmax.Z) ); 
+	
+	// save across calls
+	vars.isBetween = isBetween;
+	vars.isVecBetween = isVecBetween;
+	vars.v3f = v3f;
+	
+	// System.Tuple cannot have named parameters :(
+	Func<Vector3f, Vector3f, float, Tuple<Vector3f, Vector3f, float>> SC = (min, max, souls) => Tuple.Create(min, max, souls);
+	
+	// Define split conditions in this array, and reference the ID when creating new split lists.	
+	// set soul count to 0 for non-boss areas
+	//
+	// Anon type defines:
+	//	 minimum/maximum coordinates as XYZ order (matching CE/META), & number of souls to trigger split
+	var def_splitconds = new[]
+	{
+		new {MinPos = v3f(-143, 86, -41),		MaxPos = v3f(-112, 113, -39),	Souls = 10000},  	//00, Last Giant
+		new {MinPos = v3f(-220, 130, 9),		MaxPos = v3f(-175, 145, 11),	Souls = 17000},  	//01, Pursuer, normal kill
+		new {MinPos = v3f(-185, 78, 1),			MaxPos = v3f(-181, 82, 2),		Souls = 16900},  	//02, Pursuer, 17k
+		new {MinPos = v3f(275, -7, -15),		MaxPos = v3f(290, 22, -14),		Souls = 12000},  	//03, Dragonrider
+		new {MinPos = v3f(-128, -285, -228),	MaxPos = v3f(-93, -240, -225),	Souls = 47000},  	//04, Rotten NG
+		new {MinPos = v3f(-128, -285, -228),	MaxPos = v3f(-93, -240, -225),	Souls = 94000},  	//05, Rotten NG+
+		new {MinPos = v3f(-128, -285, -228),	MaxPos = v3f(-93, -240, -225),	Souls = 117500}, 	//06, Rotten NG+2
+		new {MinPos = v3f(-128, -285, -228),	MaxPos = v3f(-93, -240, -225),	Souls = 129250}, 	//07, Rotten NG+3
+		new {MinPos = v3f(-128, -285, -228),	MaxPos = v3f(-93, -240, -225),	Souls = 141000}, 	//08, Rotten NG+4
+		new {MinPos = v3f(144, -184, 7),		MaxPos = v3f(185, -144, 9),		Souls = 20000},  	//09, Dragonslayer
+		new {MinPos = v3f(518, 1, -72),			MaxPos = v3f(532, 23, -71),		Souls = 14000},  	//10, Flexile
+		new {MinPos = v3f(226, -435, 36),		MaxPos = v3f(267, -393, 40),	Souls = 15000},  	//11, Skeleton Lords
+		new {MinPos = v3f(530, -550, 52),		MaxPos = v3f(558, -520, 54),	Souls = 13000},  	//12, Covetous Demon
+		new {MinPos = v3f(534, -576, 85),		MaxPos = v3f(565, -548, 87),	Souls = 20000},  	//13, Mytha 
+		new {MinPos = v3f(645, -731, 176),		MaxPos = v3f(667, -706, 177),	Souls = 32000},  	//14, Smelter Demon (Red)
+		new {MinPos = v3f(714, -658, 166),		MaxPos = v3f(730, -622, 167),	Souls = 48000},  	//15, Old Iron King
+		new {MinPos = v3f(531, -170, -1),		MaxPos = v3f(564, -144, 12),	Souls = 33000},  	//16, Sentinels
+		new {MinPos = v3f(498, -227, 12),		MaxPos = v3f(524, -187, 15),	Souls = 25000},  	//17, Gargoyles
+		new {MinPos = v3f(518, -136, -78),		MaxPos = v3f(553, -110, -76),	Souls = 45000},  	//18, Sinner
+		new {MinPos = v3f(-325, -472, 83),		MaxPos = v3f(-287, -432, 88),	Souls = 23000},  	//19, Najka
+		new {MinPos = v3f(-216, -553, 107),		MaxPos = v3f(-161, -488, 108),	Souls = 14000},  	//20, Rat Authority
+		new {MinPos = v3f(-59, -652, 116),		MaxPos = v3f(-32, -627, 117),	Souls = 7000},   	//21, Congregation
+		new {MinPos = v3f(-129, -593, 72),		MaxPos = v3f(-80, -537, 74),	Souls = 42000},  	//22, Freja
+		new {MinPos = v3f(4, -126, -31),		MaxPos = v3f(34, -110, -29),	Souls = 11000},  	//23, Royal Rat Vanguard
+		new {MinPos = v3f(-373, -496, 108),		MaxPos = v3f(-353, -466, 110),	Souls = 26000},  	//24, Dragonriders
+		new {MinPos = v3f(-360, -675, 103),		MaxPos = v3f(-323, -635, 105),	Souls = 34000},  	//25, Mirror Knight
+		new {MinPos = v3f(-171, -1113, -33),	MaxPos = v3f(-115, -1069, -31),	Souls = 26000},  	//26, Demon of Song
+		new {MinPos = v3f(-73, -1009, -133),	MaxPos = v3f(-38, -981, -131),	Souls = 50000},  	//27, Velstadt
+		new {MinPos = v3f(-274, -803, 80),		MaxPos = v3f(-225, -749, 81),	Souls = 37000},  	//28, Guardian Dragon
+		new {MinPos = v3f(-794, -909, 336),		MaxPos = v3f(-671, -817, 337),	Souls = 120000}, 	//29, Ancient Dragon
+		new {MinPos = v3f(-278, 129, -5),		MaxPos = v3f(-172, 158, 1),		Souls = 75000},  	//30, Giant Lord
+		new {MinPos = v3f(383, -166, -62),		MaxPos = v3f(420, -131, -59),	Souls = 84000},  	//31, Fume Knight
+		new {MinPos = v3f(437, -256, -27),		MaxPos = v3f(460, -234, -25),	Souls = 75000},  	//32, Smelter Demon (Blue)
+		new {MinPos = v3f(697, -115, 52),		MaxPos = v3f(730, -85, 53),		Souls = 80000},  	//33, Sir Alonne
+		new {MinPos = v3f(-29, -983, -138),		MaxPos = v3f(-3, -957, -137),	Souls = 90000},  	//34, Vendrick
+		new {MinPos = v3f(-41, -134, -72),		MaxPos = v3f(-7, -96, -71),		Souls = 72000},  	//35, Elana
+		new {MinPos = v3f(-28, -256, -80),		MaxPos = v3f(52, -173, -79),	Souls = 96000},  	//36, Sinh
+		new {MinPos = v3f(52, -31, 14),			MaxPos = v3f(113, 10, 21),		Souls = 60000},  	//37, Gank Squad
+		new {MinPos = v3f(-35, -90, -24),		MaxPos = v3f(3, 8, -23),		Souls = 78000},  	//38, Aava
+		new {MinPos = v3f(-78, 209, -285),		MaxPos = v3f(-30, 297, -280),	Souls = 92000},  	//39, Ivory
+		new {MinPos = v3f(358, -414, -70),		MaxPos = v3f(400, -354, -68),	Souls = 56000},  	//40, Twin Pets
+		new {MinPos = v3f(-132, -283, 47),		MaxPos = v3f(-41, -220, 49),	Souls = 19000},  	//41, Chariot
+		new {MinPos = v3f(264, -1033, 11),		MaxPos = v3f(301, -1004, 14),	Souls = 35000},  	//42, Darklurker
+		new {MinPos = v3f(-275, -744, -6),		MaxPos = v3f(-224, -700, -4),	Souls = 68000},  	//43, Throne Duo
+		new {MinPos = v3f(-275, -744, -6),		MaxPos = v3f(-224, -700, -4),	Souls = 90000},  	//44, Nashandra
+		new {MinPos = v3f(-794, -909, 336),		MaxPos = v3f(-671, -817, 337),	Souls = 0},      	//45, Ancient Dragon Arena
+		new {MinPos = v3f(276, 5, -7),			MaxPos = v3f(280, 8, -4),		Souls = 0},      	//46, Heide's Tower of Flame bonfire
+		new {MinPos = v3f(-252, -846, 79),		MaxPos = v3f(-248, -843, 86),	Souls = 0},      	//47, elevator after Guardian Dragon
+		new {MinPos = v3f(-344, -684, 102),		MaxPos = v3f(-340, -680, 110),	Souls = 0},      	//48, Mirror Knight elevator
+		new {MinPos = v3f(-88, -1038, -30),		MaxPos = v3f(-86, -1035, -25),	Souls = 0},      	//49, Door after Demon of Song
+		new {MinPos = v3f(-185, 78, 1),			MaxPos = v3f(-181, 82, 2),		Souls = 0},      	//50, Melentia bonfire
+		new {MinPos = v3f(101, -39, 20),		MaxPos = v3f(107, -33, 23),		Souls = 0},      	//51, last Ascetic pickup in DLC1
+		new {MinPos = v3f(-216, -354, 42),		MaxPos = v3f(-210, -348, 44),	Souls = 0},      	//52, RTSR
+		new {MinPos = v3f(-163, -334, 32),		MaxPos = v3f(-157, -325, 33),	Souls = 0},      	//53, Ruined Fork Road bonfire
+		new {MinPos = v3f(0, 21, 0),			MaxPos = v3f(0, -37, 0),		Souls = 0},      	//54, (impossible condition for autosplitter error prevention)
+		new {MinPos = v3f(234, -457, 38),		MaxPos = v3f(238, -447, 39),	Souls = 0},      	//55, before bridge after Skeleton Lords
+		new {MinPos = v3f(589, -554, 89),		MaxPos = v3f(591, -550, 92),	Souls = 0},      	//56, Mytha elevator
+		new {MinPos = v3f(648, -736, 184),		MaxPos = v3f(651, -734, 185),	Souls = 0},      	//57, door after Smelter Demon
+		new {MinPos = v3f(547, -185, 7),		MaxPos = v3f(551, -181, 8),		Souls = 0},      	//58, bonfire room after Ruin Sentinels
+		new {MinPos = v3f(-55, 73, -3),			MaxPos = v3f(-51, 78, 1),		Souls = 0}, 	 	//59, big door after Aava
+		new {MinPos = v3f(-18, -84, -13),		MaxPos = v3f(-12, -78, -12),	Souls = 0},      	//60, DLC1 Dragon Stone Bonfire
+		new {MinPos = v3f(311, -198, 34),		MaxPos = v3f(321, -190, 36),	Souls = 0},      	//61, DLC2 scorching iron sceptre
+		new {MinPos = v3f(-154, 39, -39),		MaxPos = v3f(-144, 49, -37),	Souls = 0},      	//62, DLC2 Key
+		new {MinPos = v3f(-139, -247, -233),	MaxPos = v3f(-93, -190, -230),	Souls = 4000},   	//63, Black Gulch giant 
+		new {MinPos = v3f(-17, 10, 5),			MaxPos = v3f(-16, 11, 6),		Souls = 0},      	//64, Majula bonfire (from warp)
+		new {MinPos = v3f(54, -174, 24),		MaxPos = v3f(58, -171, 25),		Souls = 0},      	//65, Felkin bonfire
+		new {MinPos = v3f(-225, 38, -9),		MaxPos = v3f(-244, 64, 2),		Souls = 16998},  	//66, Pursuer, Lucida 17k
+		new {MinPos = v3f(-159, -255, -229),	MaxPos = v3f(-147, -247, -228),	Souls = 0},  	 	//67, DLC1 Entrance Portal
+		new {MinPos = v3f(660, -677, 157),		MaxPos = v3f(666, -666, 158),	Souls = 0},   	 	//68, DLC2 Entrance Portal
+		new {MinPos = v3f(-215, -211, 46),		MaxPos = v3f(-204, -206, 47),	Souls = 0},  	 	//69, DLC3 Entrance Portal
+		new {MinPos = v3f(-114, -197, -221),	MaxPos = v3f(-107, -192, -220),	Souls = 0},      	//70, Dungeon: Gulch Portal
+		new {MinPos = v3f(-220, -460, 57),		MaxPos = v3f(-210, -448, 59),	Souls = 0},      	//71, Dungeon: Woods Portal
+		new {MinPos = v3f(-329, -450, 65),		MaxPos = v3f(-320, -442, 66),	Souls = 0},      	//72, Dungeon: Drangleic Portal
+		new {MinPos = v3f(-184, -431, 61),		MaxPos = v3f(-177, -426, 62),	Souls = 0},      	//73, Shaded Ruins bonfire
+		new {MinPos = v3f(38, -249, 28),		MaxPos = v3f(45, -242, 29),		Souls = 0},      	//74, Bridge Approach bonfire
+		new {MinPos = v3f(-35, -146, -7),		MaxPos = v3f(-28, -139, -6),	Souls = 0},      	//75, Flynns ring room
+		new {MinPos = v3f(384, -125, 100),		MaxPos = v3f(389, -123, 101),	Souls = 0},      	//76, DLC2 Chunks/Butterly pickup
+		new {MinPos = v3f(-213, 34, -35),		MaxPos = v3f(-190, 54, -24),	Souls = 0},      	//77, Vammar 20k
+		new {MinPos = v3f(-44, -650, 125),		MaxPos = v3f(-37, -641, 126),	Souls = 0},      	//78, Tseldora ascetic
+		new {MinPos = v3f(591, -119, 14),		MaxPos = v3f(593, -113, 15),	Souls = 0},      	//79, Bastille ascetic
+		new {MinPos = v3f(-744, -6, -275),		MaxPos = v3f(-700, -4, -224),	Souls = 0},      	//80, Aldia / 0 souls finish
+		new {MinPos = v3f(-251, -488, 58),		MaxPos = v3f(-247, -486, 59),	Souls = 0},      	//81, Aldia's Keep Aslatiel door
+		new {MinPos = v3f(-180, 25, -22),		MaxPos = v3f(-175, 31, -21),	Souls = 0},      	//82, Giant Lord Fragrant branch
+		new {MinPos = v3f(-150, 156, 12),		MaxPos = v3f(-146, 160, 13),	Souls = 0},      	//83, Pursuer nest
+		new {MinPos = v3f(-10, -970, -138),		MaxPos = v3f(-5, -960, -137),	Souls = 0},      	//84, King's ring
+		new {MinPos = v3f(273, 7, -7),			MaxPos = v3f(290, 21, -5),		Souls = 0},      	//85, Licia / Tower of Flame bonfire
+		new {MinPos = v3f(480, -125, -81),		MaxPos = v3f(488, -118, -80),	Souls = 0},      	//86, Sinner primal bonfire
+		new {MinPos = v3f(-86, -497, 70),		MaxPos = v3f(-57, -467, 71),	Souls = 0}, 	 	//87, Freja primal bonfire
+		new {MinPos = v3f(592, -584, 165),		MaxPos = v3f(595, -580, 166),	Souls = 0}, 	 	//88, Threshold Bridge bonfire
+		new {MinPos = v3f(321, -481, 48),		MaxPos = v3f(328, -473, 49),	Souls = 0}, 	 	//89, Poison pool bonfire
+		new {MinPos = v3f(-205, 119, -26),		MaxPos = v3f(-201, 125, -24),	Souls = 0}, 	 	//90, Memory of Orro exit
+		new {MinPos = v3f(-220, -563, 96),		MaxPos = v3f(-210, -557, 99),	Souls = 0}, 	 	//91, Gyrm's respite bonfire
+		new {MinPos = v3f(-161, -717, 135),		MaxPos = v3f(-119, -669, 139),	Souls = 0}, 	 	//92, Tseldora campsite bonfire [covers both vanilla/sotfs]
+		new {MinPos = v3f(-333, -538, 125),		MaxPos = v3f(-327, -533, 126),	Souls = 0}, 	 	//93, Caitha's chime
+		new {MinPos = v3f(-6, -43, -35),		MaxPos = v3f(5, -37, -34),		Souls = 0},  	 	//94, DLC1 key
+		new {MinPos = v3f(-374, -469, 72),		MaxPos = v3f(-368, -462, 73),	Souls = 0},  	 	//95, King's gate bonfire
+		new {MinPos = v3f(597, -91, -2),		MaxPos = v3f(606, -84, 1),		Souls = 0},  	 	//96, Mcduff bonfire
 	};
+	
+	// Interface this to tuple (to allow nice above notation to be kept)
+	Tuple<Vector3f, Vector3f, float>[] tup_splitconds = new Tuple<Vector3f, Vector3f, float>[def_splitconds.Count()]; // preallocate
+	for (int i = 0; i < def_splitconds.Count(); i++)
+	{
+		var splitcond = def_splitconds[i];
+		tup_splitconds[i] = SC(splitcond.MinPos, splitcond.MaxPos, splitcond.Souls); // save in tuple form for passing across method boundary
+	}	
+	vars.split_conditions = tup_splitconds; // save
+	
 	
 	// Routes are described by a list of splits, with split conditions represented by:
 	// Number: Index representing above condition to meet.
@@ -148,7 +173,6 @@ startup {
 	//  	'S' - "Split (now)"
 	//  	'N' - "NO split"
 	// 		'C' - "Next cutscene"
-	
 	
 	
 	// Define anon type (shorthand)
@@ -165,7 +189,7 @@ startup {
 		Tuple.Create("any", "Any%", 
 			new List<Tuple<string,string>>
 			{
-				Tsplit("Branch Skiop",  "53S"), 		// (bonfire light)
+				Tsplit("Branch Skip",  	"53S"), 		// (bonfire light)
 				Tsplit("Aldia's door", 	"81S"), 		// (door)
 				Tsplit("Ashen Mist", 	"45L"), 		// (boneout)
 				Tsplit("Giant Lord", 	"30L"), 		// (boneout)
@@ -666,6 +690,16 @@ startup {
 		)
 	);
 	
+	// sotfs_Any% (Restricted, 17k)
+	//vars.routes.Add(
+	//	Tuple.Create("sotfs_NashDebugTest", "Nash_Debugging", 
+	//		new List<Tuple<string,string>>
+	//		{
+	//			Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
+	//		}
+	//	)
+	//);
+	
 	
 	// build separate objects from above user definition
 	vars.Nroutes = vars.routes.Count;
@@ -708,7 +742,6 @@ startup {
 	settings.SetToolTip("ffleret", "This setting will only work if no route is selected.");
 	
 	//additional variables used for keeping track of split order
-	vars.doneSplits = 0;
 	vars.category = 50;
 	vars.wait_for_load = false;
 	vars.wait_for_cutscene = false;
@@ -720,6 +753,60 @@ startup {
 	vars.wait_for_cutscene = false;
 	vars.wait_for_load = false;
 	vars.first_update = true;
+	
+	
+	Action<int, int> updateActiveSplit = (split_index, subsplit_index) => 
+	{
+		vars.route_splits = vars.all_route_splits[vars.route_index];
+		var thisTsplit = vars.route_splits[split_index];
+		string[] split_tokens = thisTsplit.Item2.Split(' ');		
+		string token = split_tokens[subsplit_index];
+				
+		// can't load Regex namespace it seems
+		int cond_id = int.Parse(String.Join("", token.Where(Char.IsDigit)));
+		string split_type = String.Join("", token.Where(Char.IsLetter));
+		vars.split_type = split_type.ToUpper();
+		
+		var localSC = vars.split_conditions[cond_id];
+		
+		// Unpack here... (I hate ASL)... 
+		vars.SCMin = localSC.Item1; 		// Vector3f
+		vars.SCMax = localSC.Item2; 		// Vector3f
+		vars.SCSouls = localSC.Item3;		// int
+		
+		
+		vars.split_token_count = split_tokens.Length;
+		
+		if (vars.debug_output)
+		{
+			print("token use: " + token.ToString());
+			print("split_index:" + split_index);
+			print("subsplit_index: " + subsplit_index);
+			print("split_type: " + split_type);
+		}
+		
+	};
+	vars.updateActiveSplit = updateActiveSplit; // save reference to function
+	
+	// Prepare debug print function:
+	Action<Vector3f, Vector3f, Vector3f, float, float, float> printSplitInfo = (currpos, scminpos, scmaxpos, currsouls, scminsouls, scmaxsouls) => 
+	{
+		print("Current State and Split information......");
+		print("Curr PosX:  " + currpos.X);
+		print("Curr PosY:  " + currpos.Y);
+		print("Curr PosZ:  " + currpos.Z);
+		print("Curr Souls: " + currsouls);
+		print(" ...split conditions ... ");
+		print("Req MinPosX:  " + scminpos.X);
+		print("Req MaxPosX:  " + scmaxpos.X);
+		print("Req MinPosY:  " + scminpos.Y);
+		print("Req MaxPosY:  " + scmaxpos.Y);
+		print("Req MinPosZ:  " + scminpos.Z);
+		print("Req MaxPosZ:  " + scmaxpos.Z);
+		print("Split soul range: " + scminsouls + " to " + scmaxsouls);
+	};
+	vars.printSplitInfo = printSplitInfo; // make available
+	
 }
 
 init {
@@ -737,24 +824,26 @@ init {
 }
 
 start {
-	if (current.load == old.load - 1 &&
-	current.xPos < -322.0f && current.zPos < -213.0f &&
-	current.xPos > -323.0f && current.zPos > -214.0f) {
-		
-		// get selected route
-		for (int i = 0; i < vars.Nroutes; i++){
-			if (settings[vars.route_uids[i]]){
-				vars.route_index = i; // selected route index in Livesplit settings list
-				break;
-			}
+	
+	// Keep selected route updated:
+	for (int i = 0; i < vars.Nroutes; i++){
+		if (settings[vars.route_uids[i]]){
+			vars.route_index = i; // selected route index in Livesplit settings list
+			break;
 		}
-		
+	}
+	vars.first_update = true;
+	
+	// Autostart:
+	if (current.load == old.load - 1 &&
+		current.yPos < -322.0f && current.yPos > -323.0f &&
+		current.xPos < -213.0f && current.xPos > -214.0f)
+	{
 		vars.doneSubsplits = 0;
 		vars.doneSplits = 0;
 		vars.bSubsplitComplete = false;
 		vars.wait_for_cutscene = false;
 		vars.wait_for_load = false;
-		vars.first_update = true;
 		vars.split_type = "S"; // type initialiser
 		return true;
 	}
@@ -762,62 +851,29 @@ start {
 
 split {
 	
-	Action<int, int> updateActiveSplit = (split_index, subsplit_index) => {
-		vars.route_splits = vars.all_route_splits[vars.route_index];
-		var thisTsplit = vars.route_splits[split_index];
-		string[] split_tokens = thisTsplit.Item2.Split(' ');		
-		string token = split_tokens[subsplit_index];
-				
-		// can't load Regex namespace it seems
-		int cond_id = int.Parse(String.Join("", token.Where(Char.IsDigit)));
-		string split_type = String.Join("", token.Where(Char.IsLetter));
-		vars.split_type = split_type.ToUpper();
-		
-		// Tuple<float, float, float, float, float, float, int> splitcond = null;
-		vars.splitcond = vars.split_conditions[cond_id];
-		vars.split_token_count = split_tokens.Length;
-		
-		if (vars.debug_output)
-		{
-			print("token use: " + token.ToString());
-			print("split_cond: " + vars.splitcond);
-			print("split_type: " + split_type);
-		}
-		
-	};
-	
-		
 	if (vars.route_index < vars.Nroutes) {
 		
 		bool splitbool;
 		if (vars.first_update){
 			vars.first_update = false;
-			updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
+			vars.updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
 		}
 		
+		// Shorthand:
+		var currpos = vars.v3f(current.xPos, current.yPos, current.zPos);
+		float currsouls = (float)current.souls;
+		float soulsmin = old.souls + vars.SCSouls;
+		float soulsmax = old.souls + (vars.SCSouls * 1.69f); // 1.69 = max soul boost due to gear
+		
+		// Debug helper:
 		if (vars.debug_output)
-		{
-			//updateActiveSplit(vars.doneSplits,vars.doneSubsplits);
-			print("Curr PosX:  " + current.xPos.ToString());
-			print("Curr PosY:  " + current.yPos.ToString());
-			print("Curr PosZ:  " + current.zPos.ToString());
-			print("Souls: " + current.souls.ToString());
-			print("Req MinPosX:  " + vars.splitcond.Item1.ToString());
-			print("Req MaxPosx:  " + vars.splitcond.Item2.ToString());
-			print("Req MinPosY:  " + vars.splitcond.Item3.ToString());
-			print("Req MaxPosY:  " + vars.splitcond.Item4.ToString());
-			print("Req MinPosZ:  " + vars.splitcond.Item5.ToString());
-			print("Req MinPosZ:  " + vars.splitcond.Item6.ToString());
-			print("Required Souls: " + vars.splitcond.Item7.ToString());
-			print("Old Souls:  " + old.souls.ToString());
-			print("booltest 1 complete");
-		}
+			vars.printSplitInfo(currpos, vars.SCMin, vars.SCMax, currsouls, soulsmin, soulsmax);
+				
 		
-		// check whether conditions are met for split
-		if (current.xPos >= vars.splitcond.Item1 && current.xPos <= vars.splitcond.Item2 &&
-		current.yPos >= vars.splitcond.Item3 && current.yPos <= vars.splitcond.Item4 &&
-		current.zPos >= vars.splitcond.Item5 && current.zPos <= vars.splitcond.Item6 &&
-		current.souls >= old.souls + vars.splitcond.Item7 && current.souls <= old.souls + (vars.splitcond.Item7 * 1.69)) {
+		// check whether split condition (SC) is met
+		if ( vars.isVecBetween(currpos, vars.SCMin, vars.SCMax) &&
+			vars.isBetween(currsouls, soulsmin, soulsmax)  ) 
+		{
 			string local_type = vars.split_type;
 			switch (local_type)
 			{
@@ -841,7 +897,7 @@ split {
 			vars.wait_for_load = false;
 		}
 		
-		// check for cutscene:
+		
 		if (current.state == old.state + 1 && vars.wait_for_cutscene == true) {
 			vars.bSubsplitComplete = true;
 			vars.wait_for_cutscene = false;
@@ -857,13 +913,18 @@ split {
 				vars.doneSplits++;
 				vars.doneSubsplits = 0;
 				splitbool = true;
-			} else 
+			} else
 			{
 				splitbool = false;
 			}
 			
+			// Check for end of splits:
+			if (vars.doneSplits == vars.route_splits.Count)
+				return true;
+			
+			
 			// Reset things for next split
-			updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
+			vars.updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
 			return splitbool;
 		}
 		
@@ -876,8 +937,8 @@ split {
 }
 
 reset {
-	if (current.xPos == 0 && current.zPos == 0 && 
-		current.yPos <= -100 && old.yPos > -100 &&
+	if (current.yPos == 0 && current.xPos == 0 && 
+		current.zPos <= -100 && old.zPos > -100 &&
 		current.state == 2) {
 		return true;
 	}
