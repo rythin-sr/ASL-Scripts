@@ -153,7 +153,7 @@ state("Dungeons", "Windows Store, 1.9.1.0") {
 //state("Dungeons-Win64-Shipping", "Launcher, 1.9.3.0") {
 //	byte counter:    0x;
 //	byte lc:         0x;
-//	int seed:        0x;
+//	int seed:        0x041C4FB8, 0x20, 0x528;
 //	int cs:          0x;
 //}
 
