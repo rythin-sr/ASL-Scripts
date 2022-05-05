@@ -290,12 +290,12 @@ state("Dungeons", "Windows Store, 1.9.1.0") {
 //	int cs:          0x;
 //}
 
-//state("Dungeons-Win64-Shipping", "Launcher, 1.14.1.0") {
-//	byte counter:    0x;
-//	byte lc:         0x;
-//	int seed:        0x;
-//	int cs:          0x;
-//}
+state("Dungeons-Win64-Shipping", "Launcher, 1.14.1.0") {
+	byte counter:    0x464D064;
+	byte lc:         0x464D064; //It's the same but it works -- lots of updates I guess
+	int seed:        0x43FF9D8, 0x20, 0x7B8;
+	int cs:          0x46D6238, 0x8;
+}
 
 //state("Dungeons", "Windows Store, 1.14.1.0") {
 //	byte counter:    0x;
