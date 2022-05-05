@@ -150,6 +150,167 @@ state("Dungeons", "Windows Store, 1.9.1.0") {
 	int cs:          0x04490208, 0x8;
 }
 
+//state("Dungeons-Win64-Shipping", "Launcher, 1.9.3.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.9.3.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.9.4.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.10.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.10.2.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.10.3.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.10.3.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.10.3.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.11.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.11.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.11.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.12.0.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.12.0.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.12.0.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.12.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.12.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.12.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.13.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.13.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.13.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Launcher, 1.14.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons", "Windows Store, 1.14.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
+//state("Dungeons-Win64-Shipping", "Steam, 1.14.1.0") {
+//	byte counter:    0x;
+//	byte lc:         0x;
+//	int seed:        0x;
+//	int cs:          0x;
+//}
+
 startup {
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
@@ -287,6 +448,98 @@ init {
 	
 		case 101015552:
 		version = "Windows Store, 1.9.1.0";
+		break;
+	
+		case 100347904:
+		version = "Launcher, 1.9.3.0";
+		break;
+	
+		case 101056512:
+		version = "Windows Store, 1.9.3.0";
+		break;
+	
+		case 100892672:
+		version = "Launcher, 1.9.4.0";
+		break;
+	
+		case 101818368:
+		version = "Windows Store, 1.10.2.0";
+		break;
+	
+		case 101412864:
+		version = "Launcher, 1.10.1.0";
+		break;
+	
+		case 101433344:
+		version = "Windows Store, 1.10.3.0";
+		break;
+	
+		case 101437440:
+		version = "Launcher, 1.10.3.0";
+		break;
+	
+		case 102072320:
+		version = "Steam, 1.10.3.0";
+		break;
+	
+		case 102154240:
+		version = "Launcher, 1.11.1.0";
+		break;
+	
+		case 102227968:
+		version = "Windows Store, 1.11.1.0";
+		break;
+	
+		case 102707200:
+		version = "Steam, 1.11.1.0";
+		break;
+	
+		case 103419904:
+		version = "Steam, 1.12.0.0";
+		break;
+	
+		case 102907904:
+		version = "Windows Store, 1.12.0.0";
+		break;
+	
+		case 102424576:
+		version = "Launcher, 1.12.0.0";
+		break;
+	
+		case 103178240:
+		version = "Steam, 1.12.1.0";
+		break;
+	
+		case 103440384:
+		version = "Windows Store, 1.12.1.0";
+		break;
+	
+		case 103342080:
+		version = "Launcher, 1.12.1.0";
+		break;
+	
+		case 103358464:
+		version = "Steam, 1.13.1.0";
+		break;
+	
+		case 103362560:
+		version = "Windows Store, 1.13.1.0";
+		break;
+	
+		case 102899712:
+		version = "Launcher, 1.13.1.0";
+		break;
+	
+		case 103354368:
+		version = "Steam, 1.14.1.0";
+		break;
+	
+		case 103215104:
+		version = "Windows Store, 1.14.1.0";
+		break;
+	
+		case 103407616:
+		version = "Launcher, 1.14.1.0";
 		break;
 	
 		default:
