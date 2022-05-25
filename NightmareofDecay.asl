@@ -3,6 +3,8 @@ state("NightmareOfDecay") {}
 startup
 {
 
+    vars.doneSplits = new List<string>();
+
     //UnityASL setup thanks to Ero
     vars.Log = (Action<object>)(output => print("[] " + output));
     vars.Unity = Assembly.Load(File.ReadAllBytes(@"Components\UnityASL.bin")).CreateInstance("UnityASL.Unity");
@@ -26,6 +28,7 @@ startup
         if (textSetting != null)
         textSetting.GetType().GetProperty("Text2").SetValue(textSetting, text);
     });
+
     settings.Add("Splits", true);
     settings.CurrentDefaultParent = "Splits";
     settings.Add("basement_sidestart-manor_frontyard", true, "1st Key");
@@ -46,6 +49,7 @@ startup
     settings.CurrentDefaultParent = null;
 
     settings.Add("Debug");
+    settings.Add("apartment_living-apartment_bedroom", false, "Split when entering the bedroom", "Debug");
     settings.Add("dbg", false, "Enable debug displays", "Debug");
     settings.SetToolTip("dbg", "This will display the current room and cutscene playing as a layout component.\nThese displays must be manually removed from the layout editor after disabling.\nUse to find room/cutscene names to add/request adding additional splits.");
 } 
@@ -97,12 +101,22 @@ update
 }
 
 start {
-    return current.igt > 0 && old.igt == 0;
+    if (current.igt > 0 && old.igt == 0) {
+        vars.doneSplits.Clear();
+        return true;
+    }
 }
 
 split {
+
+    string check;
+
     if (current.room != old.room) {
-        return settings[old.room.ToString() + "-" + current.room.ToString()];
+        check = old.room.ToString() + "-" + current.room.ToString();
+        if (!vars.doneSplits.Contains(check) && settings[check]) {
+            vars.doneSplits.Add(check);
+            return true;
+        }
     }
 
     if (current.room == "apartment_hallway" && current.cs == "ending" && current.gui && !old.gui)
