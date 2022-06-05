@@ -72,7 +72,7 @@ startup {
 		new {MinPos = v3f(530, -550, 52),		MaxPos = v3f(558, -520, 54),	Souls = 13000},  	//12, Covetous Demon
 		new {MinPos = v3f(534, -576, 85),		MaxPos = v3f(565, -548, 87),	Souls = 20000},  	//13, Mytha 
 		new {MinPos = v3f(645, -731, 176),		MaxPos = v3f(667, -706, 177),	Souls = 32000},  	//14, Smelter Demon (Red)
-		new {MinPos = v3f(714, -658, 166),		MaxPos = v3f(730, -622, 167),	Souls = 48000},  	//15, Old Iron King
+		new {MinPos = v3f(710, -658, 166),		MaxPos = v3f(730, -622, 167),	Souls = 48000},  	//15, Old Iron King
 		new {MinPos = v3f(531, -170, -1),		MaxPos = v3f(564, -144, 12),	Souls = 33000},  	//16, Sentinels
 		new {MinPos = v3f(498, -227, 12),		MaxPos = v3f(524, -187, 15),	Souls = 25000},  	//17, Gargoyles
 		new {MinPos = v3f(518, -136, -78),		MaxPos = v3f(553, -110, -76),	Souls = 45000},  	//18, Sinner
@@ -691,14 +691,15 @@ startup {
 	);
 	
 	// sotfs_Any% (Restricted, 17k)
-	//vars.routes.Add(
-	//	Tuple.Create("sotfs_NashDebugTest", "Nash_Debugging", 
-	//		new List<Tuple<string,string>>
-	//		{
-	//			Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
-	//		}
-	//	)
-	//);
+	// vars.routes.Add(
+	// 	Tuple.Create("OinkDebugTest", "Oink_Debugging", 
+	// 		new List<Tuple<string,string>>
+	// 		{
+	// 			Tsplit("Oink", 		"15N 68L"), // (black screen after Nash)
+	// 		}
+	// 	)
+	// );
+
 	
 	
 	// build separate objects from above user definition
