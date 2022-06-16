@@ -52,6 +52,10 @@ startup {
 
 	settings.Add("missions", true, "Main Missions");
 	settings.Add("dlc", true, "DLC Missions");
+	settings.Add("completion", true, "Mission Completion", "missions");
+	settings.Add("dlccompletion", true, "Mission Completion", "dlc");
+	settings.Add("start", true, "Mission Start", "missions");
+	settings.Add("dlcstart", true, "Mission Start", "dlc");
 	
 	//missions
 	
@@ -81,11 +85,9 @@ startup {
 	};
 
 	foreach (var Tag in m) {							
-		settings.Add(Tag.Key, true, Tag.Value, "missions");	
-		if (Tag.Key != "mCS" && Tag.Key != "tutorial") {
-			settings.Add(Tag.Key, true, "Split on mission completion", Tag.Key);
-			settings.Add(Tag.Key + "s", false, "Split on mission start", Tag.Key);
-		}
+		settings.Add(Tag.Key, true, Tag.Value, "completion");
+		if (Tag.Key != "mCS" && Tag.Key != "tutorial") 
+			settings.Add(Tag.Key + "s", false, Tag.Value, "start");
 	};
 	
 	settings.SetToolTip("mCS", "This specific autosplit is still a WIP, for now subtitles are required to be ON for it to work.");
@@ -97,7 +99,8 @@ startup {
 	};
 	
 	foreach (var Tag in dlcm) {							
-		settings.Add(Tag.Key, true, Tag.Value, "dlc");					 
+		settings.Add(Tag.Key, true, Tag.Value, "dlccompletion");
+		settings.Add(Tag.Key + "s", false, Tag.Value, "dlcstart");
 	};
 	
 	//while technically this should never be necessary, i noticed the mission count flicker to 0
