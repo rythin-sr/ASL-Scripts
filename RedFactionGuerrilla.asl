@@ -83,7 +83,7 @@ startup {
 	foreach (var Tag in m) {							
 		settings.Add(Tag.Key, true, Tag.Value, "missions");	
 		if (Tag.Key != "mCS" && Tag.Key != "tutorial") {
-			settings.Add(Tag.Key + "c", true, "Split on mission completion", Tag.Key);
+			settings.Add(Tag.Key, true, "Split on mission completion", Tag.Key);
 			settings.Add(Tag.Key + "s", false, "Split on mission start", Tag.Key);
 		}
 	};
@@ -191,8 +191,8 @@ split {
 	}
 	
 	//split on completing a mission
-	if (current.missions == old.missions + 1 && settings[current.missionVid + "c"] && !vars.doneSplit.Contains(current.missionVid + "c") && current.loading != 0) {
-		vars.doneSplit.Add(current.missionVid + "c");
+	if (current.missions == old.missions + 1 && settings[current.missionVid] && !vars.doneSplit.Contains(current.missionVid) && current.loading != 0) {
+		vars.doneSplit.Add(current.missionVid);
 		return true;
 	}
 	
