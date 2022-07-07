@@ -154,6 +154,7 @@ startup {
 		new {MinPos = v3f(-6, -43, -35),		MaxPos = v3f(5, -37, -34),		Souls = 0},  	 	//94, DLC1 key
 		new {MinPos = v3f(-374, -469, 72),		MaxPos = v3f(-368, -462, 73),	Souls = 0},  	 	//95, King's gate bonfire
 		new {MinPos = v3f(597, -91, -2),		MaxPos = v3f(606, -84, 1),		Souls = 0},  	 	//96, Mcduff bonfire
+		new {MinPos = v3f(-260, -701, -7),		MaxPos = v3f(-256, -699, -4),	Souls = 0},      	//97, Duo fog wall
 	};
 	
 	// Interface this to tuple (to allow nice above notation to be kept)
@@ -193,6 +194,7 @@ startup {
 				Tsplit("Aldia's door", 	"81S"), 		// (door)
 				Tsplit("Ashen Mist", 	"45L"), 		// (boneout)
 				Tsplit("Giant Lord", 	"30L"), 		// (boneout)
+				Tsplit("Duo Fogwall", 	"97S"), 		// (Fogwall)
 				Tsplit("Nashandra", 	"44C"), 		// (black screen after Nash)
 			}
 		)
