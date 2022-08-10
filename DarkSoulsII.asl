@@ -174,6 +174,7 @@ startup {
 	//  	'S' - "Split (now)"
 	//  	'N' - "NO split"
 	// 		'C' - "Next cutscene"
+	// 		'D' - "Dungeons" (3rd-loadscreen at portal)
 	
 	
 	// Define anon type (shorthand)
@@ -372,8 +373,8 @@ startup {
 				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
 				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
-				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
-				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Woods", 	"71D"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70D"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
 			}
@@ -612,8 +613,8 @@ startup {
 				Tsplit("Burnt Ivory King", 	"39L"), 	// (boneout)
 				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
-				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
-				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Woods", 	"71D"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70D"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)	
 			}
@@ -668,8 +669,8 @@ startup {
 				Tsplit("Lud and Zallen", 	"40L"), 	// (boneout)
 				Tsplit("Chariot", 			"41L"), 	// (boneout)
 				Tsplit("Gargoyles", 		"17L"), 	// (boneout)
-				Tsplit("Dungeon: Woods", 	"71L"), 	// (boneout after dungeon)
-				Tsplit("Dungeon: Gulch", 	"70L"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Woods", 	"71D"), 	// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70D"), 	// (boneout after dungeon)
 				Tsplit("Darklurker", 		"42L"), 	// (boneout)
 				Tsplit("Aldia", 			"43N 44C"), // (cutscene screen after Aldia)
 			}
@@ -692,12 +693,15 @@ startup {
 		)
 	);
 	
-	// sotfs_Any% (Restricted, 17k)
+	// Testing/Debugging
 	// vars.routes.Add(
-	// 	Tuple.Create("OinkDebugTest", "Oink_Debugging", 
+	// 	Tuple.Create("sotfs_DungeonDebugTest", "Dungeon_Debugging", 
 	// 		new List<Tuple<string,string>>
 	// 		{
-	// 			Tsplit("Oink", 		"15N 68L"), // (black screen after Nash)
+	// 			Tsplit("Gargoyles", 		"17L"), 	// (boneout)
+	// 			Tsplit("Dungeon: Woods", 	"71D"), 	// (boneout after dungeon)
+	// 			Tsplit("Gulch Dungeon", 	"70D"), 	// (homeward after dungeon)
+	// 			Tsplit("Darklurker", 		"42L"), 	// (boneout)
 	// 		}
 	// 	)
 	// );
@@ -756,6 +760,7 @@ startup {
 	vars.wait_for_cutscene = false;
 	vars.wait_for_load = false;
 	vars.first_update = true;
+	vars.numloads = 0;
 	
 	
 	Action<int, int> updateActiveSplit = (split_index, subsplit_index) => 
@@ -847,6 +852,7 @@ start {
 		vars.bSubsplitComplete = false;
 		vars.wait_for_cutscene = false;
 		vars.wait_for_load = false;
+		vars.numloads = 0;
 		vars.split_type = "S"; // type initialiser
 		return true;
 	}
@@ -886,6 +892,7 @@ split {
 					vars.bSubsplitComplete = true;
 					break;
 				case "L":
+				case "D":
 					vars.wait_for_load = true;
 					break;
 				case "C":
@@ -896,8 +903,12 @@ split {
 		
 		// check for load screen
 		if (current.load == old.load + 1 && vars.wait_for_load == true) {
-			vars.bSubsplitComplete = true;
 			vars.wait_for_load = false;
+			vars.numloads++;
+			
+			// Check how many desired load screens we've had
+			if ((vars.split_type == "L" && vars.numloads==1) || (vars.split_type == "D" && vars.numloads == 3))
+				vars.bSubsplitComplete = true;
 		}
 		
 		
@@ -927,6 +938,7 @@ split {
 			
 			
 			// Reset things for next split
+			vars.numloads = 0; // reset condition-loadscreen counter
 			vars.updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
 			return splitbool;
 		}
