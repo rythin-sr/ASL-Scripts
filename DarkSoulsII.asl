@@ -693,15 +693,12 @@ startup {
 		)
 	);
 	
-	// Testing/Debugging
+	// // Testing/Debugging
 	// vars.routes.Add(
 	// 	Tuple.Create("sotfs_DungeonDebugTest", "Dungeon_Debugging", 
 	// 		new List<Tuple<string,string>>
 	// 		{
-	// 			Tsplit("Gargoyles", 		"17L"), 	// (boneout)
 	// 			Tsplit("Dungeon: Woods", 	"71D"), 	// (boneout after dungeon)
-	// 			Tsplit("Gulch Dungeon", 	"70D"), 	// (homeward after dungeon)
-	// 			Tsplit("Darklurker", 		"42L"), 	// (boneout)
 	// 		}
 	// 	)
 	// );
@@ -750,18 +747,21 @@ startup {
 	
 	//additional variables used for keeping track of split order
 	vars.category = 50;
-	vars.wait_for_load = false;
-	vars.wait_for_cutscene = false;
-	
 	vars.route_index = 1; // testing
-	vars.doneSubsplits = 0;
-	vars.doneSplits = 0;
-	vars.bSubsplitComplete = false;
-	vars.wait_for_cutscene = false;
-	vars.wait_for_load = false;
-	vars.first_update = true;
-	vars.numloads = 0;
 	
+	// Variables to reset on new start
+	Action initialise = () =>
+	{
+		vars.doneSubsplits = 0;
+		vars.doneSplits = 0;
+		vars.bSubsplitComplete = false;
+		vars.wait_for_cutscene = false;
+		vars.wait_for_load = false;
+		vars.numloads = 0;
+		vars.split_type = "S"; // type initialiser
+	};
+	vars.initialise = initialise;
+
 	
 	Action<int, int> updateActiveSplit = (split_index, subsplit_index) => 
 	{
@@ -784,7 +784,8 @@ startup {
 		
 		
 		vars.split_token_count = split_tokens.Length;
-		
+		vars.numloads = 0; // reset condition-loadscreen counter on each new split
+
 		if (vars.debug_output)
 		{
 			print("token use: " + token.ToString());
@@ -841,19 +842,12 @@ start {
 		}
 	}
 	vars.first_update = true;
-	
+		
 	// Autostart:
 	if (current.load == old.load - 1 &&
 		current.yPos < -322.0f && current.yPos > -323.0f &&
 		current.xPos < -213.0f && current.xPos > -214.0f)
 	{
-		vars.doneSubsplits = 0;
-		vars.doneSplits = 0;
-		vars.bSubsplitComplete = false;
-		vars.wait_for_cutscene = false;
-		vars.wait_for_load = false;
-		vars.numloads = 0;
-		vars.split_type = "S"; // type initialiser
 		return true;
 	}
 }
@@ -865,6 +859,7 @@ split {
 		bool splitbool;
 		if (vars.first_update){
 			vars.first_update = false;
+			vars.initialise();
 			vars.updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
 		}
 		
@@ -938,7 +933,6 @@ split {
 			
 			
 			// Reset things for next split
-			vars.numloads = 0; // reset condition-loadscreen counter
 			vars.updateActiveSplit(vars.doneSplits, vars.doneSubsplits);
 			return splitbool;
 		}
