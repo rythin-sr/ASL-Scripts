@@ -98,7 +98,7 @@ split {
 
 isLoading {
     if (current.fade > old.fade) return true;
-    if (current.fade < old.fade && current.fade > 0) return false;
+    if (current.fade < old.fade && current.fade > 0 || current.fade == 0) return false;
 }
 
 exit
