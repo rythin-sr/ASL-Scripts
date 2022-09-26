@@ -17,6 +17,7 @@ state("TY", "V1.44") {
     byte mm_index:   0x286640;
     byte save_index: 0x28E6C4;
     byte menu_state: 0x28DCA0;
+    bool hardcore:   0x288730, 0xE;
 }
 
 state("TY", "V1.11") {
@@ -52,12 +53,14 @@ startup {
     vars.canSplit = false; //variable used to prevent false level exit splits when starting a new run (workaround for how the map variable behaves)
     vars.bilbySplit = false; //variable used to split on the 5th bilby on any stage
 
-    settings.Add("start", true, "Autostart only on the following savefiles");
-    settings.Add("0", true, "Game 1", "start");
-    settings.Add("1", true, "Game 2", "start");
-    settings.Add("2", true, "Game 3", "start");
+    settings.Add("start", true, "Autostart settings");
+    settings.Add("0", true, "Start on savefile 1", "start");
+    settings.Add("1", true, "Start on savefile 2", "start");
+    settings.Add("2", true, "Start on savefile 3", "start");
+    settings.Add("hc-t", false, "Only start the timer if hardcore mode is enabled", "start");
+    settings.Add("hc-f", false, "Only start the timer if hardcore mode is disabled", "start");
     
-    settings.Add("IL", false, "IL Mode");
+    settings.Add("IL", false, "IL Mode", "start");
     settings.SetToolTip("IL", "Start the timer on entering a level, rather than Rainbow Cliffs");
 
     settings.Add("Splits", true);
@@ -165,7 +168,6 @@ startup {
             if (lev.Key.Contains("*"))
                 id = lev.Key.Remove(0, 1);
             settings.Add(id + "-i", false, "Level Entry", lev.Key);
-            //settings.SetToolTip(id + "-i", id + "-i");
         }
 
         if (lev.Key.Contains("#")) {
@@ -175,7 +177,6 @@ startup {
         }
 
         settings.Add(id + "-o", true, "Level Completion", lev.Key);
-        //settings.SetToolTip(id + "-o", id + "-o");
 
         
 
@@ -185,13 +186,11 @@ startup {
             settings.Add(lev.Key + "Cogs", false, "Cogs", lev.Key);
             for (int i = 1; i < 11; i++) {
                 settings.Add(lev.Key + "-c" + i, false, "Cog #" + i, lev.Key + "Cogs");
-                //settings.SetToolTip(lev.Key + "-c" + i, lev.Key + "-c" + i);
             }
 
             settings.Add(lev.Key + "Bilbies", false, "Bilbies", lev.Key);
             for (int i = 1; i <= 5; i++) {
                 settings.Add(lev.Key + "-b" + i, false, "Bilby #" + i, lev.Key + "Bilbies");
-                //settings.SetToolTip(lev.Key + "-b" + i, lev.Key + "-b" + i);
             }
             settings.SetToolTip(lev.Key + "-b5", "Will split when picking up the TE.");
         }
@@ -247,8 +246,9 @@ start {
             vars.canSplit = false;
             vars.diff = 0;
             vars.time = null;
-            File.Delete("TY_Log.txt");
-            return true;
+            if (version == "V1.44") {
+                return settings["hc-t"] && current.hardcore || settings["hc-f"] && !current.hardcore || !settings["hc-f"] && !settings["hc-t"];
+            }
         }
     } else {
         if (current.map != old.map && old.map == "room_z1_05.mdl") {
@@ -280,17 +280,14 @@ update {
     if (current.loading != 0 && old.loading == 0) {
         vars.time = timer.CurrentTime.GameTime;
         vars.changeTime = true;
-        //print("\n\n\n[TY AUTOSPLITTER] Load starting! \nTime: " + timer.CurrentTime.GameTime + "\nchangeTime: " + vars.changeTime + "\n\n\n");
     }
 
     if(!vars.canSplit && current.map != "room_z1_05.mdl" && old.map == "room_z1_05.mdl") {
-        //print("[CANSPLIT] Hub entered, allowing splitting.");
         vars.canSplit = true;
     }
 
     //on autosave start
     if (current.autosave != 0 && old.autosave == 0) {
-        //print("autosave started, storing position");
         vars.SaveVars();
         vars.autosaveTime.Restart();
     }
@@ -299,17 +296,7 @@ update {
     if (current.autosave == 0 && old.autosave != 0) {
         vars.autosaveTime.Stop();
         vars.diff = vars.timeAdd - vars.autosaveTime.ElapsedMilliseconds;
-        //print("Autosave finished, total elapsed " + vars.autosaveTime.ElapsedMilliseconds.ToString() + " ms.");
     }
-    /*
-    if (current.TE != old.TE) {
-        File.AppendAllText(@"TY_Log.txt", "TE Count change detected: " + old.TE + " -> " + current.TE + "\n");
-    }
-
-    if (current.anim != old.anim && current.anim == 33 || current.bull_anim != old.bull_anim && current.bull_anim == 11) {
-        File.AppendAllText(@"TY_Log.txt", "Ty anim changed to TE pickup!\n");
-    }
-    */
 }
 
 split {
@@ -321,8 +308,6 @@ split {
     if (vars.canSplit && current.map != old.map && current.map.Length > 2) {
         vars.levelTEs = 0;
         vars.levelCogs = 0;
-        //print("Map changed, resetting in-level counters.");
-        //print("[MAP CHANGE] Leaving " + old.map + " and entering " + current.map + ".");
         return settings[old.map + "-o"] || settings[current.map + "-i"];    
     }
     
@@ -333,7 +318,6 @@ split {
             current.x < split.Item1 + 2.0 &&
             current.z > split.Item3 - 2.0 &&
             current.z < split.Item3 + 2.0) {
-                //print("TE position matched for " + split.Item4);
                 return settings[split.Item4 + "-" + current.map];
             }
             
@@ -342,12 +326,10 @@ split {
 
     if (current.cogs == old.cogs + 1) {
         vars.levelCogs++;
-        //print("Collected Cog #" + vars.levelCogs);
         return settings[current.map + "-c" + vars.levelCogs];
     }
 
     if (current.bilbies == old.bilbies + 1 && current.bilbies <= 4) {
-        //print("[BILBY ACQUIRED]");
         return settings[current.map + "-b" + current.bilbies];
     }
 
@@ -374,10 +356,8 @@ gameTime {
     if (vars.changeTime) {
         vars.changeTime = false;
         if (vars.CheckPos()) {
-            print("Entered load without moving, subtracting " + vars.autosaveTime.ElapsedMilliseconds.ToString() + " ms.");
             return vars.time.Add(new TimeSpan (0, 0, 0, 0, Int32.Parse(vars.diff.ToString()))); //not sure why i need to cast to int again but it works this way :shrug:
         } else {
-            print("Entered load after movement. No time will be subtracted.");
             return vars.time.Add(new TimeSpan (0, 0, 0, 0, vars.timeAdd));
         }
     }
