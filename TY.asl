@@ -248,6 +248,8 @@ start {
             vars.time = null;
             if (version == "V1.44") {
                 return settings["hc-t"] && current.hardcore || settings["hc-f"] && !current.hardcore || !settings["hc-f"] && !settings["hc-t"];
+            } else {
+                return true;
             }
         }
     } else {
