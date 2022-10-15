@@ -630,7 +630,6 @@ startup {
 				Tsplit("Pursuer", 			"01N 83L"), // (nest)
 				Tsplit("Dragonrider", 		"03N 85L"), // (warp)
 				Tsplit("Gulch Giants", 		"63L"), 	// (quitout hopefully)
-				Tsplit("DLC1 key/Gandalf", 	"94L 70L"), // (Grandahl boneout) 
 				Tsplit("Rotten", 			"04S 67L"),	// (DLC1 entrance)
 				Tsplit("Flynn's ring", 		"75L"), 	// (boneout)
 				Tsplit("King's gate", 		"95L"), 	// (warp)
