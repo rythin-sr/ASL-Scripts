@@ -42,9 +42,11 @@ init
         
         var ftbm = helper.GetClass(assembly, "FadeToBlackManager");
         var run = helper.GetClass(assembly, "Run");
+        var goc = helper.GetClass(assembly, "GameOverController");
 
         vars.Unity.Make<float>(ftbm.Static, ftbm["alpha"]).Name = "fade";
         vars.Unity.Make<int>(run.Static, run["instance"], run["stageClearCount"]).Name = "stage";
+        vars.Unity.Make<bool>(goc.Static, goc["instance"], goc["shouldDisplayGameEndReportPanels"]).Name = "panel";
 
         return true;
     });
@@ -63,8 +65,7 @@ update
     current.fade = vars.Unity["fade"].Current;
     current.stageCount = vars.Unity["stage"].Current;
     current.scene = vars.Unity.Scenes.Active.Name;
-
-    //print("uwu " + current.scene + " " + current.fade + " ");
+    current.results = vars.Unity["panel"].Current;
 }
 
 start {    
@@ -94,6 +95,9 @@ split {
     if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby" && settings[old.scene]) {
         return true;
     }
+
+    if (current.results && !old.results && (current.stage == "voidraid" || current.stage == "limbo" || current.stage == "mysteryspace"))
+        return true;
 }
 
 isLoading {
