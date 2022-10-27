@@ -22,13 +22,22 @@ state("DarkSoulsII", "1.02") {
 	int load: 	0xFF9298, 0x1D4;
 }
 
-state("DarkSoulsII", "Scholar of the First Sin") {
+state("DarkSoulsII", "SotFS_Unpatched") {
 	float xPos:	0x160DCD8, 0x8, 0x5D8;				
 	float yPos:	0x160DCD8, 0x8, 0x5D0;				
 	float zPos:	0x160DCD8, 0x8, 0x5D4;	
 	int state:	0x160B8D0, 0xD0, 0x100, 0x304;		
 	int souls:	0x160B8D0, 0xD0, 0x380, 0x21C;		
 	int load: 	0x186CCB0, 0x11C;
+}
+
+state("DarkSoulsII", "SotFS_OnlinePatch") {
+	float xPos:	0x16148F0, 0xD0, 0x28;				
+	float yPos:	0x16148F0, 0xD0, 0x20;				
+	float zPos:	0x16148F0, 0xD0, 0x24;	
+	int state:	0x16148F0, 0xD0, 0x100, 0x304;		
+	int souls:	0x16148F0, 0xD0, 0x380, 0x21C;		
+	int load: 	0x16148F0, 0x80, 0x8, 0xBB4;
 }
 
 startup {
@@ -818,15 +827,25 @@ startup {
 }
 
 init {
+	print("ModuleMemorySize: " + modules.First().ModuleMemorySize);
+
 	switch (modules.First().ModuleMemorySize) {
-		case 34299904: case 34361344:
-			version = "Scholar of the First Sin";
+		case 30892032: // sotfs online patch
+			version = "SotFS_OnlinePatch";
 			break;
-		case 33902592: case 33927168:
+
+		case 34299904: // sotfs "unpatched CP" core
+		case 34361344: // sotfs "unpacted CP" alternate
+			version = "SotFS_Unpatched";
+			break;
+
+		case 33902592: // DS2 Vanilla core
+		case 33927168: // DS2 Vanilla alternate
 			version = "1.11";
 			break;
+
 		default:
-			version = "1.02";
+			version = "1.02"; // DS2 Old Patch
 		break;
 	}
 }
