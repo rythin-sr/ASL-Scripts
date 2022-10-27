@@ -32,9 +32,9 @@ state("DarkSoulsII", "SotFS_Unpatched") {
 }
 
 state("DarkSoulsII", "SotFS_OnlinePatch") {
-	float xPos:	0x16148F0, 0xD0, 0x28;				
-	float yPos:	0x16148F0, 0xD0, 0x20;				
-	float zPos:	0x16148F0, 0xD0, 0x24;	
+	float xPos:	0x16148F0, 0xD0, 0xF8, 0xF0, 0x28;				
+	float yPos:	0x16148F0, 0xD0, 0xF8, 0xF0, 0x20;				
+	float zPos:	0x16148F0, 0xD0, 0xF8, 0xF0, 0x24;	
 	int state:	0x16148F0, 0xD0, 0x100, 0x304;		
 	int souls:	0x16148F0, 0xD0, 0x380, 0x21C;		
 	int load: 	0x16148F0, 0x80, 0x8, 0xBB4;
@@ -827,7 +827,7 @@ startup {
 }
 
 init {
-	print("ModuleMemorySize: " + modules.First().ModuleMemorySize);
+	// print("ModuleMemorySize: " + modules.First().ModuleMemorySize);
 
 	switch (modules.First().ModuleMemorySize) {
 		case 30892032: // sotfs online patch
