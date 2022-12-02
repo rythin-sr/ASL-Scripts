@@ -4,13 +4,22 @@
 //Nyk for helping with SotFS routes
 
 // [pseudo]: Shuffled state xyz to match CE/META position coordinates
+state("DarkSoulsII", "1.12") {
+	float xPos:	0x01150414, 0x74, 0xB4, 0xA8, 0x28;
+	float yPos:	0x01150414, 0x74, 0xB4, 0xA8, 0x20;
+	float zPos:	0x01150414, 0x74, 0xB4, 0xA8, 0x24;
+	int state:	0x01150414, 0x74, 0xB8, 0x2D4;
+	int souls:	0x01150414, 0x74, 0x2EC, 0x238;		
+	int load: 	0x01150414, 0xB0, 0x7C, 0x44, 0xAC8, 0x0, 0x4C, 0x730; // [this offset struggle lol]. 1 during load
+}
+
 state("DarkSoulsII", "1.11") {
 	float xPos:	0x114A5B4, 0x8, 0x88, 0x14;
 	float yPos:	0x114A5B4, 0x8, 0x88, 0xC;
 	float zPos:	0x114A5B4, 0x8, 0x88, 0x10;
-	int state:	0x11493F4, 0x74, 0xB8, 0x2D4;      //1 in cutscenes and backstabs/ripostes (lol), 2 when falling, 0 otherwise
+	int state:	0x11493F4, 0x74, 0xB8, 0x2D4;
 	int souls:	0x11493F4, 0x74, 0x2EC, 0x238;		
-	int load: 	0x118E8E0, 0x1D4;                  //1 in loads
+	int load: 	0x118E8E0, 0x1D4; //1 in loads
 }
 
 state("DarkSoulsII", "1.02") {
@@ -839,9 +848,13 @@ init {
 			version = "SotFS_Unpatched";
 			break;
 
-		case 33902592: // DS2 Vanilla core
-		case 33927168: // DS2 Vanilla alternate
+		case 33902592: // DS2 Vanilla V1.11 (main)
+		case 33927168: // DS2 Vanilla V1.11 (alternate)
 			version = "1.11";
+			break;
+
+		case 31145984: // DS2 Vanilla V1.12
+			version = "1.12";
 			break;
 
 		default:
