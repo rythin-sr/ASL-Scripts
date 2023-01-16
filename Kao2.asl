@@ -3,7 +3,7 @@ state("kao2") {}
 startup {
 	settings.Add("Level Completion");
 	settings.CurrentDefaultParent = "Level Completion";
-		settings.Add("0", true, "The Ship");
+		settings.Add("0", false, "The Ship");
 		settings.Add("2", true, "Beavers' Forest");
 		settings.Add("3", true, "The Great Escape");
 		settings.Add("4", true, "Great Trees");
@@ -21,15 +21,15 @@ startup {
 		settings.Add("16", true, "Trip to Island");
 		settings.Add("17", true, "Treasure Island");
 		settings.Add("18", true, "The Volcano");
-		settings.Add("19", true, "Pirate's Bay");
+		settings.Add("19", false, "Pirate's Bay");
 		settings.Add("20", true, "Abandoned Town");
 		settings.Add("21", true, "Hunter's Galleon");
 		settings.Add("22", true, "Final Duel");
-		settings.Add("23", true, "Bonus: Jumprope");
-		settings.Add("24", true, "Bonus: Trees");
-		settings.Add("25", true, "Bonus: Shooting");
-		settings.Add("26", true, "Bonus: The Race");
-		settings.Add("27", true, "Bonus: Mini Baseball");
+		settings.Add("23", false, "Bonus: Jumprope");
+		settings.Add("24", false, "Bonus: Trees");
+		settings.Add("25", false, "Bonus: Shooting");
+		settings.Add("26", false, "Bonus: The Race");
+		settings.Add("27", false, "Bonus: Mini Baseball");
 	settings.CurrentDefaultParent = null;
 	settings.Add("Level Entry", false);
 	settings.CurrentDefaultParent = "Level Entry";
