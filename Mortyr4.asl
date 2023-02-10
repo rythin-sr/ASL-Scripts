@@ -2,7 +2,7 @@ state("game", "1.0") {
 	byte load:   0x1C2A60;        // 2 when loading, 1 when loading is done but screen still up, 0 or >2 in gameplay
 	string9 map: 0x1C412D;
 	float end:   0x1C2EFC;        // goes from 1 to 0 at the end of the run
-	byte freeze: 0x1DEF54, 0x2B0; // 33 when game is frozen due to quicksave/checkpoint
+	byte freeze: 0x1BF9E0;        // non-0 when game is frozen due to quicksave/checkpoint
 	int cs:      0x1BA648;        // 2 during gameplay, 0 in fmvs
 
 }
@@ -11,7 +11,7 @@ state("game", "Steam") {
 	byte load:   0x1C0898;        // 2 in loads, 0 in gameplay, flickers a lot when going back to gameplay
 	string9 map: 0x1C212D;        
 	float end:   0x1C0EFC;        
-	byte freeze: 0x1DCEC8, 0x2B0; 
+	byte freeze: 0x1DCEC8, 0x2B0; //needs fixing
 	int cs:      0x1B8648;
 }
 
@@ -61,5 +61,5 @@ reset {
 }
 
 isLoading {
-	return current.load > 0 && current.load < 3 && current.cs == 2 || current.freeze == 33;
+	return current.load > 0 && current.load < 3 && current.cs == 2 || current.freeze != 0;
 }
