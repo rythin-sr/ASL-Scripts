@@ -587,7 +587,7 @@ startup {
 	
 	// sotfs_All Bosses (Restricted, Rapier/Twinblade, V1)
 	vars.routes.Add(
-		Tuple.Create("sotfs_AB", "All Bosses (Restricted, Rapier/Twinblade, V1)", 
+		Tuple.Create("sotfs_AB_v1", "All Bosses (Restricted, Rapier/Twinblade, V1)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
@@ -641,7 +641,7 @@ startup {
 	
 	// sotfs_All Bosses (Restricted, Rapier/Twinblade, V2)
 	vars.routes.Add(
-		Tuple.Create("sotfs_AB", "All Bosses (Restricted, Rapier/Twinblade, V2)", 
+		Tuple.Create("sotfs_AB_v2", "All Bosses (Restricted, Rapier/Twinblade, V2)", 
 			new List<Tuple<string,string>>
 			{
 				Tsplit("Last Giant", 		"00L"), 	// (boneout)
