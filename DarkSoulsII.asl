@@ -131,7 +131,7 @@ startup {
 		new {MinPos = v3f(-163, -334, 32),		MaxPos = v3f(-157, -325, 33),	Souls = 0},      	//53, Ruined Fork Road bonfire
 		new {MinPos = v3f(0, 21, 0),			MaxPos = v3f(0, -37, 0),		Souls = 0},      	//54, (impossible condition for autosplitter error prevention)
 		new {MinPos = v3f(234, -457, 38),		MaxPos = v3f(238, -447, 39),	Souls = 0},      	//55, before bridge after Skeleton Lords
-		new {MinPos = v3f(589, -553, 88),		MaxPos = v3f(591, -555, 92),	Souls = 0},      	//56, Mytha elevator
+		new {MinPos = v3f(589, -555, 88),		MaxPos = v3f(591, -553, 92),	Souls = 0},      	//56, Mytha elevator
 		new {MinPos = v3f(648, -736, 184),		MaxPos = v3f(651, -734, 185),	Souls = 0},      	//57, door after Smelter Demon
 		new {MinPos = v3f(547, -185, 7),		MaxPos = v3f(551, -181, 8),		Souls = 0},      	//58, bonfire room after Ruin Sentinels
 		new {MinPos = v3f(-55, 73, -3),			MaxPos = v3f(-51, 78, 1),		Souls = 0}, 	 	//59, big door after Aava
@@ -312,6 +312,22 @@ startup {
 				Tsplit("Ashen Mist", 		"45L"), 	// (boneout)
 				Tsplit("Giant Lord", 		"30L"), 	// (boneout)
 				Tsplit("Nashandra", 		"43N 44C"), // (black screen after Nash)
+			}
+		)
+	);
+	
+	// Any% CP (Unrestricted)
+	vars.routes.Add(
+		Tuple.Create("any_un", "Any% CP Unrestricted", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Branch Skip",  	"53S"), 		// (bonfire light)
+				Tsplit("Aldia's door", 	"81S"), 		// (door)
+				Tsplit("Guardian", 	"47S"), 		// (elevator)
+				Tsplit("Ashen Mist", 	"45L"), 		// (boneout)
+				Tsplit("Giant Lord", 	"30L"), 		// (boneout)
+				Tsplit("Duo Fogwall", 	"97S"), 		// (Fogwall)
+				Tsplit("Nashandra", 	"44C"), 		// (black screen after Nash)
 			}
 		)
 	);
