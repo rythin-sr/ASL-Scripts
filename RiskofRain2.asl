@@ -92,11 +92,10 @@ split {
         }
     }
 
-    if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby" && settings[old.scene]) {
+    if (current.scene != old.scene && current.scene != "title" && current.scene != "lobby" && settings[old.scene]) 
         return true;
-    }
 
-    if (current.results && !old.results && (current.stage == "voidraid" || current.stage == "limbo" || current.stage == "mysteryspace"))
+    if (current.results && !old.results && (current.scene == "voidraid" || current.scene == "limbo" || current.scene == "mysteryspace"))
         return true;
 }
 
