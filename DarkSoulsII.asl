@@ -173,6 +173,8 @@ startup {
 		new {MinPos = v3f(-374, -469, 72),		MaxPos = v3f(-368, -462, 73),	Souls = 0},  	 	//95, King's gate bonfire
 		new {MinPos = v3f(597, -91, -2),		MaxPos = v3f(606, -84, 1),		Souls = 0},  	 	//96, Mcduff bonfire
 		new {MinPos = v3f(-260, -701, -7),		MaxPos = v3f(-256, -699, -4),	Souls = 0},      	//97, Duo fog wall
+		new {MinPos = v3f(-16, -39, -49),		MaxPos = v3f(-9, -35, -47),	Souls = 0},      	//98, Inner Wall bonfire
+		new {MinPos = v3f(-95, -266, -40),		MaxPos = v3f(-86, -262, -37),	Souls = 0},      	//99, DLC3 shrine exit
 	};
 	
 	// Interface this to tuple (to allow nice above notation to be kept)
@@ -414,7 +416,62 @@ startup {
 			}
 		)
 	);
-	
+
+	// All Bosses Soul Level 1s: Restricted
+	vars.routes.Add(
+		Tuple.Create("AB(SL1_r)", "All Bosses (Soul Level 1 Restricted)", 
+			new List<Tuple<string,string>>
+			{
+				Tsplit("Last Giant",		"00L"), 		// (boneout)
+				Tsplit("Pursuer", 		"01N 83L"), 		// (nest)
+				Tsplit("Dragonrider", 		"03N 85L"), 		// (warp after Licia)	
+				Tsplit("Rotten 1", 		"04N 67L"), 		// (DLC1 portal)
+				Tsplit("DLC1 Runthrough", 	"60L"), 		// (Dragon Stone bonfire)
+				Tsplit("Skeleton Lords", 	"11N 55S"), 		// (lever)
+				Tsplit("Covetous", 		"12S"),			// (kill)
+				Tsplit("Mytha", 		"13N 56S"), 		// (elevator)
+				Tsplit("Smelter Demon",		"14N 57S"),		// (door)
+				Tsplit("Old Iron King", 	"15N 68L"),		// (DLC2 portal)
+				Tsplit("DLC2 Runthrough", 	"76L"),		 	// (chunks boneout)
+				Tsplit("Dragonslayer", 		"09L"), 		// (boneout)
+				Tsplit("Flexile", 		"10L"), 		// (boneout)
+				Tsplit("Sentinels", 		"16S"),		 	// (kill)
+				Tsplit("Gargoyles", 		"17L"),		 	// (boneout)
+				Tsplit("Sinner", 		"18N 86L"),		// (primal)
+				Tsplit("Najka", 		"19S"), 		// (kill)
+				Tsplit("Authority", 		"20S"), 		// (kill)
+				Tsplit("Congregation", 		"21S"), 		// (kill)
+				Tsplit("Freja", 		"22N 87L"),		// (boneout at primal)
+				Tsplit("Vanguard", 		"23L"), 		// (boneout)
+				Tsplit("Eye of the Priestess", 	"98L"), 		// (Inner Wall bonfire)
+				Tsplit("Aava", 			"38N 59L"),		// (warp after doing some DLC3 stuff pls work)
+				Tsplit("Dlc3 Runthrough", 	"99L"),			// (Dlc3 portal after doing the rest of dlc3 stuff)
+				Tsplit("Dragonriders", 		"24S"), 		// (kill)
+				Tsplit("Mirror Knight", 	"25N 48S"), 		// (elevator)
+				Tsplit("Demon of Song", 	"26N 49S"),		// (door)
+				Tsplit("Velstadt", 		"27N 84L"), 		// (King's ring boneout)
+				Tsplit("Guardian", 		"28N 47S"),		// (elevator)
+				Tsplit("Ancient", 		"29L"),  		// (boneout)
+				Tsplit("Giant Lord", 		"30L"), 		// (ASSUMED Soul of a Giant - not explicit)
+				Tsplit("Gulch Giants", 		"63N 70L"),		// (Grandahl boneout)
+				Tsplit("Vendrick", 		"34L"), 		// (boneout)
+				Tsplit("Fume Knight", 		"31L"),			// (boneout)
+				Tsplit("Blue Smelter", 		"32L"), 		// (boneout)
+				Tsplit("Sir Alonne", 		"33L"), 		// (boneout)
+				Tsplit("Burnt Ivory King", 	"39L"), 		// (boneout)
+				Tsplit("Lud and Zallen", 	"40L"), 		// (boneout)
+				Tsplit("Elana", 		"35S"), 		// (kill)
+				Tsplit("Sinh", 			"36L"), 		// (boneout)
+				Tsplit("Gank Squad", 		"37L"), 		// (boneout)
+				Tsplit("Chariot", 		"41L"), 		// (boneout)
+				Tsplit("Dungeon: Woods", 	"71D"), 		// (boneout after dungeon)
+				Tsplit("Dungeon: Gulch", 	"70D"), 		// (boneout after dungeon)
+				Tsplit("Darklurker", 		"42L"), 		// (boneout)
+				Tsplit("Aldia", 		"43N 44C"),		// (cutscene screen after Aldia)	
+			}
+		)
+	);
+
 	// All Bosses - No DLC, Hexes
 	vars.routes.Add(
 		Tuple.Create("old_bosses", "All Bosses No DLC (Hexes)", 
