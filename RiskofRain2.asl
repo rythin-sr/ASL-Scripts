@@ -5,8 +5,8 @@ startup
 
     //UnityASL setup thanks to Ero
     vars.Log = (Action<object>)(output => print("[] " + output));
-    vars.Unity = Assembly.Load(File.ReadAllBytes(@"Components\UnityASL.bin")).CreateInstance("UnityASL.Unity");
-    vars.Unity.LoadSceneManager = true; 
+    Assembly.Load(File.ReadAllBytes("Components/asl-help")).CreateInstance("Unity");
+    vars.Helper.LoadSceneManager = true;
 
     settings.Add("fin", false, "Don't split on stage transitions");
     settings.SetToolTip("fin", "Will still split when entering the final cutscene, just not between stages.");
@@ -35,37 +35,31 @@ init
 {
    var dll = File.Exists(modules.First().FileName + @"\..\Risk of Rain 2_Data\Managed\RoR2.dll"); 
 
-   vars.Unity.TryOnLoad = (Func<dynamic, bool>)(helper =>
+   vars.Helper.TryLoad = (Func<dynamic, bool>)(mono =>
     {
 
         var assembly = dll ? "RoR2" : "Assembly-CSharp";
-        
-        var ftbm = helper.GetClass(assembly, "FadeToBlackManager");
-        var run = helper.GetClass(assembly, "Run");
-        var goc = helper.GetClass(assembly, "GameOverController");
 
-        vars.Unity.Make<float>(ftbm.Static, ftbm["alpha"]).Name = "fade";
-        vars.Unity.Make<int>(run.Static, run["instance"], run["stageClearCount"]).Name = "stage";
-        vars.Unity.Make<bool>(goc.Static, goc["instance"], goc["shouldDisplayGameEndReportPanels"]).Name = "panel";
+        var ftbm = mono.GetClass(assembly, "FadeToBlackManager");
+        var run = mono.GetClass(assembly, "Run");
+        var goc = mono.GetClass(assembly, "GameOverController");
+
+        vars.Helper["fade"] = ftbm.Make<float>("alpha");
+        vars.Helper["stageCount"] = run.Make<int>("instance", "stageClearCount");
+        try {
+            vars.Helper["results"] = goc.Make<bool>("instance", "shouldDisplayGameEndReportPanels");
+        } catch {
+            // SotS update
+            vars.Helper["results"] = goc.Make<bool>("instance", "_shouldDisplayGameEndReportPanels");
+        }
 
         return true;
     });
-
-
-    
-    vars.Unity.Load(game);
 }
 
 update
 {
-    if (!vars.Unity.Loaded) return false;
-
-    vars.Unity.Update();
-
-    current.fade = vars.Unity["fade"].Current;
-    current.stageCount = vars.Unity["stage"].Current;
-    current.scene = vars.Unity.Scenes.Active.Name;
-    current.results = vars.Unity["panel"].Current;
+    current.scene = vars.Helper.Scenes.Active.Name;
 }
 
 start {    
@@ -102,14 +96,4 @@ split {
 isLoading {
     if (current.fade > old.fade) return true;
     if (current.fade < old.fade && current.fade > 0 || current.fade == 0) return false;
-}
-
-exit
-{
-    vars.Unity.Reset();
-}
-
-shutdown
-{
-    vars.Unity.Reset();
 }
