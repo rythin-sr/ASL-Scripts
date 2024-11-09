@@ -63,7 +63,7 @@ update
 }
 
 start {    
-    if (current.scene.Contains("beach") || current.scene.Contains("golem") || current.scene.Contains("snowy") || current.scene.Contains("lakes")) {
+    if (current.scene.Contains("beach") || current.scene.Contains("golem") || current.scene.Contains("snowy") || current.scene.Contains("lakes") || current.scene.Contains("village")) {
         return current.fade < 1.0f && old.fade >= 1.0f;
     }
 }
