@@ -1,5 +1,5 @@
 state("Rusted_Moss") {
-    int room: 0x8A4588;
+    int room: 0x8A9E28;
 }
 
 startup {
