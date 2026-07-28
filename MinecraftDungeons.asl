@@ -311,6 +311,13 @@ state("Dungeons-Win64-Shipping", "Launcher, 1.14.1.0") {
 //	int cs:          0x;
 //}
 
+state("Dungeons-Win64-Shipping", "Launcher, 1.17.0.0") {
+	byte counter:    0x4297F28;
+	byte lc:         0x4718252;
+	int seed:        0x474F468, 0x0, 0x198, 0x7F8;
+	int cs:          0x474F538, 0x8;
+}
+
 startup {
 	vars.h = 0;						//used for isLoading logic
 	vars.inTut = 0;						//used for dumb shit fuck you
@@ -540,6 +547,10 @@ init {
 	
 		case 103407616:
 		version = "Launcher, 1.14.1.0";
+		break;
+
+		case 103702528:
+		version = "Launcher, 1.17.0.0";
 		break;
 	
 		default:
